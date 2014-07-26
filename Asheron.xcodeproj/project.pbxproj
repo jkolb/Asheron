@@ -10,6 +10,13 @@
 		E52A4D83198327BC006053C8 /* Asheron.h in Headers */ = {isa = PBXBuildFile; fileRef = E52A4D82198327BC006053C8 /* Asheron.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E52A4D89198327BC006053C8 /* Asheron.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E52A4D7D198327BC006053C8 /* Asheron.framework */; };
 		E52A4D90198327BC006053C8 /* AsheronTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4D8F198327BC006053C8 /* AsheronTests.swift */; };
+		E52A4DA81983280D006053C8 /* IndexedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4DA71983280D006053C8 /* IndexedFile.swift */; };
+		E52A4DAE1983281E006053C8 /* Material.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4DA91983281E006053C8 /* Material.swift */; };
+		E52A4DAF1983281E006053C8 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4DAA1983281E006053C8 /* Palette.swift */; };
+		E52A4DB01983281E006053C8 /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4DAB1983281E006053C8 /* Polygon.swift */; };
+		E52A4DB11983281E006053C8 /* Texture.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4DAC1983281E006053C8 /* Texture.swift */; };
+		E52A4DB21983281E006053C8 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4DAD1983281E006053C8 /* Vertex.swift */; };
+		E52A4DBC1983288A006053C8 /* Lilliput.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E52A4DB91983285F006053C8 /* Lilliput.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -20,6 +27,20 @@
 			remoteGlobalIDString = E52A4D7C198327BC006053C8;
 			remoteInfo = Asheron;
 		};
+		E52A4DB81983285F006053C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E52A4DB31983285F006053C8 /* Lilliput.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E5BDC5C1196F698B001ABC11;
+			remoteInfo = Lilliput;
+		};
+		E52A4DBA1983285F006053C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E52A4DB31983285F006053C8 /* Lilliput.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E5BDC5CC196F698C001ABC11;
+			remoteInfo = LilliputTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +50,13 @@
 		E52A4D88198327BC006053C8 /* AsheronTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsheronTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52A4D8E198327BC006053C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E52A4D8F198327BC006053C8 /* AsheronTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsheronTests.swift; sourceTree = "<group>"; };
+		E52A4DA71983280D006053C8 /* IndexedFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedFile.swift; sourceTree = "<group>"; };
+		E52A4DA91983281E006053C8 /* Material.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Material.swift; sourceTree = "<group>"; };
+		E52A4DAA1983281E006053C8 /* Palette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
+		E52A4DAB1983281E006053C8 /* Polygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
+		E52A4DAC1983281E006053C8 /* Texture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Texture.swift; sourceTree = "<group>"; };
+		E52A4DAD1983281E006053C8 /* Vertex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
+		E52A4DB31983285F006053C8 /* Lilliput.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lilliput.xcodeproj; path = Lilliput/Lilliput.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E52A4DBC1983288A006053C8 /* Lilliput.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +82,7 @@
 		E52A4D73198327BC006053C8 = {
 			isa = PBXGroup;
 			children = (
+				E52A4DB31983285F006053C8 /* Lilliput.xcodeproj */,
 				E52A4D7F198327BC006053C8 /* Asheron */,
 				E52A4D8C198327BC006053C8 /* AsheronTests */,
 				E52A4D7E198327BC006053C8 /* Products */,
@@ -71,6 +101,9 @@
 		E52A4D7F198327BC006053C8 /* Asheron */ = {
 			isa = PBXGroup;
 			children = (
+				E52A4DA71983280D006053C8 /* IndexedFile.swift */,
+				E52A4DA5198327FB006053C8 /* Cell */,
+				E52A4DA6198327FB006053C8 /* Portal */,
 				E52A4D82198327BC006053C8 /* Asheron.h */,
 				E52A4D80198327BC006053C8 /* Supporting Files */,
 			);
@@ -100,6 +133,34 @@
 				E52A4D8E198327BC006053C8 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E52A4DA5198327FB006053C8 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		E52A4DA6198327FB006053C8 /* Portal */ = {
+			isa = PBXGroup;
+			children = (
+				E52A4DA91983281E006053C8 /* Material.swift */,
+				E52A4DAA1983281E006053C8 /* Palette.swift */,
+				E52A4DAB1983281E006053C8 /* Polygon.swift */,
+				E52A4DAC1983281E006053C8 /* Texture.swift */,
+				E52A4DAD1983281E006053C8 /* Vertex.swift */,
+			);
+			path = Portal;
+			sourceTree = "<group>";
+		};
+		E52A4DB41983285F006053C8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E52A4DB91983285F006053C8 /* Lilliput.framework */,
+				E52A4DBB1983285F006053C8 /* LilliputTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,6 +241,12 @@
 			mainGroup = E52A4D73198327BC006053C8;
 			productRefGroup = E52A4D7E198327BC006053C8 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E52A4DB41983285F006053C8 /* Products */;
+					ProjectRef = E52A4DB31983285F006053C8 /* Lilliput.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				E52A4D7C198327BC006053C8 /* Asheron */,
@@ -187,6 +254,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E52A4DB91983285F006053C8 /* Lilliput.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Lilliput.framework;
+			remoteRef = E52A4DB81983285F006053C8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E52A4DBB1983285F006053C8 /* LilliputTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LilliputTests.xctest;
+			remoteRef = E52A4DBA1983285F006053C8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E52A4D7B198327BC006053C8 /* Resources */ = {
@@ -210,6 +294,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E52A4DB01983281E006053C8 /* Polygon.swift in Sources */,
+				E52A4DB11983281E006053C8 /* Texture.swift in Sources */,
+				E52A4DAF1983281E006053C8 /* Palette.swift in Sources */,
+				E52A4DAE1983281E006053C8 /* Material.swift in Sources */,
+				E52A4DA81983280D006053C8 /* IndexedFile.swift in Sources */,
+				E52A4DB21983281E006053C8 /* Vertex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
