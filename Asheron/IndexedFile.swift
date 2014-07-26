@@ -123,31 +123,11 @@ class IndexedFileV1 {
     }
     
     func findKey(identifier: UInt32, index: Index) -> Index.Key? {
-        for keyIndex in 0..<index.count {
-            let key = index.key[keyIndex]
-            
-            if key.value == identifier {
-                return key
-            } else if (key.value > identifier) {
-                if index.isLeaf {
-                    return nil
-                } else {
-                    let offset = index.offset[keyIndex]
-                    let childIndex = readIndex(offset)
-                    
-                    return findKey(identifier, index: childIndex)
-                }
-            }
-        }
-        
-        if index.isLeaf {
-            return nil
-        } else {
-            let offset = index.offset[index.count]
-            let childIndex = readIndex(offset)
-            
-            return findKey(identifier, index: childIndex)
-        }
+        var keyIndex = 0
+        while keyIndex < index.count && identifier > index.key[keyIndex].value { keyIndex++ }
+        if index.key[keyIndex].value == identifier { return index.key[keyIndex] }
+        if index.isLeaf { return nil }
+        return findKey(identifier, index: readIndex(index.offset[keyIndex]))
     }
     
     func readIndex(offset: Int) -> Index {
