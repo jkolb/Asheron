@@ -66,29 +66,28 @@ extension ByteBuffer {
     }
 }
 
-class IndexedFileV1 {
+public class IndexedFileV1 {
     var byteOrder: ByteOrder
     var binaryFile: BinaryFile
     var header: Header
     var mappedBuffer: ByteBuffer
     var indexCache = Dictionary<Int, Index>(minimumCapacity: 64)
     
-    struct Error {
-        let code: Int
-        let message: String
+    public var readonlyHeader: Header {
+        return header
+    }
+    
+    public struct Error {
+        public let code: Int
+        public let message: String
         
-        init(code: Int = 0, message: String = "") {
+        public init(code: Int = 0, message: String = "") {
             self.code = code
             self.message = message
         }
     }
     
-    enum Type: Int {
-        case Cell = 256
-        case Portal = 1024
-    }
-    
-    class func openForReading(path: String, type: Type, inout error: Error) -> IndexedFileV1? {
+    public class func openForReading(path: String, inout error: Error) -> IndexedFileV1? {
         let result = BinaryFile.openForReading(path)
         
         if let fileError = result.error {
@@ -96,16 +95,16 @@ class IndexedFileV1 {
             return nil;
         }
         
-        return IndexedFileV1(byteOrder: LittleEndian(), binaryFile: result.value, type: type)
+        return IndexedFileV1(byteOrder: LittleEndian(), binaryFile: result.value)
     }
     
-    init(byteOrder: ByteOrder, binaryFile: BinaryFile, type: Type) {
+    init(byteOrder: ByteOrder, binaryFile: BinaryFile) {
         self.byteOrder = byteOrder
         self.binaryFile = binaryFile
         self.mappedBuffer = binaryFile.map(LittleEndian(), mode: .ReadOnly).value
         self.header = IndexedFileV1.readHeader(self.mappedBuffer)
 
-        if (self.header.pageSize != type.toRaw()) {
+        if (self.header.pageSize != 1024 && self.header.pageSize != 256) {
             fatalError("Invalid file: Unexpected page size")
         }
     }
@@ -168,7 +167,7 @@ class IndexedFileV1 {
         return buffer.getIndexedFileV1Header()
     }
 
-    struct Header { // 1024
+    public struct Header: Printable { // 1024
         var fileType: UInt32 = 0
         var pageSize: Int = 0
         var fileSize: Int = 0
@@ -177,6 +176,8 @@ class IndexedFileV1 {
         var lastFreePageOffset: Int = 0
         var numberOfFreePages: Int = 0
         var rootIndexOffset: Int = 0
+        
+        public var description: String { return "File Type: \(fileType)\nPage Size: \(pageSize)" }
     }
     
     struct Index: Printable { // 984
