@@ -1,3 +1,4 @@
 [submodule "Lilliput"]
 	path = Lilliput
 	url = https://github.com/jkolb/Lilliput.git
+	branch = master
