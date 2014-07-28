@@ -20,6 +20,7 @@ extension ByteBuffer {
         let position = getVector3F()
         let polygonCount = getIntFrom32Bits()
         let polygon = getPolygon(polygonCount)
+        let rootNode = getBSPNode()
         
         return Mesh(
             identifier: identifier,
@@ -28,7 +29,8 @@ extension ByteBuffer {
             unknown1: unknown1,
             vertex: vertex,
             position: position,
-            polygon: polygon
+            polygon: polygon,
+            rootNode: rootNode
         )
     }
 }
@@ -41,5 +43,5 @@ struct Mesh {
     let vertex: Array<Vertex>
     let position: Vector3F
     let polygon: Array<Polygon>
-    // Unknown...
+    let rootNode: BSPNode
 }

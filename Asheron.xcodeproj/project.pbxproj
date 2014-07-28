@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E509E5B31985EF4A0055E37A /* LandBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509E5B21985EF4A0055E37A /* LandBlock.swift */; };
+		E509E5B71985F3840055E37A /* BSPNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509E5B61985F3840055E37A /* BSPNode.swift */; };
 		E52A4D83198327BC006053C8 /* Asheron.h in Headers */ = {isa = PBXBuildFile; fileRef = E52A4D82198327BC006053C8 /* Asheron.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E52A4D89198327BC006053C8 /* Asheron.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E52A4D7D198327BC006053C8 /* Asheron.framework */; };
 		E52A4D90198327BC006053C8 /* AsheronTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4D8F198327BC006053C8 /* AsheronTests.swift */; };
@@ -50,6 +51,7 @@
 
 /* Begin PBXFileReference section */
 		E509E5B21985EF4A0055E37A /* LandBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandBlock.swift; sourceTree = "<group>"; };
+		E509E5B61985F3840055E37A /* BSPNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSPNode.swift; sourceTree = "<group>"; };
 		E52A4D7D198327BC006053C8 /* Asheron.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Asheron.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52A4D81198327BC006053C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E52A4D82198327BC006053C8 /* Asheron.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Asheron.h; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				E571473F1985E9C600D41800 /* Model.swift */,
 				E57147411985EAA000D41800 /* Vector.swift */,
 				E57147431985EB0F00D41800 /* Transform.swift */,
+				E509E5B61985F3840055E37A /* BSPNode.swift */,
 			);
 			path = Portal;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				E571473C1985E77F00D41800 /* Mesh.swift in Sources */,
 				E52A4DB11983281E006053C8 /* Texture.swift in Sources */,
 				E52A4DAF1983281E006053C8 /* Palette.swift in Sources */,
+				E509E5B71985F3840055E37A /* BSPNode.swift in Sources */,
 				E52A4DAE1983281E006053C8 /* Material.swift in Sources */,
 				E52A4DA81983280D006053C8 /* IndexedFile.swift in Sources */,
 				E57147421985EAA000D41800 /* Vector.swift in Sources */,
