@@ -17,6 +17,10 @@
 		E52A4DB11983281E006053C8 /* Texture.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4DAC1983281E006053C8 /* Texture.swift */; };
 		E52A4DB21983281E006053C8 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4DAD1983281E006053C8 /* Vertex.swift */; };
 		E52A4DBC1983288A006053C8 /* Lilliput.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E52A4DB91983285F006053C8 /* Lilliput.framework */; };
+		E571473C1985E77F00D41800 /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = E571473B1985E77F00D41800 /* Mesh.swift */; };
+		E57147401985E9C600D41800 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E571473F1985E9C600D41800 /* Model.swift */; };
+		E57147421985EAA000D41800 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57147411985EAA000D41800 /* Vector.swift */; };
+		E57147441985EB0F00D41800 /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57147431985EB0F00D41800 /* Transform.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +61,10 @@
 		E52A4DAC1983281E006053C8 /* Texture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Texture.swift; sourceTree = "<group>"; };
 		E52A4DAD1983281E006053C8 /* Vertex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
 		E52A4DB31983285F006053C8 /* Lilliput.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lilliput.xcodeproj; path = Lilliput/Lilliput.xcodeproj; sourceTree = "<group>"; };
+		E571473B1985E77F00D41800 /* Mesh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
+		E571473F1985E9C600D41800 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		E57147411985EAA000D41800 /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
+		E57147431985EB0F00D41800 /* Transform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +158,10 @@
 				E52A4DAB1983281E006053C8 /* Polygon.swift */,
 				E52A4DAC1983281E006053C8 /* Texture.swift */,
 				E52A4DAD1983281E006053C8 /* Vertex.swift */,
+				E571473B1985E77F00D41800 /* Mesh.swift */,
+				E571473F1985E9C600D41800 /* Model.swift */,
+				E57147411985EAA000D41800 /* Vector.swift */,
+				E57147431985EB0F00D41800 /* Transform.swift */,
 			);
 			path = Portal;
 			sourceTree = "<group>";
@@ -294,11 +306,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E57147401985E9C600D41800 /* Model.swift in Sources */,
 				E52A4DB01983281E006053C8 /* Polygon.swift in Sources */,
+				E57147441985EB0F00D41800 /* Transform.swift in Sources */,
+				E571473C1985E77F00D41800 /* Mesh.swift in Sources */,
 				E52A4DB11983281E006053C8 /* Texture.swift in Sources */,
 				E52A4DAF1983281E006053C8 /* Palette.swift in Sources */,
 				E52A4DAE1983281E006053C8 /* Material.swift in Sources */,
 				E52A4DA81983280D006053C8 /* IndexedFile.swift in Sources */,
+				E57147421985EAA000D41800 /* Vector.swift in Sources */,
 				E52A4DB21983281E006053C8 /* Vertex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -488,6 +504,7 @@
 				E52A4D95198327BC006053C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E52A4D96198327BC006053C8 /* Build configuration list for PBXNativeTarget "AsheronTests" */ = {
 			isa = XCConfigurationList;
@@ -496,6 +513,7 @@
 				E52A4D98198327BC006053C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
