@@ -113,7 +113,7 @@ public class IndexedFileV1 {
         binaryFile.unmap(mappedBuffer)
     }
     
-    func findData(identifier: UInt32) -> ByteBuffer? {
+    public func findData(identifier: UInt32) -> ByteBuffer? {
         let rootIndex = readIndex(header.rootIndexOffset)
         if let key = findKey(identifier, index: rootIndex) {
             return readKeyData(key)

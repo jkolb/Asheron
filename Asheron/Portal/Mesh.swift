@@ -9,7 +9,7 @@
 import Lilliput
 
 extension ByteBuffer {
-    func getMesh() -> Mesh {
+    public func getMesh() -> Mesh {
         let identifier = getUInt32()
         let meshType = getUInt32()
         let materialCount = getIntFrom32Bits()
@@ -35,13 +35,13 @@ extension ByteBuffer {
     }
 }
 
-struct Mesh {
-    let identifier: UInt32
-    let meshType: UInt32
-    let materialId: Array<UInt32>
-    let unknown1: UInt32
-    let vertex: Array<Vertex>
-    let position: Vector3F
-    let polygon: Array<Polygon>
-    let rootNode: BSPNode
+public struct Mesh {
+    public let identifier: UInt32
+    public let meshType: UInt32
+    public let materialId: Array<UInt32>
+    public let unknown1: UInt32
+    public let vertex: Array<Vertex>
+    public let position: Vector3F
+    public let polygon: Array<Polygon>
+    public let rootNode: BSPNode
 }

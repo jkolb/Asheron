@@ -9,7 +9,7 @@
 import Lilliput
 
 extension ByteBuffer {
-    func getLandBlock() -> LandBlock {
+    public func getLandBlock() -> LandBlock {
         let identifier = getUInt32()
         let meshBlockFlag = getUInt32()
         let topography = getUInt16(9 * 9)
@@ -26,7 +26,7 @@ extension ByteBuffer {
     }
 }
 
-struct LandBlock {
+public struct LandBlock {
     let identifier: UInt32
     let meshBlockFlag: UInt32
     let topography: Array<UInt16> // 9 * 9 * 2 = 162

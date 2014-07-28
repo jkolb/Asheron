@@ -9,65 +9,65 @@
 import Lilliput
 
 extension ByteBuffer {
-    func getColor() -> Color {
+    public func getColor() -> Color {
         return Color(bgra: getUInt32())
     }
     
-    func getColor(count: Int) -> Array<Color> {
+    public func getColor(count: Int) -> Array<Color> {
         return getArray(count, defaultValue: Color()) { self.getColor() }
     }
 }
 
-struct Color {
-    let r: UInt8
-    let g: UInt8
-    let b: UInt8
-    let a: UInt8
+public struct Color {
+    public let r: UInt8
+    public let g: UInt8
+    public let b: UInt8
+    public let a: UInt8
     
-    init() {
+    public init() {
         r = 0; g = 0; b = 0; a = 255;
     }
     
-    init(bgra: UInt32) {
+    public init(bgra: UInt32) {
         b = UInt8((bgra & 0xFF000000) >> 24)
         g = UInt8((bgra & 0x00FF0000) >> 16)
         r = UInt8((bgra & 0x0000FF00) >> 08)
         a = UInt8((bgra & 0x000000FF) >> 00)
     }
     
-    init(rgba: UInt32) {
+    public init(rgba: UInt32) {
         r = UInt8((rgba & 0xFF000000) >> 24)
         g = UInt8((rgba & 0x00FF0000) >> 16)
         b = UInt8((rgba & 0x0000FF00) >> 08)
         a = UInt8((rgba & 0x000000FF) >> 00)
     }
     
-    init(_ r: UInt8, _ g: UInt8, _ b: UInt8, _ a: UInt8 = UInt8.max) {
+    public init(_ r: UInt8, _ g: UInt8, _ b: UInt8, _ a: UInt8 = UInt8.max) {
         self.r = r
         self.g = g
         self.b = b
         self.a = a
     }
     
-    init(r: Float, g: Float, b: Float, a: Float = 1.0) {
+    public init(r: Float, g: Float, b: Float, a: Float = 1.0) {
         self.r = Color.clamp(r)
         self.g = Color.clamp(g)
         self.b = Color.clamp(b)
         self.a = Color.clamp(a)
     }
     
-    init (floatComponents: Array<Float>) {
+    public init (floatComponents: Array<Float>) {
         r = Color.clamp(floatComponents[0])
         g = Color.clamp(floatComponents[1])
         b = Color.clamp(floatComponents[2])
         a = Color.clamp(floatComponents[3])
     }
     
-    var components: Array<UInt8> {
+    public var components: Array<UInt8> {
     return [r, g, b, a]
     }
     
-    var floatComponents: Array<Float> {
+    public var floatComponents: Array<Float> {
     return [
         Color.floatComponent(r),
         Color.floatComponent(g),
@@ -87,20 +87,16 @@ struct Color {
 }
 
 extension ByteBuffer {
-    func getPalette() -> Palette {
+    public func getPalette() -> Palette {
         let identifier = getUInt32()
         let size = getIntFrom32Bits()
         let color = getColor(size)
         return Palette(identifier: identifier, size: size, color: color)
     }
-    
-    func getPalette(count: Int) -> Array<Palette> {
-        return getArray(count) { self.getPalette() }
-    }
 }
 
-struct Palette {
-    let identifier: UInt32
-    let size: Int
-    let color: Array<Color>
+public struct Palette {
+    public let identifier: UInt32
+    public let size: Int
+    public let color: Array<Color>
 }

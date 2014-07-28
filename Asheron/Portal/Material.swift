@@ -9,7 +9,7 @@
 import Lilliput
 
 extension ByteBuffer {
-    func getMaterial() -> Material {
+    public func getMaterial() -> Material {
         let identifier = getUInt32()
         let flags = getUInt32()
         var color: Color
@@ -46,29 +46,25 @@ extension ByteBuffer {
             light3: light3
         )
     }
-    
-    func getMaterial(count: Int) -> Array<Material> {
-        return getArray(count) { self.getMaterial() }
-    }
 }
 
-enum MaterialFlag: UInt32 {
+public enum MaterialFlag: UInt32 {
     case Color = 0x00000001
     case Solid = 0x00000002
     case Transparent = 0x00000004 // ?? How is this different from Solid off, where did these come from?
 }
 
-struct Material {
-    let identifier: UInt32
-    let flags: UInt32
-    let color: Color
-    let textureId: UInt32
-    let paletteId: UInt32
-    let light1: Float
-    let light2: Float
-    let light3: Float
+public struct Material {
+    public let identifier: UInt32
+    public let flags: UInt32
+    public let color: Color
+    public let textureId: UInt32
+    public let paletteId: UInt32
+    public let light1: Float
+    public let light2: Float
+    public let light3: Float
     
-    var isColor: Bool { return (flags & MaterialFlag.Color.toRaw()) == MaterialFlag.Color.toRaw() }
-    var isSolid: Bool { return (flags & MaterialFlag.Solid.toRaw()) == MaterialFlag.Solid.toRaw() }
-    var isTransparent: Bool { return (flags & MaterialFlag.Transparent.toRaw()) == MaterialFlag.Transparent.toRaw() }
+    public var isColor: Bool { return (flags & MaterialFlag.Color.toRaw()) == MaterialFlag.Color.toRaw() }
+    public var isSolid: Bool { return (flags & MaterialFlag.Solid.toRaw()) == MaterialFlag.Solid.toRaw() }
+    public var isTransparent: Bool { return (flags & MaterialFlag.Transparent.toRaw()) == MaterialFlag.Transparent.toRaw() }
 }

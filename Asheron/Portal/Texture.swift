@@ -9,7 +9,7 @@
 import Lilliput
 
 extension ByteBuffer {
-    func getTexture() -> Texture {
+    public func getTexture() -> Texture {
         let identifier = getUInt32()
         let type = getUInt32()
         let width = getIntFrom32Bits()
@@ -24,13 +24,9 @@ extension ByteBuffer {
             data: data
         )
     }
-    
-    func getTexture(count: Int) -> Array<Texture> {
-        return getArray(count) { self.getTexture() }
-    }
 }
 
-enum TextureType: UInt32 {
+public enum TextureType: UInt32 {
     case Palette = 2    // Doesn't matter
     case PackedARGB = 4 // GL_BGRA, GL_UNSIGNED_SHORT_4_4_4_4_REV (swapped while reading)
     case PackedRGB = 7  // GL_RGB, GL_UNSIGNED_SHORT_5_6_5        (swapped while reading)
@@ -38,10 +34,10 @@ enum TextureType: UInt32 {
     case Luminance = 11 // GL_LUMINANCE, GL_UNSIGNED_BYTE
 }
 
-struct Texture {
-    let identifier: UInt32
-    let type: UInt32
-    let width: Int
-    let height: Int
-    let data: Array<UInt8>
+public struct Texture {
+    public let identifier: UInt32
+    public let type: UInt32
+    public let width: Int
+    public let height: Int
+    public let data: Array<UInt8>
 }

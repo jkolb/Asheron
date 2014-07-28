@@ -9,16 +9,16 @@
 import Lilliput
 
 extension ByteBuffer {
-    func getTransform() -> Transform {
+    public func getTransform() -> Transform {
         return Transform(translation: getVector3F(), rotation: getVector4F())
     }
     
-    func getTransform(count: Int) -> Array<Transform> {
+    public func getTransform(count: Int) -> Array<Transform> {
         return getArray(count, defaultValue: Transform()) { self.getTransform() }
     }
 }
 
-struct Transform {
-    let translation: Vector3F = Vector3F()
-    let rotation: Vector4F = Vector4F()
+public struct Transform {
+    public let translation: Vector3F = Vector3F()
+    public let rotation: Vector4F = Vector4F()
 }

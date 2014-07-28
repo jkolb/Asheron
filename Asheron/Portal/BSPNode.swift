@@ -9,8 +9,9 @@
 import Lilliput
 
 extension ByteBuffer {
-    func getBSPNode() -> BSPNode {
+    public func getBSPNode() -> BSPNode {
         let tag = getUTF8(4)
+        println(tag)
         let unknown1 = getVector4F()
         var children = Array<BSPNode>()
         
@@ -21,7 +22,10 @@ extension ByteBuffer {
         
         let unknown2 = getVector4F()
         let count = getIntFrom32Bits()
+        println(count)
         let index = getUInt16(count)
+        let padCount = count % 2
+        getUInt16(padCount) // Skip padding
         
         return BSPNode(
             tag: tag,
@@ -34,11 +38,11 @@ extension ByteBuffer {
     }
 }
 
-struct BSPNode {
-    let tag: String
-    let unknown1: Vector4F
-    let children: Array<BSPNode> // 2
-    let unknown2: Vector4F
-    let count: Int
-    let index: Array<UInt16>
+public struct BSPNode {
+    public let tag: String
+    public let unknown1: Vector4F
+    public let children: Array<BSPNode> // 2
+    public let unknown2: Vector4F
+    public let count: Int
+    public let index: Array<UInt16>
 }

@@ -9,7 +9,7 @@
 import Lilliput
 
 extension ByteBuffer {
-    func getPolygon() -> Polygon {
+    public func getPolygon() -> Polygon {
         let index = getIntFrom16Bits()
         let count = getIntFrom8Bits()
         let type = getIntFrom8Bits()
@@ -43,24 +43,24 @@ extension ByteBuffer {
         )
     }
     
-    func getPolygon(count: Int) -> Array<Polygon> {
+    public func getPolygon(count: Int) -> Array<Polygon> {
         return getArray(count) { self.getPolygon() }
     }
 }
 
-enum PolygonType: Int {
+public enum PolygonType: Int {
     case Textured = 0
     case Colored = 4
 }
 
-struct Polygon {
-    let index: Int
-    let count: Int
-    let type: Int
-    let unknown1: UInt16
-    let unknown2: UInt16
-    let materialIndex: Int
-    let unknown3: UInt16
-    let vertexIndex: Array<Int>
-    let texcoordIndex: Array<Int>
+public struct Polygon {
+    public let index: Int
+    public let count: Int
+    public let type: Int
+    public let unknown1: UInt16
+    public let unknown2: UInt16
+    public let materialIndex: Int
+    public let unknown3: UInt16
+    public let vertexIndex: Array<Int>
+    public let texcoordIndex: Array<Int>
 }

@@ -9,7 +9,7 @@
 import Lilliput
 
 extension ByteBuffer {
-    func getModel() -> Model {
+    public func getModel() -> Model {
         let identifier = getUInt32()
         let modelType = getUInt32()
         let meshCount = getIntFrom32Bits()
@@ -57,13 +57,13 @@ extension ByteBuffer {
     }
 }
 
-struct Model {
-    let identifier: UInt32
-    let modelType: UInt32
-    let meshId: Array<UInt32>
-    let unknown1: Array<UInt32>
-    let unknown2Count: Int
-    let unknown2: Array<UInt32>
-    let flags: UInt32
-    let transform: Array<Transform>
+public struct Model {
+    public let identifier: UInt32
+    public let modelType: UInt32
+    public let meshId: Array<UInt32>
+    public let unknown1: Array<UInt32>
+    public let unknown2Count: Int
+    public let unknown2: Array<UInt32>
+    public let flags: UInt32
+    public let transform: Array<Transform>
 }
