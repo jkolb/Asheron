@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E509E5B31985EF4A0055E37A /* LandBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509E5B21985EF4A0055E37A /* LandBlock.swift */; };
 		E52A4D83198327BC006053C8 /* Asheron.h in Headers */ = {isa = PBXBuildFile; fileRef = E52A4D82198327BC006053C8 /* Asheron.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E52A4D89198327BC006053C8 /* Asheron.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E52A4D7D198327BC006053C8 /* Asheron.framework */; };
 		E52A4D90198327BC006053C8 /* AsheronTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4D8F198327BC006053C8 /* AsheronTests.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E509E5B21985EF4A0055E37A /* LandBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandBlock.swift; sourceTree = "<group>"; };
 		E52A4D7D198327BC006053C8 /* Asheron.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Asheron.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52A4D81198327BC006053C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E52A4D82198327BC006053C8 /* Asheron.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Asheron.h; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 		E52A4DA5198327FB006053C8 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				E509E5B21985EF4A0055E37A /* LandBlock.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E509E5B31985EF4A0055E37A /* LandBlock.swift in Sources */,
 				E57147401985E9C600D41800 /* Model.swift in Sources */,
 				E52A4DB01983281E006053C8 /* Polygon.swift in Sources */,
 				E57147441985EB0F00D41800 /* Transform.swift in Sources */,
