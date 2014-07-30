@@ -121,7 +121,7 @@ public class IndexedFileV1 {
         return nil
     }
     
-    func findKey(identifier: UInt32, index: Index) -> Index.Key? {
+    public func findKey(identifier: UInt32, index: Index) -> Index.Key? {
         var keyIndex = 0
         while keyIndex < index.count && identifier > index.key[keyIndex].value { keyIndex++ }
         if index.key[keyIndex].value == identifier { return index.key[keyIndex] }
@@ -129,14 +129,14 @@ public class IndexedFileV1 {
         return findKey(identifier, index: readIndex(index.offset[keyIndex]))
     }
     
-    func readIndex(offset: Int) -> Index {
+    public func readIndex(offset: Int) -> Index {
         if let index = indexCache[offset] { return index }
         let indexData = readIndexData(offset)
         indexData.flip()
         return indexData.getIndexedFileV1Index()
     }
     
-    func readIndexData(offset: Int) -> ByteBuffer {
+    public func readIndexData(offset: Int) -> ByteBuffer {
         return IndexedFileV1.readData(mappedBuffer, offset: offset, length: 984, pageSize: header.pageSize)
     }
     
@@ -168,32 +168,32 @@ public class IndexedFileV1 {
     }
 
     public struct Header: Printable { // 1024
-        var fileType: UInt32 = 0
-        var pageSize: Int = 0
-        var fileSize: Int = 0
-        var fileVersion: UInt32 = 0
-        var firstFreePageOffset: Int = 0
-        var lastFreePageOffset: Int = 0
-        var numberOfFreePages: Int = 0
-        var rootIndexOffset: Int = 0
+        public var fileType: UInt32 = 0
+        public var pageSize: Int = 0
+        public var fileSize: Int = 0
+        public var fileVersion: UInt32 = 0
+        public var firstFreePageOffset: Int = 0
+        public var lastFreePageOffset: Int = 0
+        public var numberOfFreePages: Int = 0
+        public var rootIndexOffset: Int = 0
         
         public var description: String { return "File Type: \(fileType)\nPage Size: \(pageSize)" }
     }
     
-    struct Index: Printable { // 984
-        struct Key: Printable {
-            let value: UInt32 = 0
-            let offset: Int = 0
-            let length: Int = 0
+    public struct Index: Printable { // 984
+        public struct Key: Printable {
+            public let value: UInt32 = 0
+            public let offset: Int = 0
+            public let length: Int = 0
             
-            var description: String { return "\(value):\(offset):\(length)" }
+            public var description: String { return "\(value):\(offset):\(length)" }
         }
         
-        var offset: Array<Int> // 62
-        var count: Int
-        var key: Array<Key> // 61
+        public var offset: Array<Int> // 62
+        public var count: Int
+        public var key: Array<Key> // 61
         
-        var isLeaf: Bool { return offset[0] == 0 }
-        var description: String { return "\(offset):\(count):\(key)" }
+        public var isLeaf: Bool { return offset[0] == 0 }
+        public var description: String { return "\(offset):\(count):\(key)" }
     }
 }
