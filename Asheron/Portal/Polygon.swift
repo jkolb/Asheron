@@ -13,10 +13,10 @@ extension ByteBuffer {
         let index = getIntFrom16Bits()
         let count = getIntFrom8Bits()
         let type = getIntFrom8Bits()
-        let unknown1 = getUInt16()
-        let unknown2 = getUInt16()
-        let materialIndex = getIntFrom16Bits()
-        let unknown3 = getUInt16()
+        let padding = getUInt32()
+        assert(padding == 0, "Usually 0, want to find out if it is ever not")
+        let backWindingOrder = getInt16()
+        let frontWindingOrder = getInt16()
         let vertexIndex = getIntFrom16Bits(count)
         var texcoordIndex: Array<Int>
         
@@ -34,10 +34,9 @@ extension ByteBuffer {
             index: index,
             count: count,
             type: type,
-            unknown1: unknown1,
-            unknown2: unknown2,
-            materialIndex: materialIndex,
-            unknown3: unknown3,
+            padding: padding,
+            backWindingOrder: backWindingOrder,
+            frontWindingOrder: frontWindingOrder,
             vertexIndex: vertexIndex,
             texcoordIndex: texcoordIndex
         )
@@ -49,7 +48,7 @@ extension ByteBuffer {
 }
 
 public enum PolygonType: Int {
-    case Textured = 0
+    case Textured = 0 // type 1 has same format
     case Colored = 4
 }
 
@@ -57,10 +56,9 @@ public struct Polygon {
     public let index: Int
     public let count: Int
     public let type: Int
-    public let unknown1: UInt16
-    public let unknown2: UInt16
-    public let materialIndex: Int
-    public let unknown3: UInt16
+    public let padding: UInt32
+    public let backWindingOrder: Int16
+    public let frontWindingOrder: Int16
     public let vertexIndex: Array<Int>
     public let texcoordIndex: Array<Int>
 }
