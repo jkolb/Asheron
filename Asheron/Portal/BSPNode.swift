@@ -8,24 +8,47 @@
 
 import Lilliput
 
+extension String {
+    public func characterAtIndex(index: Int) -> Character {
+        for (i, c) in enumerate(self) {
+            if i == index { return c }
+        }
+        fatalError("Index out of range")
+    }
+}
+
 extension ByteBuffer {
-    public func getBSPNode() -> BSPNode {
+    public func getBSPNode(level: Int = 0) -> BSPNode {
         let tag = getUTF8(4)
-        println(tag)
+        let padChar: Character = "\t"
+        let padding = String(count: level, repeatedValue: padChar)
+
+        println("\(level)\(padding)\(tag)")
         let unknown1 = getVector4F()
-        var children = Array<BSPNode>()
+        println("\(padding)unknown1: \(unknown1)")
+        var children = Dictionary<String, BSPNode>(minimumCapacity: 2)
+        let hasNext: Character = "N"
+        let hasPrev: Character = "P"
         
-        if tag.hasPrefix("N") || tag.hasPrefix("P") {
-            children += getBSPNode() // Recursion!
-            children += getBSPNode() // Recursion!
+        if tag.characterAtIndex(0) == hasNext || tag.characterAtIndex(0) == hasPrev {
+            let next = getBSPNode(level: level + 1) // Recursion!
+            children["next"] = next
+            let prev = getBSPNode(level: level + 1) // Recursion!
+            children["prev"] = prev
         }
         
         let unknown2 = getVector4F()
+        println("\(padding)unknown2: \(unknown2)")
         let count = getIntFrom32Bits()
-        println(count)
+        println("\(padding)count: \(count)")
         let index = getUInt16(count)
-        let padCount = count % 2
-        getUInt16(padCount) // Skip padding
+        println("\(padding)\(index)")
+        
+        if (self.position % 4) != 0 {
+            println("\(padding)align: \(self.position % 4)")
+            // Make sure aligned to 4 bytes
+            self.position += 4 - (self.position % 4)
+        }
         
         return BSPNode(
             tag: tag,
@@ -41,7 +64,7 @@ extension ByteBuffer {
 public struct BSPNode {
     public let tag: String
     public let unknown1: Vector4F
-    public let children: Array<BSPNode> // 2
+    public let children: Dictionary<String, BSPNode>
     public let unknown2: Vector4F
     public let count: Int
     public let index: Array<UInt16>

@@ -14,7 +14,7 @@ extension ByteBuffer {
         let count = getIntFrom8Bits()
         let type = getIntFrom8Bits()
         let padding = getUInt32()
-        assert(padding == 0, "Usually 0, want to find out if it is ever not")
+        assert(padding == 0 || padding == 1, "Usually 0, want to find out if it is ever not")
         let backWindingOrder = getInt16()
         let frontWindingOrder = getInt16()
         let vertexIndex = getIntFrom16Bits(count)
@@ -22,12 +22,13 @@ extension ByteBuffer {
         
         if type == PolygonType.Colored.toRaw() {
             texcoordIndex = Array<Int>()
-            let padCount = count % 2
-            getUInt16(padCount) // Skip padding
         } else {
             texcoordIndex = getIntFrom8Bits(count)
-            let padCount = count % 4
-            getUInt8(padCount) // Skip padding
+        }
+        
+        if (self.position % 4) != 0 {
+            // Make sure aligned to 4 bytes
+            self.position += 4 - (self.position % 4)
         }
         
         return Polygon(

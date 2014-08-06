@@ -18,9 +18,13 @@ extension ByteBuffer {
     }
 }
 
-public struct Vector2F {
+public struct Vector2F : Printable {
     public let x: Float = 0.0
     public let y: Float = 0.0
+    
+    public var description: String {
+        return "\(x), \(y)"
+    }
 }
 
 extension ByteBuffer {
@@ -33,10 +37,14 @@ extension ByteBuffer {
     }
 }
 
-public struct Vector3F {
+public struct Vector3F : Printable {
     public let x: Float = 0.0
     public let y: Float = 0.0
     public let z: Float = 0.0
+    
+    public var description: String {
+        return "\(x), \(y), \(z)"
+    }
 }
 
 extension ByteBuffer {
@@ -49,9 +57,13 @@ extension ByteBuffer {
     }
 }
 
-public struct Vector4F {
+public struct Vector4F : Printable {
     public let x: Float = 0.0
     public let y: Float = 0.0
     public let z: Float = 0.0
     public let w: Float = 0.0
+    
+    public var description: String {
+        return "\(x), \(y), \(z), \(w)"
+    }
 }
