@@ -17,7 +17,12 @@ extension ByteBuffer {
         let unknown1 = getUInt32()
         let vertexCount = getIntFrom32Bits()
         let vertex = getVertex(vertexCount)
-        let position = getVector3F()
+        var position = Vector3F()
+        
+        if meshType == 3 {
+            position = getVector3F()
+        }
+        
         let polygonCount = getIntFrom32Bits()
         let polygon = getPolygon(polygonCount)
 //        let rootNode = getBSPNode()
