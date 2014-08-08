@@ -19,7 +19,7 @@ extension ByteBuffer {
         let vertex = getVertex(vertexCount)
         var position = Vector3F()
         
-        if meshType == 3 {
+        if meshType != 3 {
             position = getVector3F()
         }
         
