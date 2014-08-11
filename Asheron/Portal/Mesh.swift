@@ -12,7 +12,7 @@ extension ByteBuffer {
     public func getMesh() -> Mesh {
         let identifier = getUInt32()
         let meshType = getUInt32()
-        let materialCount = getIntFrom32Bits()
+        let materialCount = getIntFrom32Bits() & 0x0000003F
         let materialId = getUInt32(materialCount)
         let unknown1 = getUInt32()
         let vertexCount = getIntFrom32Bits()

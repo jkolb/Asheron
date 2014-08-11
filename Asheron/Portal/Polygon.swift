@@ -13,33 +13,31 @@ extension ByteBuffer {
         let index = getIntFrom16Bits()
         let count = getIntFrom8Bits()
         let type = getIntFrom8Bits()
-        let padding = getUInt32()
-        assert(padding == 0 || padding == 1, "Usually 0, want to find out if it is ever not")
-        let backWindingOrder = getInt16()
-        let frontWindingOrder = getInt16()
+        let unknown1 = getUInt16(4)
         let vertexIndex = getIntFrom16Bits(count)
         var texcoordIndex: Array<Int>
+        var unknown2: Array<UInt8>
         
-        if type == PolygonType.Colored.toRaw() {
-            texcoordIndex = Array<Int>()
-        } else {
+        if type == 0 || type == 1 {
             texcoordIndex = getIntFrom8Bits(count)
+        } else {
+            texcoordIndex = Array<Int>()
         }
-        
-        if (self.position % 4) != 0 {
-            // Make sure aligned to 4 bytes
-            self.position += 4 - (self.position % 4)
-        }
+
+        let vertexIndexByteCount = vertexIndex.count * sizeof(UInt16)
+        let texcoordIndexByteCount = texcoordIndex.count * sizeof(UInt8)
+        let byteCount = vertexIndexByteCount + texcoordIndexByteCount
+        let padding = (4 - (byteCount % 4)) % 4
+        unknown2 = getUInt8(padding);
         
         return Polygon(
             index: index,
             count: count,
             type: type,
-            padding: padding,
-            backWindingOrder: backWindingOrder,
-            frontWindingOrder: frontWindingOrder,
+            unknown1: unknown1,
             vertexIndex: vertexIndex,
-            texcoordIndex: texcoordIndex
+            texcoordIndex: texcoordIndex,
+            unknown2: unknown2
         )
     }
     
@@ -57,9 +55,8 @@ public struct Polygon {
     public let index: Int
     public let count: Int
     public let type: Int
-    public let padding: UInt32
-    public let backWindingOrder: Int16
-    public let frontWindingOrder: Int16
+    public let unknown1: Array<UInt16>
     public let vertexIndex: Array<Int>
     public let texcoordIndex: Array<Int>
+    public let unknown2: Array<UInt8>
 }
