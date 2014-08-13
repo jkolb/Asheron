@@ -10,7 +10,7 @@ import Lilliput
 
 extension ByteBuffer {
     public func getColor() -> Color {
-        return Color(bgra: getUInt32())
+        return Color(getUInt8(), getUInt8(), getUInt8(), getUInt8())
     }
     
     public func getColor(count: Int) -> Array<Color> {
