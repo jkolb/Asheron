@@ -14,14 +14,31 @@ extension ByteBuffer {
         let type = getUInt32()
         let width = getIntFrom32Bits()
         let height = getIntFrom32Bits()
-        let data = getUInt8(remaining)
+        
+        var dataSize = 0
+        
+        if type == 2 || type == 1 {
+            dataSize = width * height
+        } else if type == 4 || type == 7 {
+            dataSize = width * height * 2
+        } else if type == 10 {
+            dataSize = width * height * 3
+        }
+        
+        let data = getUInt8(dataSize)
+        var paletteID: UInt32 = 0
+        
+        if type == 2 {
+            paletteID = getUInt32()
+        }
         
         return Texture(
             identifier: identifier,
             type: type,
             width: width,
             height: height,
-            data: data
+            data: data,
+            paletteID: paletteID
         )
     }
 }
@@ -40,4 +57,5 @@ public struct Texture {
     public let width: Int
     public let height: Int
     public let data: Array<UInt8>
+    public let paletteID: UInt32
 }

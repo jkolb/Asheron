@@ -10,7 +10,11 @@ import Lilliput
 
 extension ByteBuffer {
     public func getColor() -> Color {
-        return Color(getUInt8(), getUInt8(), getUInt8(), getUInt8())
+        let b = getUInt8()
+        let g = getUInt8()
+        let r = getUInt8()
+        let a = getUInt8()
+        return Color(r, g, b, a)
     }
     
     public func getColor(count: Int) -> Array<Color> {
@@ -26,20 +30,6 @@ public struct Color {
     
     public init() {
         r = 0; g = 0; b = 0; a = 255;
-    }
-    
-    public init(bgra: UInt32) {
-        b = UInt8((bgra & 0xFF000000) >> 24)
-        g = UInt8((bgra & 0x00FF0000) >> 16)
-        r = UInt8((bgra & 0x0000FF00) >> 08)
-        a = UInt8((bgra & 0x000000FF) >> 00)
-    }
-    
-    public init(rgba: UInt32) {
-        r = UInt8((rgba & 0xFF000000) >> 24)
-        g = UInt8((rgba & 0x00FF0000) >> 16)
-        b = UInt8((rgba & 0x0000FF00) >> 08)
-        a = UInt8((rgba & 0x000000FF) >> 00)
     }
     
     public init(_ r: UInt8, _ g: UInt8, _ b: UInt8, _ a: UInt8 = UInt8.max) {
