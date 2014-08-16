@@ -17,7 +17,7 @@ extension ByteBuffer {
         
         var dataSize = 0
         
-        if type == 2 || type == 1 {
+        if type == 2 || type == 11 {
             dataSize = width * height
         } else if type == 4 || type == 7 {
             dataSize = width * height * 2
