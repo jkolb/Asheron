@@ -95,13 +95,13 @@ public class IndexedFileV1 {
             return nil;
         }
         
-        return IndexedFileV1(byteOrder: LittleEndian(), binaryFile: result.value)
+        return IndexedFileV1(byteOrder: LittleEndian(), binaryFile: result.binaryFile)
     }
     
     init(byteOrder: ByteOrder, binaryFile: BinaryFile) {
         self.byteOrder = byteOrder
         self.binaryFile = binaryFile
-        self.mappedBuffer = binaryFile.map(LittleEndian(), mode: .ReadOnly).value
+        self.mappedBuffer = binaryFile.map(LittleEndian(), mode: .ReadOnly).byteBuffer
         self.header = IndexedFileV1.readHeader(self.mappedBuffer)
 
         if (self.header.pageSize != 1024 && self.header.pageSize != 256) {
