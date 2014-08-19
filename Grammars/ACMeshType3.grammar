@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufwb version="1.9">
+    <grammar name="MeshType3" start="id:226" author="Justin Kolb">
+        <description>Grammar for my file format</description>
+        <structure name="MeshType3" id="226" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="identifier" id="227" type="integer" length="4" display="hex"/>
+            <number name="meshType" mustmatch="yes" id="228" type="integer" length="4">
+                <fixedvalues>
+                    <fixedvalue value="3"/>
+                </fixedvalues>
+            </number>
+            <number name="materialCount" id="229" type="integer" length="4"/>
+            <number name="materialList" id="230" repeatmin="materialCount" repeatmax="materialCount" type="integer" length="4" display="hex"/>
+            <number name="unknown1" id="231" type="integer" length="4"/>
+            <number name="vertexCount" id="232" type="integer" length="4"/>
+            <structref name="vertexList" id="234" repeatmin="vertexCount" repeatmax="vertexCount" structure="id:233"/>
+            <number name="polygonCount" id="235" type="integer" length="4"/>
+            <structref name="polygonList" id="237" repeatmin="polygonCount" repeatmax="polygonCount" structure="id:236"/>
+        </structure>
+        <structure name="Vertex" id="233" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="vertexIndex" id="239" type="integer" length="2"/>
+            <number name="texCoordCount" id="240" type="integer" length="2"/>
+            <structref name="position" id="242" structure="id:241"/>
+            <structref name="normal" id="243" structure="id:241"/>
+            <structref name="texCoord" id="245" repeatmin="texCoordCount" repeatmax="texCoordCount" structure="id:244"/>
+        </structure>
+        <structure name="Vector2D" id="244" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="x" id="247" type="float" length="32" lengthunit="bit"/>
+            <number name="y" id="248" type="float" length="32" lengthunit="bit"/>
+        </structure>
+        <structure name="Vector3D" id="241" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="x" id="250" type="float" length="32" lengthunit="bit"/>
+            <number name="y" id="251" type="float" length="32" lengthunit="bit"/>
+            <number name="z" id="252" type="float" length="32" lengthunit="bit"/>
+        </structure>
+        <structure name="Polygon" id="236" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="polygonIndex" id="254" type="integer" length="2"/>
+            <number name="vertexIndexCount" id="255" type="integer" length="1"/>
+            <structure name="PolygonType" id="256" alignment="0" order="variable">
+                <structref name="PolygonType0" id="258" repeatmin="0" structure="id:257"/>
+                <structref name="PolygonType1" id="260" repeatmin="0" structure="id:259"/>
+                <structref name="PolygonType3" id="262" repeatmin="0" structure="id:261"/>
+                <structref name="PolygonType4" id="347" repeatmin="0" structure="id:343"/>
+            </structure>
+        </structure>
+        <structure name="PolygonType0" id="257" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="polygonType" mustmatch="yes" id="265" type="integer" length="1">
+                <fixedvalues>
+                    <fixedvalue name="polygonType" value="0"/>
+                </fixedvalues>
+            </number>
+            <number name="polygonUnknown1" id="266" repeatmin="4" repeatmax="4" type="integer" length="2" signed="yes"/>
+            <number name="vertexIndexList" id="267" repeatmin="vertexIndexCount" repeatmax="vertexIndexCount" type="integer" length="2"/>
+            <number name="texCoordIndexList" id="268" repeatmin="vertexIndexCount" repeatmax="vertexIndexCount" type="integer" length="1"/>
+            <number name="padding" id="269" repeatmin="mod(vertexIndexCount, 4)" repeatmax="mod(vertexIndexCount, 4)" type="integer" length="1"/>
+        </structure>
+        <structure name="PolygonType1" id="259" alignment="0" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="polygonType" mustmatch="yes" id="271" type="integer" length="1">
+                <fixedvalues>
+                    <fixedvalue name="polygonType" value="1"/>
+                </fixedvalues>
+            </number>
+            <number name="polygonUnknown1" id="272" repeatmin="4" repeatmax="4" type="integer" length="2" signed="yes"/>
+            <number name="vertexIndexList" id="273" repeatmin="vertexIndexCount" repeatmax="vertexIndexCount" type="integer" length="2"/>
+            <number name="texCoordIndexList" id="274" repeatmin="vertexIndexCount" repeatmax="vertexIndexCount" type="integer" length="1"/>
+            <number name="padding" id="275" repeatmin="mod(vertexIndexCount, 4)" repeatmax="mod(vertexIndexCount, 4)" type="integer" length="1"/>
+        </structure>
+        <structure name="PolygonType3" id="261" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="polygonType" mustmatch="yes" id="277" type="integer" length="1">
+                <fixedvalues>
+                    <fixedvalue name="polygonType" value="3"/>
+                </fixedvalues>
+            </number>
+            <number name="polygonUnknown1" id="278" repeatmin="4" repeatmax="4" type="integer" length="2" signed="yes"/>
+            <number name="vertexIndexList" id="279" repeatmin="vertexIndexCount" repeatmax="vertexIndexCount" type="integer" length="2"/>
+            <number name="texCoordIndexList" id="280" repeatmin="vertexIndexCount" repeatmax="vertexIndexCount" type="integer" length="1"/>
+            <number name="padding" id="281" repeatmin="mod(vertexIndexCount, 4)" repeatmax="mod(vertexIndexCount, 4)" type="integer" length="1"/>
+        </structure>
+        <structure name="PolygonType4" id="343" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="polygonType" mustmatch="yes" id="345" type="integer" length="1">
+                <fixedvalues>
+                    <fixedvalue value="4"/>
+                </fixedvalues>
+            </number>
+            <number name="polygonUnknown1" id="346" repeatmin="4" repeatmax="4" type="integer" length="2"/>
+            <number name="vertexIndexList" id="348" repeatmin="vertexIndexCount" repeatmax="vertexIndexCount" type="integer" length="2"/>
+            <number name="unknown2" id="349" repeatmin="mod((4 - mod(vertexIndexCount * 2, 4)), 4)" repeatmax="mod((4 - mod(vertexIndexCount * 2, 4)), 4)" type="integer" length="1"/>
+        </structure>
+    </grammar>
+</ufwb>
