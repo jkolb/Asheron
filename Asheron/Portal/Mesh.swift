@@ -37,6 +37,7 @@ extension ByteBuffer {
             materialId: materialId,
             unknown1: unknown1,
             vertex: vertex,
+            collisionPolygons: collisionPolygons,
             collisionNode: collisionNode,
             position: position,
             renderPolygons: renderPolygons,
@@ -51,6 +52,7 @@ public struct Mesh {
     public let materialId: Array<UInt32>
     public let unknown1: UInt32
     public let vertex: Array<Vertex>
+    public let collisionPolygons: Array<Polygon>
     public let collisionNode: BSPNode
     public let position: Vector3F
     public let renderPolygons: Array<Polygon>

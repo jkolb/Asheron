@@ -32,13 +32,11 @@ extension ByteBuffer {
         println("\(level)\(padding)\(tag)")
 
         if tag != "LEAF" {
-            var unknown1 = Vector4F()
+            var plane = getVector4F()
+            println("\(padding)plane: \(plane)")
+
             var child1: BSPNode = EmptyNode()
             var child2: BSPNode = EmptyNode()
-            var unknown2 = Vector4F()
-
-            unknown1 = getVector4F()
-            println("\(padding)unknown1: \(unknown1)")
         
             if tag == "BPnN" || tag == "BPIN" {
                 child1 = getCollisionBSPNode(level: level + 1) // Recursion!
@@ -49,26 +47,26 @@ extension ByteBuffer {
                 child1 = getCollisionBSPNode(level: level + 1) // Recursion!
             } // BPOL (has no children)
 
-            unknown2 = getVector4F()
+            let unknown2 = getVector4F()
+
             println("\(padding)unknown2: \(unknown2)")
         
             return CollisionNode(
                 tag: tag,
-                unknown1: unknown1,
+                plane: plane,
                 child1: child1,
                 child2: child2,
                 unknown2: unknown2
             )
         } else {
             let leafIndex = getIntFrom32Bits()
-            println("\(padding)\(leafIndex)")
             let unknown1 = getUInt32()
             let unknown2 = getVector4F()
-            var count = Int(-1)
-            var index = Array<UInt16>()
-            count = getIntFrom32Bits()
+            let count = getIntFrom32Bits()
+            let index = getUInt16(count)
+
+            println("\(padding)\(leafIndex)")
             println("\(padding)count: \(count)")
-            index = getUInt16(count)
             println("\(padding)\(index)")
         
             if (self.position % 4) != 0 {
@@ -76,6 +74,7 @@ extension ByteBuffer {
                 // Make sure aligned to 4 bytes
                 self.position += 4 - (self.position % 4)
             }
+
             return CollisionLeaf(
                 tag: tag,
                 leafIndex: leafIndex,
@@ -97,9 +96,14 @@ extension ByteBuffer {
         if tag == "LEAF" {
             let index = getIntFrom32Bits()
             println("\(padding)\(index)")
-            return RenderLeaf(tag: tag, index: index)
+            return RenderLeaf(
+                tag: tag,
+                index: index
+            )
         } else if tag == "PORT" {
-            let unknown1 = getVector4F()
+            let plane = getVector4F()
+            println("\(padding)plane: \(plane)")
+
             let child1: BSPNode = getRenderBSPNode(level: level + 1) // Recursion!
             let child2: BSPNode = getRenderBSPNode(level: level + 1) // Recursion!
             let unknown2 = getVector4F()
@@ -108,7 +112,6 @@ extension ByteBuffer {
             let index = getUInt16(count)
             let index2 = getDoubleIndex(count2)
 
-            println("\(padding)unknown1: \(unknown1)")
             println("\(padding)unknown2: \(unknown2)")
             println("\(padding)count: \(count)")
             println("\(padding)count2: \(count2)")
@@ -123,7 +126,7 @@ extension ByteBuffer {
         
             return PortalNode(
                 tag: tag,
-                unknown1: unknown1,
+                plane: plane,
                 child1: child1,
                 child2: child2,
                 unknown2: unknown2,
@@ -133,7 +136,9 @@ extension ByteBuffer {
                 index2: index2
             )
         } else {
-            let unknown1 = getVector4F()
+            let plane = getVector4F()
+            println("\(padding)plane: \(plane)")
+
             var child1: BSPNode = EmptyNode()
             var child2: BSPNode = EmptyNode()
 
@@ -150,7 +155,6 @@ extension ByteBuffer {
             let count = getIntFrom32Bits()
             let index = getUInt16(count)
 
-            println("\(padding)unknown1: \(unknown1)")
             println("\(padding)unknown2: \(unknown2)")
             println("\(padding)count: \(count)")
             println("\(padding)\(index)")
@@ -163,7 +167,7 @@ extension ByteBuffer {
         
             return RenderNode(
                 tag: tag,
-                unknown1: unknown1,
+                plane: plane,
                 child1: child1,
                 child2: child2,
                 unknown2: unknown2,
@@ -184,7 +188,7 @@ public struct EmptyNode : BSPNode {
 
 public struct CollisionNode : BSPNode { // 010000C19
     public let tag: String
-    public let unknown1: Vector4F
+    public let plane: Vector4F
     public let child1: BSPNode
     public let child2: BSPNode
     public let unknown2: Vector4F
@@ -201,7 +205,7 @@ public struct CollisionLeaf : BSPNode { // 010000C19
 
 public struct RenderNode : BSPNode {
     public let tag: String
-    public let unknown1: Vector4F
+    public let plane: Vector4F
     public let child1: BSPNode
     public let child2: BSPNode
     public let unknown2: Vector4F
@@ -216,7 +220,7 @@ public struct RenderLeaf : BSPNode {
 
 public struct PortalNode : BSPNode { // 010000801 & 0100081C
     public let tag: String
-    public let unknown1: Vector4F
+    public let plane: Vector4F
     public let child1: BSPNode
     public let child2: BSPNode
     public let unknown2: Vector4F
