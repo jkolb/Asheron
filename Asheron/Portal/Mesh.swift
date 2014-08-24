@@ -17,15 +17,19 @@ extension ByteBuffer {
         let unknown1 = getUInt32()
         let vertexCount = getIntFrom32Bits()
         let vertex = getVertex(vertexCount)
-        var position = Vector3F()
-        
-        if meshType != 3 {
-            position = getVector3F()
+        var collisionPolygons = Array<Polygon>()
+        var collisionNode: BSPNode = EmptyNode()
+
+        if meshType == 3 {
+            let collisionPolygonCount = getIntFrom32Bits()
+            collisionPolygons = getPolygon(collisionPolygonCount)
+            collisionNode = getCollisionBSPNode()
         }
         
-        let polygonCount = getIntFrom32Bits()
-        let polygon = getPolygon(polygonCount)
-        let rootNode = getBSPNode()
+        var position = getVector3F()
+        let renderPolygonCount = getIntFrom32Bits()
+        let renderPolygons = getPolygon(renderPolygonCount)
+        let renderNode = getRenderBSPNode()
         
         return Mesh(
             identifier: identifier,
@@ -33,9 +37,10 @@ extension ByteBuffer {
             materialId: materialId,
             unknown1: unknown1,
             vertex: vertex,
+            collisionNode: collisionNode,
             position: position,
-            polygon: polygon,
-            rootNode: rootNode
+            renderPolygons: renderPolygons,
+            renderNode: renderNode
         )
     }
 }
@@ -46,7 +51,8 @@ public struct Mesh {
     public let materialId: Array<UInt32>
     public let unknown1: UInt32
     public let vertex: Array<Vertex>
+    public let collisionNode: BSPNode
     public let position: Vector3F
-    public let polygon: Array<Polygon>
-    public let rootNode: BSPNode
+    public let renderPolygons: Array<Polygon>
+    public let renderNode: BSPNode
 }

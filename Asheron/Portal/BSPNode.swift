@@ -25,34 +25,94 @@ extension ByteBuffer {
         return string
     }
 
-    public func getBSPNode(level: Int = 0) -> BSPNode {
+    public func getCollisionBSPNode(level: Int = 0) -> BSPNode {
         let tag = getTag()
         let padChar: Character = "\t"
         let padding = String(count: level, repeatedValue: padChar)
-        var unknown1 = Vector4F()
-        var children = Dictionary<String, BSPNode>(minimumCapacity: 2)
-        var unknown2 = Vector4F()
-        var count = Int(-1)
-        var index = Array<UInt16>()
-        var leafIndex = Int(-1)
 
         println("\(level)\(padding)\(tag)")
 
         if tag != "LEAF" {
+            var unknown1 = Vector4F()
+            var child1: BSPNode = EmptyNode()
+            var child2: BSPNode = EmptyNode()
+            var unknown2 = Vector4F()
+
             unknown1 = getVector4F()
             println("\(padding)unknown1: \(unknown1)")
         
             if tag == "BPnN" || tag == "BPIN" {
-                let next = getBSPNode(level: level + 1) // Recursion!
-                children["next"] = next
-                let prev = getBSPNode(level: level + 1) // Recursion!
-                children["prev"] = prev
+                child1 = getCollisionBSPNode(level: level + 1) // Recursion!
+                child2 = getCollisionBSPNode(level: level + 1) // Recursion!
             } else if tag == "BPIn" {
-                let next = getBSPNode(level: level + 1) // Recursion!
-                children["next"] = next
+                child1 = getCollisionBSPNode(level: level + 1) // Recursion!
             } else if tag == "BpIN" {
-                let prev = getBSPNode(level: level + 1) // Recursion!
-                children["prev"] = prev
+                child1 = getCollisionBSPNode(level: level + 1) // Recursion!
+            }
+
+            unknown2 = getVector4F()
+            println("\(padding)unknown2: \(unknown2)")
+        
+            return CollisionNode(
+                tag: tag,
+                unknown1: unknown1,
+                child1: child1,
+                child2: child2,
+                unknown2: unknown2
+            )
+        } else {
+            let leafIndex = getIntFrom32Bits()
+            println("\(padding)\(leafIndex)")
+            let unknown1 = getUInt32()
+            let unknown2 = getVector4F()
+            var count = Int(-1)
+            var index = Array<UInt16>()
+            count = getIntFrom32Bits()
+            println("\(padding)count: \(count)")
+            index = getUInt16(count)
+            println("\(padding)\(index)")
+        
+            if (self.position % 4) != 0 {
+                println("\(padding)align: \(self.position % 4)")
+                // Make sure aligned to 4 bytes
+                self.position += 4 - (self.position % 4)
+            }
+            return CollisionLeaf(
+                tag: tag,
+                leafIndex: leafIndex,
+                unknown1: unknown1,
+                unknown2: unknown2,
+                count: count,
+                index: index
+            )
+        }
+    }
+
+    public func getRenderBSPNode(level: Int = 0) -> BSPNode {
+        let tag = getTag()
+        let padChar: Character = "\t"
+        let padding = String(count: level, repeatedValue: padChar)
+
+        println("\(level)\(padding)\(tag)")
+
+        if tag != "LEAF" {
+            var unknown1 = Vector4F()
+            var child1: BSPNode = EmptyNode()
+            var child2: BSPNode = EmptyNode()
+            var unknown2 = Vector4F()
+            var count = Int(-1)
+            var index = Array<UInt16>()
+
+            unknown1 = getVector4F()
+            println("\(padding)unknown1: \(unknown1)")
+        
+            if tag == "BPnN" || tag == "BPIN" {
+                child1 = getRenderBSPNode(level: level + 1) // Recursion!
+                child2 = getRenderBSPNode(level: level + 1) // Recursion!
+            } else if tag == "BPIn" {
+                child1 = getRenderBSPNode(level: level + 1) // Recursion!
+            } else if tag == "BpIN" {
+                child1 = getRenderBSPNode(level: level + 1) // Recursion!
             }
 
             unknown2 = getVector4F()
@@ -67,29 +127,60 @@ extension ByteBuffer {
                 // Make sure aligned to 4 bytes
                 self.position += 4 - (self.position % 4)
             }
-        } else {
-            leafIndex = getIntFrom32Bits()
-            println("\(padding)\(leafIndex)")
-        }
         
-        return BSPNode(
-            tag: tag,
-            unknown1: unknown1,
-            children: children,
-            unknown2: unknown2,
-            count: count,
-            index: index,
-            leafIndex: leafIndex
-        )
+            return RenderNode(
+                tag: tag,
+                unknown1: unknown1,
+                child1: child1,
+                child2: child2,
+                unknown2: unknown2,
+                count: count,
+                index: index
+            )
+        } else {
+            let index = getIntFrom32Bits()
+            println("\(padding)\(index)")
+            return RenderLeaf(tag: tag, index: index)
+        }
     }
 }
 
-public struct BSPNode {
+public protocol BSPNode {
+    var tag: String { get }
+}
+
+public struct EmptyNode : BSPNode {
+    public let tag: String = ""
+}
+
+public struct CollisionNode : BSPNode {
     public let tag: String
     public let unknown1: Vector4F
-    public let children: Dictionary<String, BSPNode>
+    public let child1: BSPNode
+    public let child2: BSPNode
+    public let unknown2: Vector4F
+}
+
+public struct CollisionLeaf : BSPNode {
+    public let tag: String
+    public let leafIndex: Int
+    public let unknown1: UInt32
     public let unknown2: Vector4F
     public let count: Int
     public let index: Array<UInt16>
-    public let leafIndex: Int
+}
+
+public struct RenderNode : BSPNode {
+    public let tag: String
+    public let unknown1: Vector4F
+    public let child1: BSPNode
+    public let child2: BSPNode
+    public let unknown2: Vector4F
+    public let count: Int
+    public let index: Array<UInt16>
+}
+
+public struct RenderLeaf : BSPNode {
+    public let tag: String
+    public let index: Int
 }
