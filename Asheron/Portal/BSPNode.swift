@@ -8,21 +8,20 @@
 
 import Lilliput
 
-extension String {
-    public func characterAtIndex(index: Int) -> Character {
-        for (i, c) in enumerate(self) {
-            if i == index { return c }
-        }
-        fatalError("Index out of range")
-    }
-}
-
 extension ByteBuffer {
     public func getTag() -> String {
         let tag = getUTF8(4)
         var string = ""
         string.extend(reverse(tag))
         return string
+    }
+
+    public func getDoubleIndex() -> (UInt16, UInt16) {
+        return (getUInt16(), getUInt16())
+    }
+    
+    public func getDoubleIndex(count: Int) -> Array<(UInt16, UInt16)> {
+        return getArray(count, defaultValue: (0, 0)) { self.getDoubleIndex() }
     }
 
     public func getCollisionBSPNode(level: Int = 0) -> BSPNode {
@@ -48,7 +47,7 @@ extension ByteBuffer {
                 child1 = getCollisionBSPNode(level: level + 1) // Recursion!
             } else if tag == "BpIN" {
                 child1 = getCollisionBSPNode(level: level + 1) // Recursion!
-            }
+            } // BPOL (has no children)
 
             unknown2 = getVector4F()
             println("\(padding)unknown2: \(unknown2)")
@@ -95,17 +94,49 @@ extension ByteBuffer {
 
         println("\(level)\(padding)\(tag)")
 
-        if tag != "LEAF" {
-            var unknown1 = Vector4F()
+        if tag == "LEAF" {
+            let index = getIntFrom32Bits()
+            println("\(padding)\(index)")
+            return RenderLeaf(tag: tag, index: index)
+        } else if tag == "PORT" {
+            let unknown1 = getVector4F()
+            let child1: BSPNode = getRenderBSPNode(level: level + 1) // Recursion!
+            let child2: BSPNode = getRenderBSPNode(level: level + 1) // Recursion!
+            let unknown2 = getVector4F()
+            let count = getIntFrom32Bits()
+            let count2 = getIntFrom32Bits()
+            let index = getUInt16(count)
+            let index2 = getDoubleIndex(count2)
+
+            println("\(padding)unknown1: \(unknown1)")
+            println("\(padding)unknown2: \(unknown2)")
+            println("\(padding)count: \(count)")
+            println("\(padding)count2: \(count2)")
+            println("\(padding)\(index)")
+            println("\(padding)index2: \(index2)")
+        
+            if (self.position % 4) != 0 {
+                println("\(padding)align: \(self.position % 4)")
+                // Make sure aligned to 4 bytes
+                self.position += 4 - (self.position % 4)
+            }
+        
+            return PortalNode(
+                tag: tag,
+                unknown1: unknown1,
+                child1: child1,
+                child2: child2,
+                unknown2: unknown2,
+                count: count,
+                count2: count2,
+                index: index,
+                index2: index2
+            )
+        } else {
+            let unknown1 = getVector4F()
             var child1: BSPNode = EmptyNode()
             var child2: BSPNode = EmptyNode()
-            var unknown2 = Vector4F()
-            var count = Int(-1)
-            var index = Array<UInt16>()
 
-            unknown1 = getVector4F()
-            println("\(padding)unknown1: \(unknown1)")
-        
             if tag == "BPnN" || tag == "BPIN" {
                 child1 = getRenderBSPNode(level: level + 1) // Recursion!
                 child2 = getRenderBSPNode(level: level + 1) // Recursion!
@@ -115,11 +146,13 @@ extension ByteBuffer {
                 child1 = getRenderBSPNode(level: level + 1) // Recursion!
             }
 
-            unknown2 = getVector4F()
+            let unknown2 = getVector4F()
+            let count = getIntFrom32Bits()
+            let index = getUInt16(count)
+
+            println("\(padding)unknown1: \(unknown1)")
             println("\(padding)unknown2: \(unknown2)")
-            count = getIntFrom32Bits()
             println("\(padding)count: \(count)")
-            index = getUInt16(count)
             println("\(padding)\(index)")
         
             if (self.position % 4) != 0 {
@@ -137,10 +170,6 @@ extension ByteBuffer {
                 count: count,
                 index: index
             )
-        } else {
-            let index = getIntFrom32Bits()
-            println("\(padding)\(index)")
-            return RenderLeaf(tag: tag, index: index)
         }
     }
 }
@@ -153,7 +182,7 @@ public struct EmptyNode : BSPNode {
     public let tag: String = ""
 }
 
-public struct CollisionNode : BSPNode {
+public struct CollisionNode : BSPNode { // 010000C19
     public let tag: String
     public let unknown1: Vector4F
     public let child1: BSPNode
@@ -161,7 +190,7 @@ public struct CollisionNode : BSPNode {
     public let unknown2: Vector4F
 }
 
-public struct CollisionLeaf : BSPNode {
+public struct CollisionLeaf : BSPNode { // 010000C19
     public let tag: String
     public let leafIndex: Int
     public let unknown1: UInt32
@@ -183,4 +212,16 @@ public struct RenderNode : BSPNode {
 public struct RenderLeaf : BSPNode {
     public let tag: String
     public let index: Int
+}
+
+public struct PortalNode : BSPNode { // 010000801 & 0100081C
+    public let tag: String
+    public let unknown1: Vector4F
+    public let child1: BSPNode
+    public let child2: BSPNode
+    public let unknown2: Vector4F
+    public let count: Int
+    public let count2: Int
+    public let index: Array<UInt16>
+    public let index2: Array<(UInt16, UInt16)>
 }
