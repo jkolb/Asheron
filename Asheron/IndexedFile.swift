@@ -132,7 +132,6 @@ public class IndexedFileV1 {
     public func readIndex(offset: Int) -> Index {
         if let index = indexCache[offset] { return index }
         let indexData = readIndexData(offset)
-        indexData.flip()
         return indexData.getIndexedFileV1Index()
     }
     
