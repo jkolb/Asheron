@@ -159,6 +159,7 @@ public class IndexedFileV1 {
             data.putBuffer(page)
         }
         
+        data.flip()
         return data
     }
 
