@@ -32,6 +32,8 @@ extension ByteBuffer {
             paletteID = getUInt32()
         }
         
+        assert(remaining == 0, "Not fully parsed")
+        
         return Texture(
             identifier: identifier,
             type: type,
