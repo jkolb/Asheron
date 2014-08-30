@@ -31,6 +31,8 @@ extension ByteBuffer {
         let renderPolygons = getPolygon(renderPolygonCount)
         let renderNode = getRenderBSPNode()
         
+        assert(remaining == 0, "Not fully parsed")
+        
         return Mesh(
             identifier: identifier,
             meshType: meshType,
