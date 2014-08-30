@@ -22,7 +22,7 @@ extension ByteBuffer {
     }
 }
 
-public struct Color {
+public struct Color : Printable {
     public let r: UInt8
     public let g: UInt8
     public let b: UInt8
@@ -74,6 +74,8 @@ public struct Color {
     static func floatComponent(value: UInt8) -> Float {
         return Float(value) / Float(UInt8.max)
     }
+
+    public var description: String { return "r:\(hex(r)) g:\(hex(g)) b:\(hex(b)) a:\(hex(a))" }
 }
 
 extension ByteBuffer {

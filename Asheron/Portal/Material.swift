@@ -35,6 +35,8 @@ extension ByteBuffer {
             light3 = getFloat32()
         }
         
+        assert(remaining == 0, "Not fully parsed")
+
         return Material(
             identifier: identifier,
             flags: flags,
@@ -49,9 +51,12 @@ extension ByteBuffer {
 }
 
 public enum MaterialFlag: UInt32 {
-    case Color = 0x00000001
-    case Solid = 0x00000002
-    case Transparent = 0x00000004 // ?? How is this different from Solid off, where did these come from?
+    case Color = 1
+    case Texture = 2
+    case Transparent = 4 // ?? How is this different from Solid off, where did these come from?
+    case Unknown1 = 16
+    case Unknown2 = 256
+    case Unknown3 = 65536
 }
 
 public struct Material {
@@ -65,6 +70,6 @@ public struct Material {
     public let light3: Float
     
     public var isColor: Bool { return (flags & MaterialFlag.Color.toRaw()) == MaterialFlag.Color.toRaw() }
-    public var isSolid: Bool { return (flags & MaterialFlag.Solid.toRaw()) == MaterialFlag.Solid.toRaw() }
+    public var isTexture: Bool { return (flags & MaterialFlag.Texture.toRaw()) == MaterialFlag.Texture.toRaw() }
     public var isTransparent: Bool { return (flags & MaterialFlag.Transparent.toRaw()) == MaterialFlag.Transparent.toRaw() }
 }
