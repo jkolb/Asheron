@@ -23,12 +23,18 @@ extension ByteBuffer {
         if meshType == 3 {
             let collisionPolygonCount = getIntFrom32Bits()
             collisionPolygons = getPolygon(collisionPolygonCount)
+            for polygon in collisionPolygons {
+                println(polygon)
+            }
             collisionNode = getCollisionBSPNode()
         }
         
         var position = getVector3F()
         let renderPolygonCount = getIntFrom32Bits()
         let renderPolygons = getPolygon(renderPolygonCount)
+        for polygon in renderPolygons {
+            println(polygon)
+        }
         let renderNode = getRenderBSPNode()
         
         assert(remaining == 0, "Not fully parsed")
