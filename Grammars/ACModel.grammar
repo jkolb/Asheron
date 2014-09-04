@@ -1,27 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ufwb version="1.9">
-    <grammar name="ACModel" start="id:23" author="Justin Kolb">
-        <structure name="Model" id="23" encoding="ISO_8859-1:1987" endian="little" signed="no">
-            <number name="Identifier" id="25" type="integer" length="4" display="hex"/>
-            <number name="modelType" id="28" type="integer" length="4"/>
-            <number name="meshCount" id="29" type="integer" length="4"/>
-            <number name="meshId" id="30" repeatmin="meshCount" repeatmax="meshCount" type="integer" length="4" display="hex"/>
-            <number name="unknown1" id="31" type="integer" length="4" display="hex"/>
-            <number name="unknown2" id="32" type="integer" length="4"/>
-            <number name="unknown3" id="33" type="integer" length="4"/>
-            <number name="unknown4" id="34" type="integer" length="4"/>
-            <number name="unknown5" id="35" type="integer" length="4"/>
-            <number name="unknown6" id="36" repeatmin="8" repeatmax="8" type="float" length="32" lengthunit="bit"/>
-            <number name="unknown7" id="37" type="integer" length="4"/>
-            <number name="unknown8" id="38" repeatmin="8" repeatmax="8" type="float" length="32" lengthunit="bit"/>
-            <number name="unknown9" id="39" type="integer" length="4"/>
-            <number name="unknown10" id="40" repeatmin="8" repeatmax="8" type="float" length="32" lengthunit="bit"/>
-            <number name="unknown11" id="41" type="integer" length="32" lengthunit="bit"/>
-            <number name="unknown12" id="42" repeatmin="8" repeatmax="8" type="float" length="32" lengthunit="bit"/>
-            <number name="unknown13" id="43" type="integer" length="4"/>
-            <number name="unknown14" id="44" repeatmin="8" repeatmax="8" type="float" length="32" lengthunit="bit"/>
-            <number name="unknown15" id="45" type="integer" length="4"/>
-            <number name="unknown16" id="46" repeatmin="8" repeatmax="8" type="float" length="32" lengthunit="bit"/>
+    <grammar name="ACModel" start="id:95" author="Justin Kolb">
+        <structure name="Model" id="95" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="Identifier" id="96" type="integer" length="4" display="hex"/>
+            <number name="modelType" id="97" type="integer" length="4"/>
+            <number name="meshCount" id="98" type="integer" length="4"/>
+            <number name="meshId" id="99" repeatmin="meshCount" repeatmax="meshCount" type="integer" length="4" display="hex"/>
         </structure>
     </grammar>
 </ufwb>
