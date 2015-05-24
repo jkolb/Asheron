@@ -19,7 +19,7 @@ extension ByteBuffer {
         var light2: Float
         var light3: Float
         
-        if (flags & MaterialFlag.Color.toRaw()) == MaterialFlag.Color.toRaw() {
+        if (flags & MaterialFlag.Color.rawValue) == MaterialFlag.Color.rawValue {
             color = getColor()
             textureId = 0
             paletteId = 0
@@ -69,7 +69,7 @@ public struct Material {
     public let light2: Float
     public let light3: Float
     
-    public var isColor: Bool { return (flags & MaterialFlag.Color.toRaw()) == MaterialFlag.Color.toRaw() }
-    public var isTexture: Bool { return (flags & MaterialFlag.Texture.toRaw()) == MaterialFlag.Texture.toRaw() }
-    public var isTransparent: Bool { return (flags & MaterialFlag.Transparent.toRaw()) == MaterialFlag.Transparent.toRaw() }
+    public var isColor: Bool { return (flags & MaterialFlag.Color.rawValue) == MaterialFlag.Color.rawValue }
+    public var isTexture: Bool { return (flags & MaterialFlag.Texture.rawValue) == MaterialFlag.Texture.rawValue }
+    public var isTransparent: Bool { return (flags & MaterialFlag.Transparent.rawValue) == MaterialFlag.Transparent.rawValue }
 }

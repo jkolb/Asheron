@@ -7,10 +7,15 @@
 //
 
 import Lilliput
+import Swiftish
+
+public typealias Vector2F = Vector2<Float>
+public typealias Vector3F = Vector3<Float>
+public typealias Vector4F = Vector4<Float>
 
 extension ByteBuffer {
     public func getVector2F() -> Vector2F {
-        return Vector2F(x: getFloat32(), y: getFloat32())
+        return Vector2F(getFloat32(), getFloat32())
     }
     
     public func getVector2F(count: Int) -> Array<Vector2F> {
@@ -18,18 +23,9 @@ extension ByteBuffer {
     }
 }
 
-public struct Vector2F : Printable {
-    public let x: Float = 0.0
-    public let y: Float = 0.0
-    
-    public var description: String {
-        return "\(x), \(y)"
-    }
-}
-
 extension ByteBuffer {
     public func getVector3F() -> Vector3F {
-        return Vector3F(x: getFloat32(), y: getFloat32(), z: getFloat32())
+        return Vector3F(getFloat32(), getFloat32(), getFloat32())
     }
     
     public func getVector3F(count: Int) -> Array<Vector3F> {
@@ -37,33 +33,12 @@ extension ByteBuffer {
     }
 }
 
-public struct Vector3F : Printable {
-    public let x: Float = 0.0
-    public let y: Float = 0.0
-    public let z: Float = 0.0
-    
-    public var description: String {
-        return "\(x), \(y), \(z)"
-    }
-}
-
 extension ByteBuffer {
     public func getVector4F() -> Vector4F {
-        return Vector4F(x: getFloat32(), y: getFloat32(), z: getFloat32(), w: getFloat32())
+        return Vector4F(getFloat32(), getFloat32(), getFloat32(), getFloat32())
     }
     
     public func getVector4F(count: Int) -> Array<Vector4F> {
         return getArray(count, defaultValue: Vector4F()) { self.getVector4F() }
-    }
-}
-
-public struct Vector4F : Printable {
-    public let x: Float = 0.0
-    public let y: Float = 0.0
-    public let z: Float = 0.0
-    public let w: Float = 0.0
-    
-    public var description: String {
-        return "\(x), \(y), \(z), \(w)"
     }
 }

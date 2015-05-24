@@ -6,7 +6,9 @@
 //  Copyright (c) 2014 Justin Kolb. All rights reserved.
 //
 
+import Foundation
 import Lilliput
+import FranticApparatus
 
 extension ByteBuffer {
     func getIntFrom8Bits() -> Int {
@@ -68,7 +70,7 @@ extension ByteBuffer {
 
 public class IndexedFileV1 {
     var byteOrder: ByteOrder
-    var binaryFile: BinaryFile
+    var binaryFile: NSFileHandle
     var header: Header
     var mappedBuffer: ByteBuffer
     var indexCache = Dictionary<Int, Index>(minimumCapacity: 64)
@@ -87,8 +89,14 @@ public class IndexedFileV1 {
         }
     }
     
-    public class func openForReading(path: String, inout error: Error) -> IndexedFileV1? {
-        let result = BinaryFile.openForReading(path)
+    public class func openForReading(url: NSURL, inout error: Error) -> IndexedFileV1? {
+        var openError: NSError?
+        
+        if let result = NSFileHandle(forReadingFromURL: url, error: &openError) {
+            error = NSErr
+        } else {
+            return nil
+        }
         
         if let fileError = result.error {
             error = Error(code: Int(fileError.code))
@@ -98,7 +106,7 @@ public class IndexedFileV1 {
         return IndexedFileV1(byteOrder: LittleEndian(), binaryFile: result.binaryFile)
     }
     
-    init(byteOrder: ByteOrder, binaryFile: BinaryFile) {
+    init(byteOrder: ByteOrder, binaryFile: NSFileHandle) {
         self.byteOrder = byteOrder
         self.binaryFile = binaryFile
         self.mappedBuffer = binaryFile.map(LittleEndian(), mode: .ReadOnly).byteBuffer
