@@ -1,0 +1,10 @@
+framework module Asheron {
+  umbrella header "Asheron.h"
+
+  export *
+  module * { export * }
+}
+
+module Asheron.__Swift {
+    exclude header "Asheron-Swift.h"
+}

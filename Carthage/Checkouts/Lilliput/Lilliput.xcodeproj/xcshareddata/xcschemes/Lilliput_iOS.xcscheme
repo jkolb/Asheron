@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E52A4D7C198327BC006053C8"
-               BuildableName = "Asheron.framework"
-               BlueprintName = "Asheron"
-               ReferencedContainer = "container:Asheron.xcodeproj">
+               BlueprintIdentifier = "E52F45F91B128769004F7444"
+               BuildableName = "Lilliput.framework"
+               BlueprintName = "Lilliput_iOS"
+               ReferencedContainer = "container:Lilliput.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -28,10 +28,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E52A4D87198327BC006053C8"
-               BuildableName = "AsheronTests.xctest"
-               BlueprintName = "AsheronTests"
-               ReferencedContainer = "container:Asheron.xcodeproj">
+               BlueprintIdentifier = "E52F46031B12876A004F7444"
+               BuildableName = "Lilliput_iOSTests.xctest"
+               BlueprintName = "Lilliput_iOSTests"
+               ReferencedContainer = "container:Lilliput.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,20 +46,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E52A4D87198327BC006053C8"
-               BuildableName = "AsheronTests.xctest"
-               BlueprintName = "AsheronTests"
-               ReferencedContainer = "container:Asheron.xcodeproj">
+               BlueprintIdentifier = "E52F46031B12876A004F7444"
+               BuildableName = "Lilliput_iOSTests.xctest"
+               BlueprintName = "Lilliput_iOSTests"
+               ReferencedContainer = "container:Lilliput.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E52A4D7C198327BC006053C8"
-            BuildableName = "Asheron.framework"
-            BlueprintName = "Asheron"
-            ReferencedContainer = "container:Asheron.xcodeproj">
+            BlueprintIdentifier = "E52F45F91B128769004F7444"
+            BuildableName = "Lilliput.framework"
+            BlueprintName = "Lilliput_iOS"
+            ReferencedContainer = "container:Lilliput.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -78,10 +78,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E52A4D7C198327BC006053C8"
-            BuildableName = "Asheron.framework"
-            BlueprintName = "Asheron"
-            ReferencedContainer = "container:Asheron.xcodeproj">
+            BlueprintIdentifier = "E52F45F91B128769004F7444"
+            BuildableName = "Lilliput.framework"
+            BlueprintName = "Lilliput_iOS"
+            ReferencedContainer = "container:Lilliput.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -96,10 +96,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E52A4D7C198327BC006053C8"
-            BuildableName = "Asheron.framework"
-            BlueprintName = "Asheron"
-            ReferencedContainer = "container:Asheron.xcodeproj">
+            BlueprintIdentifier = "E52F45F91B128769004F7444"
+            BuildableName = "Lilliput.framework"
+            BlueprintName = "Lilliput_iOS"
+            ReferencedContainer = "container:Lilliput.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

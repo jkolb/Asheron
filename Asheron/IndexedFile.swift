@@ -8,7 +8,6 @@
 
 import Foundation
 import Lilliput
-import FranticApparatus
 
 extension ByteBuffer {
     func getIntFrom8Bits() -> Int {
@@ -69,10 +68,9 @@ extension ByteBuffer {
 }
 
 public class IndexedFileV1 {
-    var byteOrder: ByteOrder
-    var binaryFile: NSFileHandle
-    var header: Header
-    var mappedBuffer: ByteBuffer
+    var header: Header! = nil
+    var fileData: NSMutableData! = nil
+    var mappedBuffer: ByteBuffer! = nil
     var indexCache = Dictionary<Int, Index>(minimumCapacity: 64)
     
     public var readonlyHeader: Header {
@@ -89,36 +87,14 @@ public class IndexedFileV1 {
         }
     }
     
-    public class func openForReading(url: NSURL, inout error: Error) -> IndexedFileV1? {
-        var openError: NSError?
-        
-        if let result = NSFileHandle(forReadingFromURL: url, error: &openError) {
-            error = NSErr
-        } else {
-            return nil
-        }
-        
-        if let fileError = result.error {
-            error = Error(code: Int(fileError.code))
-            return nil;
-        }
-        
-        return IndexedFileV1(byteOrder: LittleEndian(), binaryFile: result.binaryFile)
-    }
-    
-    init(byteOrder: ByteOrder, binaryFile: NSFileHandle) {
-        self.byteOrder = byteOrder
-        self.binaryFile = binaryFile
-        self.mappedBuffer = binaryFile.map(LittleEndian(), mode: .ReadOnly).byteBuffer
+    init(url: NSURL, byteOrder: ByteOrder) throws {
+        self.fileData = try NSMutableData(contentsOfURL: url, options: NSDataReadingOptions.DataReadingMappedIfSafe)
+        self.mappedBuffer = ByteBuffer(order: LittleEndian(), data: UnsafeMutablePointer<UInt8>(self.fileData.bytes), capacity: self.fileData.length, freeOnDeinit: false)
         self.header = IndexedFileV1.readHeader(self.mappedBuffer)
 
         if (self.header.pageSize != 1024 && self.header.pageSize != 256) {
             fatalError("Invalid file: Unexpected page size")
         }
-    }
-    
-    deinit {
-        binaryFile.unmap(mappedBuffer)
     }
     
     public func findData(identifier: UInt32) -> ByteBuffer? {
@@ -175,7 +151,7 @@ public class IndexedFileV1 {
         return buffer.getIndexedFileV1Header()
     }
 
-    public struct Header: Printable { // 1024
+    public struct Header: CustomStringConvertible { // 1024
         public var fileType: UInt32 = 0
         public var pageSize: Int = 0
         public var fileSize: Int = 0
@@ -188,11 +164,21 @@ public class IndexedFileV1 {
         public var description: String { return "File Type: \(fileType)\nPage Size: \(pageSize)" }
     }
     
-    public struct Index: Printable { // 984
-        public struct Key: Printable {
-            public let value: UInt32 = 0
-            public let offset: Int = 0
-            public let length: Int = 0
+    public struct Index: CustomStringConvertible { // 984
+        public struct Key: CustomStringConvertible {
+            public let value: UInt32
+            public let offset: Int
+            public let length: Int
+            
+            public init() {
+                self.init(value: 0, offset: 0, length: 0)
+            }
+            
+            public init(value: UInt32, offset: Int, length: Int) {
+                self.value = value
+                self.offset = offset
+                self.length = length
+            }
             
             public var description: String { return "\(value):\(offset):\(length)" }
         }

@@ -22,7 +22,7 @@ extension ByteBuffer {
     }
 }
 
-public struct Color : Printable {
+public struct Color : CustomStringConvertible {
     public let r: UInt8
     public let g: UInt8
     public let b: UInt8

@@ -7,11 +7,11 @@
 //
 
 import Lilliput
-import Swiftish
+import simd
 
-public typealias Vector2F = Vector2<Float>
-public typealias Vector3F = Vector3<Float>
-public typealias Vector4F = Vector4<Float>
+public typealias Vector2F = float2
+public typealias Vector3F = float3
+public typealias Vector4F = float4
 
 extension ByteBuffer {
     public func getVector2F() -> Vector2F {

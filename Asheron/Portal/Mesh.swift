@@ -24,18 +24,18 @@ extension ByteBuffer {
             let collisionPolygonCount = getIntFrom32Bits()
             collisionPolygons = getPolygon(collisionPolygonCount)
             for polygon in collisionPolygons {
-                println(polygon)
+                print(polygon)
             }
-            collisionNode = getCollisionBSPNode()
+            collisionNode = getCollisionBSPNodeWithLevel(0)
         }
         
-        var position = getVector3F()
+        let position = getVector3F()
         let renderPolygonCount = getIntFrom32Bits()
         let renderPolygons = getPolygon(renderPolygonCount)
         for polygon in renderPolygons {
-            println(polygon)
+            print(polygon)
         }
-        let renderNode = getRenderBSPNode()
+        let renderNode = getRenderBSPNodeWithLevel(0)
         
         assert(remaining == 0, "Not fully parsed")
         

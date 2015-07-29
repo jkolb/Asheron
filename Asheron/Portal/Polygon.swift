@@ -66,7 +66,7 @@ public enum PolygonType: Int {
     case Colored = 4
 }
 
-public struct Polygon : Printable {
+public struct Polygon : CustomStringConvertible {
     public let index: Int
     public let count: Int
     public let type: Int

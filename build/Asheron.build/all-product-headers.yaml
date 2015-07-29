@@ -1,0 +1,33 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [
+    {
+      'type': 'directory',
+      'name': "/Users/jkolb/src/asheron/build/Release/Asheron.framework/Headers",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "Asheron-Swift.h",
+          'external-contents': "/Users/jkolb/src/asheron/build/Release/Asheron.framework/Versions/A/Headers/Asheron-Swift.h"
+        },
+        {
+          'type': 'file',
+          'name': "Asheron.h",
+          'external-contents': "/Users/jkolb/src/asheron/Asheron/Asheron.h"
+        }
+      ]
+    },
+    {
+      'type': 'directory',
+      'name': "/Users/jkolb/src/asheron/build/Release/Asheron.framework/Modules",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "module.modulemap",
+          'external-contents': "/Users/jkolb/src/asheron/build/Asheron.build/Release/Asheron.build/module.modulemap"
+        }
+      ]
+    }
+  ]
+}

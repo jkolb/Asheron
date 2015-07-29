@@ -18,8 +18,6 @@
 		E52A4DB01983281E006053C8 /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4DAB1983281E006053C8 /* Polygon.swift */; };
 		E52A4DB11983281E006053C8 /* Texture.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4DAC1983281E006053C8 /* Texture.swift */; };
 		E52A4DB21983281E006053C8 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A4DAD1983281E006053C8 /* Vertex.swift */; };
-		E52F45B21B1277E5004F7444 /* Swiftish.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E52F45B11B1277E5004F7444 /* Swiftish.framework */; };
-		E52F45B61B127ACB004F7444 /* FranticApparatus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E52F45B51B127ACB004F7444 /* FranticApparatus.framework */; };
 		E571473C1985E77F00D41800 /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = E571473B1985E77F00D41800 /* Mesh.swift */; };
 		E57147401985E9C600D41800 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E571473F1985E9C600D41800 /* Model.swift */; };
 		E57147421985EAA000D41800 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57147411985EAA000D41800 /* Vector.swift */; };
@@ -52,8 +50,6 @@
 		E52A4DAB1983281E006053C8 /* Polygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
 		E52A4DAC1983281E006053C8 /* Texture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Texture.swift; sourceTree = "<group>"; };
 		E52A4DAD1983281E006053C8 /* Vertex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
-		E52F45B11B1277E5004F7444 /* Swiftish.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Swiftish.framework; path = Carthage/Build/Mac/Swiftish.framework; sourceTree = "<group>"; };
-		E52F45B51B127ACB004F7444 /* FranticApparatus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FranticApparatus.framework; path = Carthage/Build/iOS/FranticApparatus.framework; sourceTree = "<group>"; };
 		E571473B1985E77F00D41800 /* Mesh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		E571473F1985E9C600D41800 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		E57147411985EAA000D41800 /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
@@ -66,8 +62,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E52F45B61B127ACB004F7444 /* FranticApparatus.framework in Frameworks */,
-				E52F45B21B1277E5004F7444 /* Swiftish.framework in Frameworks */,
 				E598987A1B10EB8500C49B79 /* Lilliput.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,8 +80,6 @@
 		E52A4D73198327BC006053C8 = {
 			isa = PBXGroup;
 			children = (
-				E52F45B51B127ACB004F7444 /* FranticApparatus.framework */,
-				E52F45B11B1277E5004F7444 /* Swiftish.framework */,
 				E59898791B10EB8500C49B79 /* Lilliput.framework */,
 				E52A4D7F198327BC006053C8 /* Asheron */,
 				E52A4D8C198327BC006053C8 /* AsheronTests */,
@@ -222,7 +214,8 @@
 		E52A4D74198327BC006053C8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Justin Kolb";
 				TargetAttributes = {
 					E52A4D7C198327BC006053C8 = {
@@ -328,6 +321,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -344,8 +338,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -381,7 +374,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -398,12 +391,12 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = Asheron/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.franticapparatus.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -420,12 +413,12 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = Asheron/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.franticapparatus.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -445,6 +438,7 @@
 				);
 				INFOPLIST_FILE = AsheronTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.franticapparatus.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -459,6 +453,7 @@
 				);
 				INFOPLIST_FILE = AsheronTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.franticapparatus.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
