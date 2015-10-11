@@ -67,7 +67,7 @@ extension ByteBuffer {
     }
 }
 
-public class IndexedFileV1 {
+public final class IndexedFileV1 {
     var header: Header! = nil
     var fileData: NSMutableData! = nil
     var mappedBuffer: ByteBuffer! = nil
@@ -87,7 +87,7 @@ public class IndexedFileV1 {
         }
     }
     
-    init(url: NSURL, byteOrder: ByteOrder) throws {
+    public init(url: NSURL, byteOrder: ByteOrder = LittleEndian()) throws {
         self.fileData = try NSMutableData(contentsOfURL: url, options: NSDataReadingOptions.DataReadingMappedIfSafe)
         self.mappedBuffer = ByteBuffer(order: LittleEndian(), data: UnsafeMutablePointer<UInt8>(self.fileData.bytes), capacity: self.fileData.length, freeOnDeinit: false)
         self.header = IndexedFileV1.readHeader(self.mappedBuffer)
@@ -123,11 +123,11 @@ public class IndexedFileV1 {
         return IndexedFileV1.readData(mappedBuffer, offset: offset, length: 984, pageSize: header.pageSize)
     }
     
-    func readKeyData(key: Index.Key) -> ByteBuffer {
+    public func readKeyData(key: Index.Key) -> ByteBuffer {
         return IndexedFileV1.readData(mappedBuffer, offset: key.offset, length: key.length, pageSize: header.pageSize)
     }
     
-    class func readData(buffer: ByteBuffer, offset: Int, length: Int, pageSize: Int) -> ByteBuffer {
+    public class func readData(buffer: ByteBuffer, offset: Int, length: Int, pageSize: Int) -> ByteBuffer {
         let data = ByteBuffer(order: buffer.order, capacity: length)
         var nextOffset = offset
         
@@ -146,7 +146,7 @@ public class IndexedFileV1 {
         return data
     }
 
-    class func readHeader(buffer: ByteBuffer) -> Header {
+    public class func readHeader(buffer: ByteBuffer) -> Header {
         buffer.position = 300
         return buffer.getIndexedFileV1Header()
     }
