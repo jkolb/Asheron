@@ -28,6 +28,6 @@ extension ByteBuffer {
 public struct Model {
     public let identifier: UInt32
     public let modelType: UInt32
-    public let meshId: Array<UInt32>
-//    public let transform: Array<Transform>
+    public let meshId: [UInt32]
+//    public let transform: [Transform]
 }

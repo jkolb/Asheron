@@ -14,7 +14,7 @@ extension ByteBuffer {
         return Int(getUInt8())
     }
     
-    func getIntFrom8Bits(count: Int) -> Array<Int> {
+    func getIntFrom8Bits(count: Int) -> [Int] {
         return getArray(count, defaultValue: 0) { self.getIntFrom8Bits() }
     }
     
@@ -22,7 +22,7 @@ extension ByteBuffer {
         return Int(getUInt16())
     }
     
-    func getIntFrom16Bits(count: Int) -> Array<Int> {
+    func getIntFrom16Bits(count: Int) -> [Int] {
         return getArray(count, defaultValue: 0) { self.getIntFrom16Bits() }
     }
     
@@ -30,7 +30,7 @@ extension ByteBuffer {
         return Int(getInt32())
     }
     
-    func getIntFrom32Bits(count: Int) -> Array<Int> {
+    func getIntFrom32Bits(count: Int) -> [Int] {
         return getArray(count, defaultValue: 0) { self.getIntFrom32Bits() }
     }
     
@@ -55,7 +55,7 @@ extension ByteBuffer {
         )
     }
     
-    func getIndexedFileV1IndexKey(count: Int) -> Array<IndexedFileV1.Index.Key> {
+    func getIndexedFileV1IndexKey(count: Int) -> [IndexedFileV1.Index.Key] {
         return getArray(count, defaultValue: IndexedFileV1.Index.Key()) { return self.getIndexedFileV1IndexKey() }
     }
     
@@ -183,9 +183,9 @@ public class IndexedFileV1 {
             public var description: String { return "\(value):\(offset):\(length)" }
         }
         
-        public var offset: Array<Int> // 62
+        public var offset: [Int] // 62
         public var count: Int
-        public var key: Array<Key> // 61
+        public var key: [Key] // 61
         
         public var isLeaf: Bool { return offset[0] == 0 }
         public var description: String { return "\(offset):\(count):\(key)" }

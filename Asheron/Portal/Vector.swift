@@ -18,7 +18,7 @@ extension ByteBuffer {
         return Vector2F(getFloat32(), getFloat32())
     }
     
-    public func getVector2F(count: Int) -> Array<Vector2F> {
+    public func getVector2F(count: Int) -> [Vector2F] {
         return getArray(count, defaultValue: Vector2F()) { self.getVector2F() }
     }
 }
@@ -28,7 +28,7 @@ extension ByteBuffer {
         return Vector3F(getFloat32(), getFloat32(), getFloat32())
     }
     
-    public func getVector3F(count: Int) -> Array<Vector3F> {
+    public func getVector3F(count: Int) -> [Vector3F] {
         return getArray(count, defaultValue: Vector3F()) { self.getVector3F() }
     }
 }
@@ -38,7 +38,7 @@ extension ByteBuffer {
         return Vector4F(getFloat32(), getFloat32(), getFloat32(), getFloat32())
     }
     
-    public func getVector4F(count: Int) -> Array<Vector4F> {
+    public func getVector4F(count: Int) -> [Vector4F] {
         return getArray(count, defaultValue: Vector4F()) { self.getVector4F() }
     }
 }

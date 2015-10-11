@@ -58,6 +58,6 @@ public struct Texture {
     public let type: UInt32
     public let width: Int
     public let height: Int
-    public let data: Array<UInt8>
+    public let data: [UInt8]
     public let paletteID: UInt32
 }

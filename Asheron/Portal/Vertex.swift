@@ -25,7 +25,7 @@ extension ByteBuffer {
         )
     }
     
-    public func getVertex(count: Int) -> Array<Vertex> {
+    public func getVertex(count: Int) -> [Vertex] {
         return getArray(count) { self.getVertex() }
     }
 }
@@ -35,5 +35,5 @@ public struct Vertex {
     public let count: Int
     public let position: Vector3F
     public let normal: Vector3F
-    public let texcoord: Array<Vector2F>
+    public let texcoord: [Vector2F]
 }

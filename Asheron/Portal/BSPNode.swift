@@ -17,7 +17,7 @@ extension ByteBuffer {
         return (getUInt16(), getUInt16())
     }
     
-    public func getDoubleIndex(count: Int) -> Array<(UInt16, UInt16)> {
+    public func getDoubleIndex(count: Int) -> [(UInt16, UInt16)] {
         return getArray(count, defaultValue: (0, 0)) { self.getDoubleIndex() }
     }
 
@@ -197,7 +197,7 @@ public struct CollisionLeaf : BSPNode { // 010000C19
     public let unknown1: UInt32
     public let unknown2: Vector4F
     public let count: Int
-    public let index: Array<UInt16>
+    public let index: [UInt16]
 }
 
 public struct RenderNode : BSPNode {
@@ -207,7 +207,7 @@ public struct RenderNode : BSPNode {
     public let child2: BSPNode
     public let unknown2: Vector4F
     public let count: Int
-    public let index: Array<UInt16>
+    public let index: [UInt16]
 }
 
 public struct RenderLeaf : BSPNode {
@@ -223,6 +223,6 @@ public struct PortalNode : BSPNode { // 010000801 & 0100081C
     public let unknown2: Vector4F
     public let count: Int
     public let count2: Int
-    public let index: Array<UInt16>
-    public let index2: Array<(UInt16, UInt16)>
+    public let index: [UInt16]
+    public let index2: [(UInt16, UInt16)]
 }

@@ -18,25 +18,25 @@ extension ByteBuffer {
         let frontMaterialIndex = getIntFrom16Bits()
         let backMaterialIndex = getIntFrom16Bits()
         let vertexIndex = getIntFrom16Bits(count)
-        var texcoordIndex1: Array<Int>
-        var texcoordIndex2: Array<Int>
-        var unknown2: Array<UInt8>
+        var texcoordIndex1: [Int]
+        var texcoordIndex2: [Int]
+        var unknown2: [UInt8]
         
         if type == 0 || type == 1 || type == 3 {
             texcoordIndex1 = getIntFrom8Bits(count)
         } else {
-            texcoordIndex1 = Array<Int>()
+            texcoordIndex1 = [Int]()
         }
 
         if hasBackFace == 2 {
             texcoordIndex2 = getIntFrom8Bits(count)
         } else {
-            texcoordIndex2 = Array<Int>()
+            texcoordIndex2 = [Int]()
         }
 
-        let vertexIndexByteCount = vertexIndex.count * sizeof(UInt16)
-        let texcoord1IndexByteCount = texcoordIndex1.count * sizeof(UInt8)
-        let texcoord2IndexByteCount = texcoordIndex2.count * sizeof(UInt8)
+        let vertexIndexByteCount = vertexIndex.count * strideof(UInt16)
+        let texcoord1IndexByteCount = texcoordIndex1.count * strideof(UInt8)
+        let texcoord2IndexByteCount = texcoordIndex2.count * strideof(UInt8)
         let byteCount = vertexIndexByteCount + texcoord1IndexByteCount + texcoord2IndexByteCount
         let padding = (4 - (byteCount % 4)) % 4
         unknown2 = getUInt8(padding);
@@ -56,7 +56,7 @@ extension ByteBuffer {
         )
     }
     
-    public func getPolygon(count: Int) -> Array<Polygon> {
+    public func getPolygon(count: Int) -> [Polygon] {
         return getArray(count) { self.getPolygon() }
     }
 }
@@ -74,10 +74,10 @@ public struct Polygon : CustomStringConvertible {
     public let unknown1: UInt16
     public let frontMaterialIndex: Int
     public let backMaterialIndex: Int
-    public let vertexIndex: Array<Int>
-    public let texcoordIndex1: Array<Int>
-    public let texcoordIndex2: Array<Int>
-    public let unknown2: Array<UInt8>
+    public let vertexIndex: [Int]
+    public let texcoordIndex1: [Int]
+    public let texcoordIndex2: [Int]
+    public let unknown2: [UInt8]
 
     public var description: String {
         return "\(index)\n\tcount: \(count)\n\ttype: \(type)\n\thasBackFace: \(hasBackFace)\n\tunknown1: \(unknown1)"

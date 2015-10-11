@@ -13,7 +13,7 @@ extension ByteBuffer {
         return Transform(translation: getVector3F(), rotation: getVector4F())
     }
     
-    public func getTransform(count: Int) -> Array<Transform> {
+    public func getTransform(count: Int) -> [Transform] {
         return getArray(count, defaultValue: Transform()) { self.getTransform() }
     }
 }
@@ -22,12 +22,7 @@ public struct Transform {
     public let translation: Vector3F
     public let rotation: Vector4F
     
-    public init() {
-        self.translation = Vector3F()
-        self.rotation = Vector4F()
-    }
-    
-    public init(translation: Vector3F, rotation: Vector4F) {
+    public init(translation: Vector3F = Vector3F(), rotation: Vector4F = Vector4F()) {
         self.translation = translation
         self.rotation = rotation
     }

@@ -17,7 +17,7 @@ extension ByteBuffer {
         return Color(r, g, b, a)
     }
     
-    public func getColor(count: Int) -> Array<Color> {
+    public func getColor(count: Int) -> [Color] {
         return getArray(count, defaultValue: Color()) { self.getColor() }
     }
 }
@@ -46,18 +46,18 @@ public struct Color : CustomStringConvertible {
         self.a = Color.clamp(a)
     }
     
-    public init (floatComponents: Array<Float>) {
+    public init (floatComponents: [Float]) {
         r = Color.clamp(floatComponents[0])
         g = Color.clamp(floatComponents[1])
         b = Color.clamp(floatComponents[2])
         a = Color.clamp(floatComponents[3])
     }
     
-    public var components: Array<UInt8> {
+    public var components: [UInt8] {
     return [r, g, b, a]
     }
     
-    public var floatComponents: Array<Float> {
+    public var floatComponents: [Float] {
     return [
         Color.floatComponent(r),
         Color.floatComponent(g),
@@ -90,5 +90,5 @@ extension ByteBuffer {
 public struct Palette {
     public let identifier: UInt32
     public let size: Int
-    public let color: Array<Color>
+    public let color: [Color]
 }
