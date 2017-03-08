@@ -1,0 +1,53 @@
+{
+  "": {
+    "swift-dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/master.swiftdeps"
+  },
+  "/Users/jkolb/src/Asheron/Sources/Asheron.swift": {
+    "dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/Asheron.d",
+    "object": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/Asheron.swift.o",
+    "swiftmodule": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/Asheron~partial.swiftmodule",
+    "swift-dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/Asheron.swiftdeps"
+  },
+  "/Users/jkolb/src/Asheron/Sources/BinaryFile.swift": {
+    "dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BinaryFile.d",
+    "object": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BinaryFile.swift.o",
+    "swiftmodule": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BinaryFile~partial.swiftmodule",
+    "swift-dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BinaryFile.swiftdeps"
+  },
+  "/Users/jkolb/src/Asheron/Sources/BlockFile.swift": {
+    "dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BlockFile.d",
+    "object": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BlockFile.swift.o",
+    "swiftmodule": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BlockFile~partial.swiftmodule",
+    "swift-dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BlockFile.swiftdeps"
+  },
+  "/Users/jkolb/src/Asheron/Sources/ByteBuffer.swift": {
+    "dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteBuffer.d",
+    "object": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteBuffer.swift.o",
+    "swiftmodule": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteBuffer~partial.swiftmodule",
+    "swift-dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteBuffer.swiftdeps"
+  },
+  "/Users/jkolb/src/Asheron/Sources/ByteStream.swift": {
+    "dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteStream.d",
+    "object": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteStream.swift.o",
+    "swiftmodule": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteStream~partial.swiftmodule",
+    "swift-dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteStream.swiftdeps"
+  },
+  "/Users/jkolb/src/Asheron/Sources/IndexFile.swift": {
+    "dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFile.d",
+    "object": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFile.swift.o",
+    "swiftmodule": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFile~partial.swiftmodule",
+    "swift-dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFile.swiftdeps"
+  },
+  "/Users/jkolb/src/Asheron/Sources/IndexFileManager.swift": {
+    "dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFileManager.d",
+    "object": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFileManager.swift.o",
+    "swiftmodule": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFileManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFileManager.swiftdeps"
+  },
+  "/Users/jkolb/src/Asheron/Sources/IOError.swift": {
+    "dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IOError.d",
+    "object": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IOError.swift.o",
+    "swiftmodule": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IOError~partial.swiftmodule",
+    "swift-dependencies": "/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IOError.swiftdeps"
+  }
+}

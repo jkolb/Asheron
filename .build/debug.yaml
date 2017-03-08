@@ -1,0 +1,47 @@
+client:
+  name: swift-build
+tools: {}
+targets:
+  "test": ["<Asheron.module>","<AsheronTests.module>","<AsheronPackageTests.test>"]
+  "main": ["<Asheron.module>"]
+default: "main"
+commands: 
+  "<Asheron.module>":
+    tool: swift-compiler
+    executable: "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    module-name: "Asheron"
+    module-output-path: "/Users/jkolb/src/Asheron/.build/debug/Asheron.swiftmodule"
+    inputs: []
+    outputs: ["<Asheron.module>","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/Asheron.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BinaryFile.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BlockFile.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteBuffer.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteStream.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFile.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFileManager.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IOError.swift.o"]
+    import-paths: ["/Users/jkolb/src/Asheron/.build/debug"]
+    temps-path: "/Users/jkolb/src/Asheron/.build/debug/Asheron.build"
+    objects: ["/Users/jkolb/src/Asheron/.build/debug/Asheron.build/Asheron.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BinaryFile.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BlockFile.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteBuffer.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteStream.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFile.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFileManager.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IOError.swift.o"]
+    other-args: ["-j8","-D","SWIFT_PACKAGE","-Onone","-g","-enable-testing","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-target","x86_64-apple-macosx10.10","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk","-module-cache-path","/Users/jkolb/src/Asheron/.build/debug/ModuleCache"]
+    sources: ["/Users/jkolb/src/Asheron/Sources/Asheron.swift","/Users/jkolb/src/Asheron/Sources/BinaryFile.swift","/Users/jkolb/src/Asheron/Sources/BlockFile.swift","/Users/jkolb/src/Asheron/Sources/ByteBuffer.swift","/Users/jkolb/src/Asheron/Sources/ByteStream.swift","/Users/jkolb/src/Asheron/Sources/IndexFile.swift","/Users/jkolb/src/Asheron/Sources/IndexFileManager.swift","/Users/jkolb/src/Asheron/Sources/IOError.swift"]
+    is-library: true
+    enable-whole-module-optimization: false
+    num-threads: "8"
+
+  "<AsheronTests.module>":
+    tool: swift-compiler
+    executable: "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    module-name: "AsheronTests"
+    module-output-path: "/Users/jkolb/src/Asheron/.build/debug/AsheronTests.swiftmodule"
+    inputs: ["<Asheron.module>"]
+    outputs: ["<AsheronTests.module>","/Users/jkolb/src/Asheron/.build/debug/AsheronTests.build/AsheronTests.swift.o"]
+    import-paths: ["/Users/jkolb/src/Asheron/.build/debug"]
+    temps-path: "/Users/jkolb/src/Asheron/.build/debug/AsheronTests.build"
+    objects: ["/Users/jkolb/src/Asheron/.build/debug/AsheronTests.build/AsheronTests.swift.o"]
+    other-args: ["-j8","-D","SWIFT_PACKAGE","-Onone","-g","-enable-testing","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-target","x86_64-apple-macosx10.10","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk","-module-cache-path","/Users/jkolb/src/Asheron/.build/debug/ModuleCache"]
+    sources: ["/Users/jkolb/src/Asheron/Tests/AsheronTests/AsheronTests.swift"]
+    is-library: true
+    enable-whole-module-optimization: false
+    num-threads: "8"
+
+  "<AsheronPackageTests.test>":
+    tool: shell
+    description: "Linking ./.build/debug/AsheronPackageTests.xctest/Contents/MacOS/AsheronPackageTests"
+    inputs: ["/Users/jkolb/src/Asheron/.build/debug/AsheronTests.build/AsheronTests.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/Asheron.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BinaryFile.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BlockFile.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteBuffer.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteStream.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFile.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFileManager.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IOError.swift.o"]
+    outputs: ["<AsheronPackageTests.test>","/Users/jkolb/src/Asheron/.build/debug/AsheronPackageTests.xctest/Contents/MacOS/AsheronPackageTests"]
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-target","x86_64-apple-macosx10.10","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk","-g","-L/Users/jkolb/src/Asheron/.build/debug","-o","/Users/jkolb/src/Asheron/.build/debug/AsheronPackageTests.xctest/Contents/MacOS/AsheronPackageTests","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-module-name","AsheronPackageTests","-Xlinker","-bundle","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","/Users/jkolb/src/Asheron/.build/debug/AsheronTests.build/AsheronTests.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/Asheron.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BinaryFile.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/BlockFile.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteBuffer.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/ByteStream.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFile.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IndexFileManager.swift.o","/Users/jkolb/src/Asheron/.build/debug/Asheron.build/IOError.swift.o"]
+

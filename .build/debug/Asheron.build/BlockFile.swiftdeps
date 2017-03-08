@@ -1,0 +1,111 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "BlockFile"
+provides-nominal:
+- "C7Asheron9BlockFile"
+provides-member:
+- ["C7Asheron9BlockFile", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- "BlockFile"
+- "UInt32"
+- "BinaryFile"
+- !private "StringLiteralType"
+- !private "numericCast"
+- "ByteBufferStream"
+- !private "IntegerLiteralType"
+- "ByteBuffer"
+- !private "FloatLiteralType"
+- !private "precondition"
+- !private ">"
+- "AssignmentPrecedence"
+- !private "=="
+depends-member:
+- !private ["Ps9AnyObject", "ByteBuffer"]
+- !private ["Ps9AnyObject", "ByteBufferStream"]
+- !private ["Ps9AnyObject", "binaryFile"]
+- !private ["Ps9AnyObject", "block"]
+- !private ["Ps9AnyObject", "buffer"]
+- !private ["Ps9AnyObject", "copyBytes"]
+- !private ["Ps9AnyObject", "getUInt32"]
+- !private ["Ps9AnyObject", "init"]
+- !private ["Ps9AnyObject", "numericCast"]
+- !private ["Ps9AnyObject", "precondition"]
+- !private ["Ps9AnyObject", "readBytes"]
+- !private ["Ps9AnyObject", "remaining"]
+- !private ["Ps9AnyObject", "reset"]
+- ["Ps9AnyObject", ""]
+- !private ["C7Asheron10BinaryFile", "readBytes"]
+- ["C7Asheron9BlockFile", "BinaryFile"]
+- ["C7Asheron9BlockFile", "ByteBuffer"]
+- ["C7Asheron9BlockFile", "ByteBufferStream"]
+- ["C7Asheron9BlockFile", "UInt32"]
+- !private ["C7Asheron9BlockFile", "binaryFile"]
+- !private ["C7Asheron9BlockFile", "block"]
+- ["C7Asheron9BlockFile", "deinit"]
+- ["C7Asheron9BlockFile", "init"]
+- !private ["C7Asheron9BlockFile", "numericCast"]
+- !private ["C7Asheron9BlockFile", "precondition"]
+- ["C7Asheron9BlockFile", "readBlocks"]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["C7Asheron10ByteBuffer", "init"]
+- !private ["C7Asheron16ByteBufferStream", "buffer"]
+- !private ["C7Asheron16ByteBufferStream", "copyBytes"]
+- !private ["C7Asheron16ByteBufferStream", "getUInt32"]
+- !private ["C7Asheron16ByteBufferStream", "init"]
+- !private ["C7Asheron16ByteBufferStream", "remaining"]
+- !private ["C7Asheron16ByteBufferStream", "reset"]
+- !private ["Ps28CustomDebugStringConvertible", "init"]
+- !private ["Ps29CustomPlaygroundQuickLookable", "_getBuiltinLogicValue"]
+- !private ["Ps17CustomReflectable", "_getBuiltinLogicValue"]
+- !private ["Ps17CustomReflectable", "init"]
+- !private ["Ps23CustomStringConvertible", "_getBuiltinLogicValue"]
+- !private ["Ps23CustomStringConvertible", "init"]
+- !private ["Ps9Equatable", "_getBuiltinLogicValue"]
+- !private ["Ps27ExpressibleByBooleanLiteral", "_getBuiltinLogicValue"]
+- !private ["Ps43ExpressibleByExtendedGraphemeClusterLiteral", "init"]
+- !private ["Ps26ExpressibleByStringLiteral", "init"]
+- !private ["Ps33ExpressibleByUnicodeScalarLiteral", "init"]
+- !private ["Ps8Hashable", "_getBuiltinLogicValue"]
+- !private ["Si", "deinit"]
+- !private ["Ps25LosslessStringConvertible", "_getBuiltinLogicValue"]
+- !private ["Vs12StaticString", "deinit"]
+- !private ["Vs12StaticString", "init"]
+- !private ["Vs6UInt32", "deinit"]
+- !private ["Ps35_ExpressibleByBuiltinBooleanLiteral", "_getBuiltinLogicValue"]
+- !private ["Ps51_ExpressibleByBuiltinExtendedGraphemeClusterLiteral", "init"]
+- !private ["Ps34_ExpressibleByBuiltinStringLiteral", "init"]
+- !private ["Ps41_ExpressibleByBuiltinUnicodeScalarLiteral", "init"]
+- !private ["Ps9_Hashable", "_getBuiltinLogicValue"]
+depends-nominal:
+- "Ps9AnyObject"
+- !private "C7Asheron10BinaryFile"
+- "C7Asheron9BlockFile"
+- !private "Sb"
+- !private "C7Asheron10ByteBuffer"
+- !private "C7Asheron16ByteBufferStream"
+- !private "Ps28CustomDebugStringConvertible"
+- !private "Ps29CustomPlaygroundQuickLookable"
+- !private "Ps17CustomReflectable"
+- !private "Ps23CustomStringConvertible"
+- !private "Ps9Equatable"
+- !private "Ps27ExpressibleByBooleanLiteral"
+- !private "Ps43ExpressibleByExtendedGraphemeClusterLiteral"
+- !private "Ps26ExpressibleByStringLiteral"
+- !private "Ps33ExpressibleByUnicodeScalarLiteral"
+- !private "Ps8Hashable"
+- !private "Si"
+- !private "Ps25LosslessStringConvertible"
+- !private "Vs12StaticString"
+- !private "Vs6UInt32"
+- !private "Ps35_ExpressibleByBuiltinBooleanLiteral"
+- !private "Ps51_ExpressibleByBuiltinExtendedGraphemeClusterLiteral"
+- !private "Ps34_ExpressibleByBuiltinStringLiteral"
+- !private "Ps41_ExpressibleByBuiltinUnicodeScalarLiteral"
+- !private "Ps9_Hashable"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Darwin.swiftmodule"
+interface-hash: "3dde5cf3d300d7425a2d13ffde5a8d98"

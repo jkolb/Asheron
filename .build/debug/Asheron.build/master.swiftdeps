@@ -1,0 +1,12 @@
+version: "Apple Swift version 3.0.2 (swiftlang-800.0.63 clang-800.0.42.1)"
+options: "5ae963b61b9435eb3e233bccf4853f38"
+build_time: [542256210, 415602000]
+inputs:
+  "/Users/jkolb/src/Asheron/Sources/Asheron.swift": [542256202, 0]
+  "/Users/jkolb/src/Asheron/Sources/BinaryFile.swift": [542256077, 0]
+  "/Users/jkolb/src/Asheron/Sources/BlockFile.swift": [542256077, 0]
+  "/Users/jkolb/src/Asheron/Sources/ByteBuffer.swift": [542256077, 0]
+  "/Users/jkolb/src/Asheron/Sources/ByteStream.swift": [542256077, 0]
+  "/Users/jkolb/src/Asheron/Sources/IndexFile.swift": [542256077, 0]
+  "/Users/jkolb/src/Asheron/Sources/IndexFileManager.swift": [542256077, 0]
+  "/Users/jkolb/src/Asheron/Sources/IOError.swift": [542256077, 0]

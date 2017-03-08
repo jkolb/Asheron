@@ -1,0 +1,5 @@
+version: "Apple Swift version 3.0.2 (swiftlang-800.0.63 clang-800.0.42.1)"
+options: "e4e14e2804e3467c1d9d2d946e87ca3c"
+build_time: [542256210, 834263000]
+inputs:
+  "/Users/jkolb/src/Asheron/Tests/AsheronTests/AsheronTests.swift": [542256061, 0]
