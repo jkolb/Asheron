@@ -3,9 +3,14 @@ import XCTest
 
 class AsheronTests: XCTestCase {
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        XCTAssertEqual(Asheron().text, "Hello, World!")
+        let fileManager = IndexFileManager()
+        let indexFile = try! fileManager.open(path: "/Users/jkolb/src/Dereth/Data/client_portal.dat")
+        let textureHandles = try! indexFile.handles(matching: { UInt16($0 >> 16) == PortalKind.texture.rawValue })
+        print(textureHandles)
+        let portalFile = PortalFile(indexFile: indexFile)
+        let texture = try! portalFile.fetchTexture(handle: PortalHandle(rawValue: textureHandles.first!)!)
+        print(texture)
+//        XCTAssertEqual(Asheron().text, "Hello, World!")
     }
 
 

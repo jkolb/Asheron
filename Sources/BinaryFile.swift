@@ -4,10 +4,10 @@
     import Darwin
 #endif
 
-final class BinaryFile {
+public final class BinaryFile {
     private let fileDescriptor: CInt
     
-    init(path: String) throws {
+    public init(path: String) throws {
         self.fileDescriptor = open(path, O_RDONLY)
         if fileDescriptor < 0 {
             throw IOError.code(errno)
@@ -18,7 +18,7 @@ final class BinaryFile {
         close(fileDescriptor)
     }
     
-    func readBytes(_ bytes: ByteBuffer, at offset: Int) throws {
+    public func readBytes(_ bytes: ByteBuffer, at offset: Int) throws {
         var buffer = bytes.bytes
         var length = bytes.count
         var offset = offset

@@ -1,43 +1,43 @@
-enum IndexFileError : Error {
+public enum IndexFileError : Error {
     case missingHandle(UInt32)
 }
 
-final class IndexFile {
+public final class IndexFile {
     private let blockFile: BlockFile
-    let rootNodeOffset: UInt32
+    public let rootNodeOffset: UInt32
     private let nodeBytes: ByteBufferStream
     private var nodeCache: [UInt32:Node]
     
-    struct Node {
+    public struct Node {
         static let entryCount = 61
         static let offsetCount = entryCount + 1
         static let diskSize = MemoryLayout<UInt32>.size * (offsetCount + 1 + (entryCount * 6))
         
-        struct Entry {
+        public struct Entry {
             // 4 bytes skipped
-            var handle: UInt32 = 0
-            var offset: UInt32 = 0
-            var length: UInt32 = 0
+            public var handle: UInt32 = 0
+            public var offset: UInt32 = 0
+            public var length: UInt32 = 0
             // 8 bytes ignored
         }
         
-        var offset = [UInt32](repeating: 0, count: Node.offsetCount)
-        var count: Int = 0
-        var entry = [Entry](repeating: Entry(), count: Node.entryCount)
+        public var offset = [UInt32](repeating: 0, count: Node.offsetCount)
+        public var count: Int = 0
+        public var entry = [Entry](repeating: Entry(), count: Node.entryCount)
         
-        var isLeaf: Bool {
+        public var isLeaf: Bool {
             return offset[0] == 0
         }
     }
 
-    init(blockFile: BlockFile, rootNodeOffset: UInt32) {
+    public init(blockFile: BlockFile, rootNodeOffset: UInt32) {
         self.blockFile = blockFile
         self.rootNodeOffset = rootNodeOffset
         self.nodeBytes = ByteBufferStream(buffer: ByteBuffer(count: Node.diskSize))
         self.nodeCache = [UInt32:Node](minimumCapacity: 64)
     }
     
-    func readData(handle: UInt32) throws -> ByteBuffer {
+    public func readData(handle: UInt32) throws -> ByteBuffer {
         guard let entry = try findEntry(for: handle) else {
             throw IndexFileError.missingHandle(handle)
         }
@@ -45,7 +45,36 @@ final class IndexFile {
         return try readEntry(entry)
     }
 
-    func findEntry(for handle: UInt32) throws -> Node.Entry? {
+    public func handles(matching filter: (UInt32) -> Bool) throws -> [UInt32] {
+        let node = try fetchNode(at: rootNodeOffset)
+        
+        return try handlesInNode(node, matching: filter)
+    }
+    
+    private func handlesInNode(_ node: Node, matching filter: (UInt32) -> Bool) throws -> [UInt32] {
+        var handles = [UInt32]()
+        
+        for entryIndex in 0..<node.count {
+            let entry = node.entry[Int(entryIndex)]
+            
+            if filter(entry.handle) {
+                handles.append(entry.handle)
+            }
+        }
+        
+        if !node.isLeaf {
+            for offsetIndex in 0...node.count {
+                let offset = node.offset[Int(offsetIndex)]
+                let nextNode = try fetchNode(at: offset)
+                let nextHandles = try handlesInNode(nextNode, matching: filter)
+                handles.append(contentsOf: nextHandles)
+            }
+        }
+        
+        return handles.sorted()
+    }
+
+    public func findEntry(for handle: UInt32) throws -> Node.Entry? {
         var offset = rootNodeOffset
         
         nextLevel: while offset > 0 {
@@ -74,7 +103,7 @@ final class IndexFile {
         return nil
     }
 
-    private func readEntry(_ entry: Node.Entry) throws -> ByteBuffer {
+    public func readEntry(_ entry: Node.Entry) throws -> ByteBuffer {
         let buffer = ByteBuffer(count: numericCast(entry.length))
         
         try blockFile.readBlocks(buffer, at: entry.offset)
@@ -82,7 +111,7 @@ final class IndexFile {
         return buffer
     }
     
-    func fetchNode(at offset: UInt32) throws -> Node {
+    public func fetchNode(at offset: UInt32) throws -> Node {
         if let node = nodeCache[offset] {
             return node
         }
@@ -94,7 +123,7 @@ final class IndexFile {
         return node
     }
     
-    private func readNode(at offset: UInt32) throws -> Node {
+    public func readNode(at offset: UInt32) throws -> Node {
         try blockFile.readBlocks(nodeBytes.buffer, at: offset)
         
         let node = parseNode(bytes: nodeBytes)
