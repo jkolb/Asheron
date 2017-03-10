@@ -5,7 +5,7 @@ public enum IndexFileError : Error {
 public final class IndexFile {
     private let blockFile: BlockFile
     public let rootNodeOffset: UInt32
-    private let nodeBytes: ByteBufferStream
+    private let nodeBytes: ByteStream
     private var nodeCache: [UInt32:Node]
     
     public struct Node {
@@ -33,7 +33,7 @@ public final class IndexFile {
     public init(blockFile: BlockFile, rootNodeOffset: UInt32) {
         self.blockFile = blockFile
         self.rootNodeOffset = rootNodeOffset
-        self.nodeBytes = ByteBufferStream(buffer: ByteBuffer(count: Node.diskSize))
+        self.nodeBytes = ByteStream(buffer: ByteBuffer(count: Node.diskSize))
         self.nodeCache = [UInt32:Node](minimumCapacity: 64)
     }
     
@@ -133,7 +133,7 @@ public final class IndexFile {
         return node
     }
     
-    private func parseNode(bytes: ByteBufferStream) -> Node {
+    private func parseNode(bytes: ByteStream) -> Node {
         var node = Node()
         
         for index in 0..<node.offset.count {

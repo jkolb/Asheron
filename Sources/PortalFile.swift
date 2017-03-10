@@ -7,7 +7,7 @@ public final class PortalFile {
     
     public func fetchColors(handle: PortalHandle) throws -> [ARGB8888] {
         precondition(handle.kind == .colors)
-        let bytes = ByteBufferStream(buffer: try indexFile.readData(handle: handle.rawValue))
+        let bytes = ByteStream(buffer: try indexFile.readData(handle: handle.rawValue))
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
         let count = bytes.getUInt32()
@@ -25,7 +25,7 @@ public final class PortalFile {
     
     public func fetchTexture(handle: PortalHandle) throws -> Texture {
         precondition(handle.kind == .texture)
-        let bytes = ByteBufferStream(buffer: try indexFile.readData(handle: handle.rawValue))
+        let bytes = ByteStream(buffer: try indexFile.readData(handle: handle.rawValue))
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
         bytes.skipBytes(MemoryLayout<UInt32>.size)

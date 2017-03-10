@@ -1,14 +1,14 @@
 public final class BlockFile {
     private let binaryFile: BinaryFile
-    private let block: ByteBufferStream
+    private let block: ByteStream
     
     public init(binaryFile: BinaryFile, blockSize: UInt32) {
         self.binaryFile = binaryFile
-        self.block = ByteBufferStream(buffer: ByteBuffer(count: numericCast(blockSize)))
+        self.block = ByteStream(buffer: ByteBuffer(count: numericCast(blockSize)))
     }
 
     public func readBlocks(_ blocks: ByteBuffer, at offset: UInt32) throws {
-        let data = ByteBufferStream(buffer: blocks)
+        let data = ByteStream(buffer: blocks)
         var offset = offset
         
         while offset > 0 {
