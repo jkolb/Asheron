@@ -1,4 +1,4 @@
-public class ByteStream {
+public class ByteStream : IteratorProtocol {
     public let buffer: ByteBuffer
     private var bytes: UnsafeMutableRawPointer
     
@@ -7,20 +7,59 @@ public class ByteStream {
         self.bytes = buffer.bytes
     }
     
+    public var position: Int {
+        get {
+            return bytes - buffer.bytes
+        }
+        set {
+            precondition(newValue >= 0 && newValue < buffer.count)
+            bytes = buffer.bytes + newValue
+        }
+    }
+    
+    public var count: Int {
+        return buffer.count
+    }
+    
+    public var hasRemaining: Bool {
+        return remaining > 0
+    }
+    
     public var remaining: Int {
-        return buffer.count - (bytes - buffer.bytes)
+        return count - position
     }
     
     public func reset() {
-        bytes = buffer.bytes
+        position = 0
     }
     
-    public func skipBytes(_ count: Int) {
+    public func align(_ count: Int) {
+        position += (count - (position % count)) % count
+    }
+
+    public func skip(_ count: Int) {
         precondition(count >= 0)
         precondition(remaining >= count)
         bytes += count
     }
+    
+    public func next() -> UInt8? {
+        return hasRemaining ? getUInt8() : nil
+    }
 
+    public func getUInt8(count: Int) -> [UInt8] {
+        precondition(remaining >= count)
+        var array = [UInt8](repeating: 0, count: count)
+        
+        array.withUnsafeMutableBytes { (pointer) -> Void in
+            pointer.copyBytes(from: UnsafeMutableRawBufferPointer(start: bytes, count: count))
+        }
+        
+        bytes += count
+        
+        return array
+    }
+    
     public func getInt8() -> Int8 {
         return Int8(bitPattern: getUInt8())
     }
@@ -95,6 +134,55 @@ public class ByteStream {
         return unsafeBitCast(getUInt64(), to: Float64.self)
     }
     
+    public func getCString() -> String {
+        let pointer = bytes.bindMemory(to: UInt8.self, capacity: remaining)
+        var count = 0
+        
+        while (pointer[count] != 0) {
+            precondition(count < remaining)
+            count += 1
+        }
+        
+        let string = String(cString: pointer)
+        bytes += count
+        
+        return string
+    }
+    
+    public func getUTF8(count: Int) -> String {
+        var decodeCodec = UTF8()
+        var generator = self
+        var characters = [Character]()
+        characters.reserveCapacity(count)
+        var remaining = count
+        
+        while (remaining > 0) {
+            let result = decodeCodec.decode(&generator)
+            remaining -= 1
+            
+            switch result {
+            case .scalarValue(let scalar):
+                characters.append(Character(scalar))
+                
+            case .emptyInput:
+                remaining = 0
+                
+            case .error:
+                remaining = 0
+            }
+        }
+        
+        return String(characters)
+    }
+    
+    public func putUInt8(_ array: [UInt8]) {
+        array.withUnsafeBytes { (pointer) -> Void in
+            bytes.copyBytes(from: pointer.baseAddress!, count: array.count)
+        }
+        
+        bytes += array.count
+    }
+    
     public func putInt8(_ value: Int8) {
         putUInt8(UInt8(bitPattern: value))
     }
@@ -161,6 +249,15 @@ public class ByteStream {
     
     public func putFloat64(_ value: Float64) {
         putUInt64(unsafeBitCast(value, to: UInt64.self))
+    }
+    
+    public func putCString(_ value: String) {
+        putUTF8(value)
+        putUInt8(0)
+    }
+
+    public func putUTF8(_ value: String) {
+        value.utf8.forEach { putUInt8($0) }
     }
 
     public func copyBytes(from source: ByteStream) {

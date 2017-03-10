@@ -28,7 +28,7 @@ public final class PortalFile {
         let bytes = ByteStream(buffer: try indexFile.readData(handle: handle.rawValue))
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
-        bytes.skipBytes(MemoryLayout<UInt32>.size)
+        bytes.skip(MemoryLayout<UInt32>.size)
         let width = bytes.getUInt32()
         let height = bytes.getUInt32()
         let format = TextureFormat(rawValue: bytes.getUInt32())!

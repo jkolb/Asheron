@@ -144,14 +144,14 @@ public final class IndexFile {
         
         for index in 0..<node.entry.count {
             // 4 bytes skipped
-            bytes.skipBytes(MemoryLayout<UInt32>.size)
+            bytes.skip(MemoryLayout<UInt32>.size)
             
             node.entry[index].handle = bytes.getUInt32()
             node.entry[index].offset = bytes.getUInt32()
             node.entry[index].length = bytes.getUInt32()
             
             // 8 bytes skipped
-            bytes.skipBytes(MemoryLayout<UInt32>.size * 2)
+            bytes.skip(MemoryLayout<UInt32>.size * 2)
         }
 
         precondition(bytes.remaining == 0)
