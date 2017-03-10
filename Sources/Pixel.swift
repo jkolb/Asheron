@@ -145,33 +145,57 @@ public struct ARGB8888 : Pixel {
 }
 
 public struct BGR888 : Pixel {
-    public let rawBytes: (UInt8, UInt8, UInt8)
-    public init(rawBytes: (UInt8, UInt8, UInt8)) { self.rawBytes = rawBytes }
-    public init(r: UInt8, g: UInt8, b: UInt8) {
-        self.rawBytes = (r, g, b)
+    public let bits: UInt32
+    public init(bits: UInt32) { self.bits = bits }
+    public init(r: UInt8, g: UInt8, b: UInt8, a: UInt8 = UInt8.max) {
+        let bBits = UInt32(b) << 16
+        let gBits = UInt32(g) << 8
+        let rBits = UInt32(r) << 0
+        
+        self.bits = bBits | gBits | rBits
     }
     public static var bitCount: Int { return 24 }
     public static var byteCount: Int { return 3 }
     public static var hasAlpha: Bool { return false }
-    public var r: UInt8 { return rawBytes.0 }
-    public var g: UInt8 { return rawBytes.1 }
-    public var b: UInt8 { return rawBytes.2 }
-    public var a: UInt8 { return UInt8.max }
+    public var r: UInt8 {
+        return UInt8((bits & 0x000000FF) >> 0)
+    }
+    public var g: UInt8 {
+        return UInt8((bits & 0x0000FF00) >> 8)
+    }
+    public var b: UInt8 {
+        return UInt8((bits & 0x00FF0000) >> 16)
+    }
+    public var a: UInt8 {
+        return UInt8.max
+    }
 }
 
 public struct RGB888 : Pixel {
-    public let rawBytes: (UInt8, UInt8, UInt8)
-    public init(rawBytes: (UInt8, UInt8, UInt8)) { self.rawBytes = rawBytes }
-    public init(r: UInt8, g: UInt8, b: UInt8) {
-        self.rawBytes = (b, g, r)
+    public let bits: UInt32
+    public init(bits: UInt32) { self.bits = bits }
+    public init(r: UInt8, g: UInt8, b: UInt8, a: UInt8 = UInt8.max) {
+        let rBits = UInt32(r) << 16
+        let gBits = UInt32(g) << 8
+        let bBits = UInt32(b) << 0
+        
+        self.bits = bBits | gBits | rBits
     }
     public static var bitCount: Int { return 24 }
     public static var byteCount: Int { return 3 }
     public static var hasAlpha: Bool { return false }
-    public var r: UInt8 { return rawBytes.2 }
-    public var g: UInt8 { return rawBytes.1 }
-    public var b: UInt8 { return rawBytes.0 }
-    public var a: UInt8 { return UInt8.max }
+    public var r: UInt8 {
+        return UInt8((bits & 0x00FF0000) >> 16)
+    }
+    public var g: UInt8 {
+        return UInt8((bits & 0x0000FF00) >> 8)
+    }
+    public var b: UInt8 {
+        return UInt8((bits & 0x000000FF) >> 0)
+    }
+    public var a: UInt8 {
+        return UInt8.max
+    }
 }
 
 public struct I8 : Pixel {
