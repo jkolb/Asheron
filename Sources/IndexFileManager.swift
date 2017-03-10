@@ -1,4 +1,6 @@
 public final class IndexFileManager {
+    public init() { }
+    
     public func open(path: String) throws -> IndexFile {
         let binaryFile = try BinaryFile(path: path)
         let headerBytes = ByteBufferStream(buffer: ByteBuffer(count: 1024))
