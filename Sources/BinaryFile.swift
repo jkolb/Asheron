@@ -5,13 +5,32 @@
 #endif
 
 public final class BinaryFile {
-    private let fileDescriptor: CInt
+    private let fileDescriptor: Int32
     
-    public init(path: String) throws {
-        self.fileDescriptor = open(path, O_RDONLY)
+    public class func openForReading(at path: String) throws -> BinaryFile {
+        return try openFile(at: path, flags: O_RDONLY)
+    }
+
+    public class func openForWriting(at path: String, create: Bool = true) throws -> BinaryFile {
+        return try openFile(at: path, flags: create ? (O_WRONLY | O_CREAT) : O_WRONLY)
+    }
+
+    public class func openForUpdating(at path: String, create: Bool = true) throws -> BinaryFile {
+        return try openFile(at: path, flags: create ? (O_RDWR | O_CREAT) : O_RDWR)
+    }
+    
+    private class func openFile(at path: String, flags: Int32) throws -> BinaryFile {
+        let fileDescriptor = open(path, flags, 0o666)
+        
         if fileDescriptor < 0 {
             throw IOError.code(errno)
         }
+        
+        return BinaryFile(fileDescriptor: fileDescriptor)
+    }
+    
+    private init(fileDescriptor: Int32) {
+        self.fileDescriptor = fileDescriptor
     }
     
     deinit {
@@ -32,6 +51,24 @@ public final class BinaryFile {
             
             if bytesRead == 0 {
                 throw IOError.eof
+            }
+            
+            buffer += bytesRead
+            length -= bytesRead
+            offset += bytesRead
+        }
+    }
+    
+    public func writeBytes(_ bytes: ByteBuffer, at offset: Int) throws {
+        var buffer = bytes.bytes
+        var length = bytes.count
+        var offset = offset
+        
+        while length > 0 {
+            let bytesRead = pwrite(fileDescriptor, buffer, length, numericCast(offset))
+            
+            if bytesRead < 0 {
+                throw IOError.code(errno)
             }
             
             buffer += bytesRead

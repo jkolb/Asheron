@@ -32,8 +32,7 @@ class AsheronTests: XCTestCase {
         cStringBuffer.reset()
         XCTAssertEqual(cStringBuffer.getCString(), "ABC")
         
-        let fileManager = IndexFileManager()
-        let indexFile = try! fileManager.open(path: "/Users/jkolb/src/Dereth/Data/client_portal.dat")
+        let indexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Dereth/Data/client_portal.dat")
         let textureHandles = try! indexFile.handles(matching: { UInt16($0 >> 16) == PortalKind.texture.rawValue })
         print(textureHandles)
         let portalFile = PortalFile(indexFile: indexFile)

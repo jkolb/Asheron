@@ -29,6 +29,19 @@ public final class IndexFile {
             return offset[0] == 0
         }
     }
+    
+    public class func openForReading(at path: String) throws -> IndexFile {
+        let binaryFile = try BinaryFile.openForReading(at: path)
+        let headerBytes = ByteStream(buffer: ByteBuffer(count: 1024))
+        try binaryFile.readBytes(headerBytes.buffer, at: 0)
+        headerBytes.skip(324)
+        let blockSize = headerBytes.getUInt32()
+        headerBytes.skip(24)
+        let rootNodeOffset = headerBytes.getUInt32()
+        let blockFile = BlockFile(binaryFile: binaryFile, blockSize: blockSize)
+        let indexFile = IndexFile(blockFile: blockFile, rootNodeOffset: rootNodeOffset)
+        return indexFile
+    }
 
     public init(blockFile: BlockFile, rootNodeOffset: UInt32) {
         self.blockFile = blockFile
@@ -79,7 +92,6 @@ public final class IndexFile {
         
         nextLevel: while offset > 0 {
             let node = try fetchNode(at: offset)
-            print(node)
             precondition(node.count > 0)
             
             for index in 0..<node.count {
