@@ -28,6 +28,7 @@ public enum TextureFormat : UInt32 {
     case D3DFMT_A8R8G8B8 = 21         // ARGB888
     case D3DFMT_R5G6B5   = 23         // RGB565
     case D3DFMT_A4R4G4B4 = 26         // ARGB4444
+    case D3DFMT_A8       = 28         // 8-bit alpha only
     case D3DFMT_P8       = 41         // 8-bit index
     case D3DFMT_DXT1     = 0x31545844 // MAKEFOURCC('D', 'X', 'T', '1')
     case D3DFMT_DXT3     = 0x33545844 // MAKEFOURCC('D', 'X', 'T', '3')
