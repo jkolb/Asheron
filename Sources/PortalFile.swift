@@ -29,8 +29,7 @@ public final class PortalFile {
         self.indexFile = indexFile
     }
     
-    public func fetchColors(handle: PortalHandle) throws -> [ARGB8888] {
-        precondition(handle.kind == .colors)
+    public func fetchColorTable(handle: PortalHandle<ColorTable>) throws -> ColorTable {
         let bytes = ByteStream(buffer: try indexFile.readData(handle: handle.rawValue))
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
@@ -44,26 +43,80 @@ public final class PortalFile {
             colors.append(color)
         }
         
-        return colors
+        return ColorTable(handle: handle, colors: colors)
     }
     
-    public func fetchTexture(handle: PortalHandle) throws -> Texture {
-        precondition(handle.kind == .texture)
+    public func fetchTextureData(handle: PortalHandle<TextureData>) throws -> TextureData {
         let bytes = ByteStream(buffer: try indexFile.readData(handle: handle.rawValue))
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
         bytes.skip(MemoryLayout<UInt32>.size)
         let width = bytes.getUInt32()
         let height = bytes.getUInt32()
-        let format = TextureFormat(rawValue: bytes.getUInt32())!
+        let rawD3DFormat = bytes.getUInt32()
+        guard let d3dFormat = D3DFormat(rawValue: rawD3DFormat) else {
+            fatalError("Unexpected D3DFMT: \(hex(rawD3DFormat))")
+        }
         let data = ByteBuffer(count: numericCast(bytes.getUInt32()))
         bytes.copyBytes(to: data)
-        var colors: [ARGB8888] = []
+        let format: TextureFormat
+        let rawColorTableHandle = bytes.getUInt32()
         
-        if format == .D3DFMT_INDEX16 || format == .D3DFMT_P8 {
-            colors = try fetchColors(handle: PortalHandle(rawValue: bytes.getUInt32())!)
+        if d3dFormat == .D3DFMT_INDEX16 || d3dFormat == .D3DFMT_P8 {
+            guard let colorTableHandle = PortalHandle<ColorTable>(rawValue: rawColorTableHandle) else {
+                fatalError("Invalid color table handle: \(hex(rawColorTableHandle))")
+            }
+            
+            if d3dFormat == .D3DFMT_INDEX16 {
+                format = .p16(colorTableHandle)
+            }
+            else {
+                format = .p8(colorTableHandle)
+            }
+        }
+        else {
+            switch d3dFormat {
+            case .D3DFMT_R8G8B8:
+                format = .rgb888
+                
+            case .D3DFMT_A8R8G8B8:
+                format = .argb8888
+                
+            case .D3DFMT_R5G6B5:
+                format = .rgb565
+                
+            case .D3DFMT_A4R4G4B4:
+                format = .argb4444
+                
+            case .D3DFMT_A8:
+                format = .a8
+                
+            case .D3DFMT_DXT1:
+                format = .dxt1
+                
+            case .D3DFMT_DXT3:
+                format = .dxt3
+                
+            case .D3DFMT_DXT5:
+                format = .dxt5
+                
+            case .CUSTOM_B8R8G8:
+                format = .bgr888
+                
+            case .CUSTOM_I8:
+                format = .i8
+                
+            case .CUSTOM_JFIF:
+                format = .jfif
+                
+            case .D3DFMT_P8:
+                fatalError("Unpossible")
+                
+            case .D3DFMT_INDEX16:
+                fatalError("Unpossible")
+            }
         }
 
-        return Texture(width: width, height: height, format: format, data: data, colors: colors)
+        return TextureData(handle: handle, width: width, height: height, format: format, data: data)
     }
 }

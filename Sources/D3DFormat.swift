@@ -22,18 +22,20 @@
  SOFTWARE.
  */
 
-public enum TextureFormat {
-    case rgb888
-    case argb8888
-    case rgb565
-    case argb4444
-    case a8
-    case p8(PortalHandle<ColorTable>)
-    case dxt1
-    case dxt3
-    case dxt5
-    case p16(PortalHandle<ColorTable>)
-    case bgr888
-    case i8
-    case jfif
+public enum D3DFormat : UInt32 {
+    /* DirectX standard formats */
+    case D3DFMT_R8G8B8   = 20         // RGB888
+    case D3DFMT_A8R8G8B8 = 21         // ARGB8888
+    case D3DFMT_R5G6B5   = 23         // RGB565
+    case D3DFMT_A4R4G4B4 = 26         // ARGB4444
+    case D3DFMT_A8       = 28         // 8-bit alpha only
+    case D3DFMT_P8       = 41         // 8-bit index
+    case D3DFMT_DXT1     = 0x31545844 // MAKEFOURCC('D', 'X', 'T', '1')
+    case D3DFMT_DXT3     = 0x33545844 // MAKEFOURCC('D', 'X', 'T', '3')
+    case D3DFMT_DXT5     = 0x35545844 // MAKEFOURCC('D', 'X', 'T', '5')
+    case D3DFMT_INDEX16  = 101        // 16-bit index
+    /* Custom formats */
+    case CUSTOM_B8R8G8   = 0xF3       // BGR888
+    case CUSTOM_I8       = 0xF4       // Intensity (I, I, I, I)
+    case CUSTOM_JFIF     = 0x01F4     // JFIF (https://en.wikipedia.org/wiki/JPEG_File_Interchange_Format)
 }

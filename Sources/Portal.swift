@@ -22,31 +22,49 @@
  SOFTWARE.
  */
 
-public enum PortalKind : UInt16 {
-    case colors  = 0x0400
-    case texture = 0x0600
+public enum PortalKind : UInt32 {
+    case colorTable  = 0x04000000
+    case textureData = 0x06000000
 }
 
-public struct PortalHandle : Equatable, Hashable, CustomStringConvertible, CustomDebugStringConvertible, RawRepresentable {
-    public let kind: PortalKind
+public protocol PortalObject : CustomStringConvertible {
+    static var kind: PortalKind { get }
+    var handle: PortalHandle<Self> { get }
+}
+
+extension PortalObject {
+    public var description: String {
+        return "\(handle)"
+    }
+}
+
+public struct PortalHandle<ObjectType : PortalObject> : Equatable, Hashable, CustomStringConvertible, RawRepresentable {
     public let index: UInt16
     
     public init?(rawValue: UInt32) {
-        guard let kind = PortalKind(rawValue: UInt16((rawValue & 0xFFFF0000) >> 16)) else {
+        guard let kind = PortalKind(rawValue: rawValue & 0xFFFF0000) else {
             return nil
         }
+        
+        if kind != ObjectType.kind {
+            return nil
+        }
+        
         let index = UInt16(rawValue & 0x0000FFFF)
         
-        self.init(kind: kind, index: index)
+        self.init(index: index)
     }
 
-    public init(kind: PortalKind, index: UInt16) {
-        self.kind = kind
+    public init(index: UInt16) {
         self.index = index
     }
 
+    public var kind: PortalKind {
+        return ObjectType.kind
+    }
+    
     public var rawValue: UInt32 {
-        return UInt32(kind.rawValue) << 16 | UInt32(index)
+        return kind.rawValue | UInt32(index)
     }
     
     public var hashValue: Int {
@@ -54,16 +72,6 @@ public struct PortalHandle : Equatable, Hashable, CustomStringConvertible, Custo
     }
     
     public var description: String {
-        return "\(kind)(\(index))"
-    }
-    
-    public var debugDescription: String {
-        var string = String(rawValue, radix: 16, uppercase: true)
-        
-        while string.characters.count < 8 {
-            string = "0\(string)"
-        }
-        
-        return string
+        return "\(kind)(\(hex(rawValue)))"
     }
 }

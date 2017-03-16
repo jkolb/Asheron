@@ -22,18 +22,12 @@
  SOFTWARE.
  */
 
-public enum TextureFormat {
-    case rgb888
-    case argb8888
-    case rgb565
-    case argb4444
-    case a8
-    case p8(PortalHandle<ColorTable>)
-    case dxt1
-    case dxt3
-    case dxt5
-    case p16(PortalHandle<ColorTable>)
-    case bgr888
-    case i8
-    case jfif
+public func hex<T : UnsignedInteger>(_ value: T) -> String {
+    var string = String(value, radix: 16, uppercase: true)
+    
+    while string.characters.count < MemoryLayout.size(ofValue: value) * 2 {
+        string = "0\(string)"
+    }
+    
+    return string
 }

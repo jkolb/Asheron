@@ -22,18 +22,19 @@
  SOFTWARE.
  */
 
-public struct Texture {
-    public var width: UInt32
-    public var height: UInt32
-    public var format: TextureFormat
-    public var data: ByteBuffer
-    public var colors: [ARGB8888]
+public final class TextureData : PortalObject {
+    public static let kind = PortalKind.textureData
+    public let handle: PortalHandle<TextureData>
+    public let width: UInt32
+    public let height: UInt32
+    public let format: TextureFormat
+    public let data: ByteBuffer
     
-    public init(width: UInt32, height: UInt32, format: TextureFormat, data: ByteBuffer, colors: [ARGB8888]) {
+    public init(handle: PortalHandle<TextureData>, width: UInt32, height: UInt32, format: TextureFormat, data: ByteBuffer) {
+        self.handle = handle
         self.width = width
         self.height = height
         self.format = format
         self.data = data
-        self.colors = colors
     }
 }

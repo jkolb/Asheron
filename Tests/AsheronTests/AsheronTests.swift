@@ -56,6 +56,10 @@ class AsheronTests: XCTestCase {
         cStringBuffer.reset()
         XCTAssertEqual(cStringBuffer.getCString(), "ABC")
         
+        let textureData = TextureData(handle: PortalHandle<TextureData>(index: 1), width: 320, height: 200, format: .p8(PortalHandle<Asheron.ColorTable>(index: 1)), data: ByteBuffer(count: 1))
+        XCTAssertEqual(textureData.description, "textureData(06000001)")
+        
+        XCTAssertEqual(hex(UInt8(0xFF)), "FF")
 //        let indexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Dereth/Data/client_portal.dat")
 //        let textureHandles = try! indexFile.handles(matching: { UInt16($0 >> 16) == PortalKind.texture.rawValue })
 //        print(textureHandles)

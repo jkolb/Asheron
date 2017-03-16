@@ -22,18 +22,25 @@
  SOFTWARE.
  */
 
-public enum TextureFormat {
-    case rgb888
-    case argb8888
-    case rgb565
-    case argb4444
-    case a8
-    case p8(PortalHandle<ColorTable>)
-    case dxt1
-    case dxt3
-    case dxt5
-    case p16(PortalHandle<ColorTable>)
-    case bgr888
-    case i8
-    case jfif
+public final class ColorTable : PortalObject {
+    public static let kind = PortalKind.colorTable
+    public let handle: PortalHandle<ColorTable>
+    private let colors: [ARGB8888]
+    
+    public init(handle: PortalHandle<ColorTable>, colors: [ARGB8888]) {
+        self.handle = handle
+        self.colors = colors
+    }
+    
+    public var count: UInt32 {
+        return numericCast(colors.count)
+    }
+    
+    public subscript (index: UInt8) -> ARGB8888 {
+        return colors[numericCast(index)]
+    }
+    
+    public subscript (index: UInt16) -> ARGB8888 {
+        return colors[numericCast(index)]
+    }
 }
