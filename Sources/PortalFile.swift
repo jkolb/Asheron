@@ -60,9 +60,10 @@ public final class PortalFile {
         let data = ByteBuffer(count: numericCast(bytes.getUInt32()))
         bytes.copyBytes(to: data)
         let format: TextureFormat
-        let rawColorTableHandle = bytes.getUInt32()
         
         if d3dFormat == .D3DFMT_INDEX16 || d3dFormat == .D3DFMT_P8 {
+            let rawColorTableHandle = bytes.getUInt32()
+            
             guard let colorTableHandle = PortalHandle<ColorTable>(rawValue: rawColorTableHandle) else {
                 fatalError("Invalid color table handle: \(hex(rawColorTableHandle))")
             }
