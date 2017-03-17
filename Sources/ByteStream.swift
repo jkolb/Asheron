@@ -84,6 +84,66 @@ public class ByteStream : IteratorProtocol {
         return array
     }
     
+    public func getUInt16(count: Int) -> [UInt16] {
+        var array = [UInt16](repeating: 0, count: count)
+        
+        for index in 0..<count {
+            array[index] = getUInt16()
+        }
+        
+        return array
+    }
+    
+    public func getUInt24(count: Int) -> [UInt32] {
+        var array = [UInt32](repeating: 0, count: count)
+        
+        for index in 0..<count {
+            array[index] = getUInt24()
+        }
+        
+        return array
+    }
+    
+    public func getUInt32(count: Int) -> [UInt32] {
+        var array = [UInt32](repeating: 0, count: count)
+        
+        for index in 0..<count {
+            array[index] = getUInt32()
+        }
+        
+        return array
+    }
+    
+    public func getUInt64(count: Int) -> [UInt64] {
+        var array = [UInt64](repeating: 0, count: count)
+        
+        for index in 0..<count {
+            array[index] = getUInt64()
+        }
+        
+        return array
+    }
+    
+    public func getFloat32(count: Int) -> [Float32] {
+        var array = [Float32](repeating: 0, count: count)
+        
+        for index in 0..<count {
+            array[index] = getFloat32()
+        }
+        
+        return array
+    }
+    
+    public func getFloat64(count: Int) -> [Float64] {
+        var array = [Float64](repeating: 0, count: count)
+        
+        for index in 0..<count {
+            array[index] = getFloat64()
+        }
+        
+        return array
+    }
+    
     public func getInt8() -> Int8 {
         return Int8(bitPattern: getUInt8())
     }

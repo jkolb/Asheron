@@ -22,28 +22,34 @@
  SOFTWARE.
  */
 
-public final class BlockFile {
-    private let binaryFile: BinaryFile
-    private let block: ByteStream
+public struct CellHandle : Equatable, Hashable, CustomStringConvertible, RawRepresentable {
+    public let x: UInt8
+    public let y: UInt8
+    public let index: UInt16
     
-    public init(binaryFile: BinaryFile, blockSize: UInt32) {
-        self.binaryFile = binaryFile
-        self.block = ByteStream(buffer: ByteBuffer(count: numericCast(blockSize)))
+    public init?(rawValue: UInt32) {
+        let x = UInt8((rawValue & 0xFF000000) >> 24)
+        let y = UInt8((rawValue & 0x00FF0000) >> 16)
+        let index = UInt16(rawValue & 0x0000FFFF)
+        
+        self.init(x: x, y: y, index: index)
     }
-
-    public func readBlocks(_ blocks: ByteBuffer, at offset: UInt32) throws {
-        let data = ByteStream(buffer: blocks)
-        var offset = offset
-        
-        while offset > 0 {
-            try binaryFile.readBytes(block.buffer, at: numericCast(offset))
-
-            offset = block.getUInt32()
-            data.copyBytes(from: block)
-            
-            block.reset()
-        }
-        
-        precondition(!data.hasRemaining)
+    
+    public init(x: UInt8, y: UInt8, index: UInt16) {
+        self.x = x
+        self.y = y
+        self.index = index
+    }
+    
+    public var rawValue: UInt32 {
+        return UInt32(x) << 24 | UInt32(y) << 16 | UInt32(index)
+    }
+    
+    public var hashValue: Int {
+        return rawValue.hashValue
+    }
+    
+    public var description: String {
+        return "(\(x), \(y)) \(hex(index))"
     }
 }

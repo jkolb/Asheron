@@ -43,6 +43,8 @@ public final class PortalFile {
             colors.append(color)
         }
         
+        precondition(!bytes.hasRemaining)
+
         return ColorTable(handle: handle, colors: colors)
     }
     
@@ -117,6 +119,8 @@ public final class PortalFile {
                 fatalError("Unpossible")
             }
         }
+        
+        precondition(!bytes.hasRemaining)
 
         return TextureData(handle: handle, width: width, height: height, format: format, data: data)
     }

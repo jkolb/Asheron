@@ -190,7 +190,7 @@ public final class IndexFile {
             bytes.skip(MemoryLayout<UInt32>.size * 2)
         }
 
-        precondition(bytes.remaining == 0)
+        precondition(!bytes.hasRemaining)
         
         return node
     }

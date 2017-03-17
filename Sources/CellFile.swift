@@ -22,28 +22,23 @@
  SOFTWARE.
  */
 
-public final class BlockFile {
-    private let binaryFile: BinaryFile
-    private let block: ByteStream
+public final class CellFile {
+    private let indexFile: IndexFile
     
-    public init(binaryFile: BinaryFile, blockSize: UInt32) {
-        self.binaryFile = binaryFile
-        self.block = ByteStream(buffer: ByteBuffer(count: numericCast(blockSize)))
+    public init(indexFile: IndexFile) {
+        self.indexFile = indexFile
     }
-
-    public func readBlocks(_ blocks: ByteBuffer, at offset: UInt32) throws {
-        let data = ByteStream(buffer: blocks)
-        var offset = offset
-        
-        while offset > 0 {
-            try binaryFile.readBytes(block.buffer, at: numericCast(offset))
-
-            offset = block.getUInt32()
-            data.copyBytes(from: block)
-            
-            block.reset()
-        }
-        
-        precondition(!data.hasRemaining)
+    
+    public func fetchTerrainBlock(x: UInt8, y: UInt8) throws -> TerrainBlock {
+        let handle = CellHandle(x: x, y: y, index: 0xFFFF)
+        let bytes = ByteStream(buffer: try indexFile.readData(handle: handle.rawValue))
+        let rawHandle = bytes.getUInt32()
+        precondition(handle.rawValue == rawHandle)
+        let flags = bytes.getUInt32()
+        let index = bytes.getUInt16(count: TerrainBlock.size * TerrainBlock.size)
+        let height = bytes.getUInt8(count: TerrainBlock.size * TerrainBlock.size)
+        bytes.skip(1)
+        precondition(!bytes.hasRemaining)
+        return TerrainBlock(handle: rawHandle, flags: flags, index: index, height: height)
     }
 }

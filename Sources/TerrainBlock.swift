@@ -22,28 +22,42 @@
  SOFTWARE.
  */
 
-public final class BlockFile {
-    private let binaryFile: BinaryFile
-    private let block: ByteStream
+public final class TerrainBlock : CustomStringConvertible {
+    public static let size = 9
+    public let handle: UInt32
+    public let flags: UInt32
+    public let index: [UInt16]
+    public let height: [UInt8]
     
-    public init(binaryFile: BinaryFile, blockSize: UInt32) {
-        self.binaryFile = binaryFile
-        self.block = ByteStream(buffer: ByteBuffer(count: numericCast(blockSize)))
+    public init(handle: UInt32, flags: UInt32, index: [UInt16], height: [UInt8]) {
+        self.handle = handle
+        self.flags = flags
+        self.index = index
+        self.height = height
     }
-
-    public func readBlocks(_ blocks: ByteBuffer, at offset: UInt32) throws {
-        let data = ByteStream(buffer: blocks)
-        var offset = offset
+    
+    public var description: String {
+        var string = "["
+        let size = type(of: self).size
         
-        while offset > 0 {
-            try binaryFile.readBytes(block.buffer, at: numericCast(offset))
-
-            offset = block.getUInt32()
-            data.copyBytes(from: block)
+        for y in 0..<size {
+            string += "\t[ "
             
-            block.reset()
+            for x in 0..<size {
+                let index = x + (y * size)
+                
+                string += hex(height[index])
+                
+                if x < size - 1 {
+                    string += ", "
+                }
+            }
+            
+            string += " ]\n"
         }
+
+        string += "]"
         
-        precondition(!data.hasRemaining)
+        return string
     }
 }

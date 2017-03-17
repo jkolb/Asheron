@@ -66,6 +66,43 @@ class AsheronTests: XCTestCase {
 //        let portalFile = PortalFile(indexFile: indexFile)
 //        let texture = try! portalFile.fetchTexture(handle: PortalHandle(rawValue: textureHandles.first!)!)
 //        print(texture)
+
+        let cellIndexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Dereth/Data/client_cell_1.dat")
+        let cellFile = CellFile(indexFile: cellIndexFile)
+
+        var blocks = [[TerrainBlock]]()
+        let maxY = 18
+        let maxX = 17
+        
+        for y in 0..<UInt8(maxY) {
+            var array = [TerrainBlock]()
+            
+            for x in 0..<UInt8(maxX) {
+                array.append(try! cellFile.fetchTerrainBlock(x: x, y: y))
+            }
+            
+            blocks.append(array)
+        }
+        
+        var string = ""
+        let size = TerrainBlock.size
+        
+        for blockY in 0..<maxY {
+            for y in 0..<size {
+                for blockX in 0..<maxX {
+                    let block = blocks[(maxY - 1) - blockY][blockX]
+
+                    for x in 0..<size {
+                        let index = ((size - 1) - y) + (x * size)
+                        string += hex(block.height[index])
+                    }
+                }
+                
+                string += "\n"
+            }
+        }
+        
+        print(string)
     }
 
 
