@@ -27,7 +27,7 @@ public final class TerrainBlock : CustomStringConvertible {
     public let handle: UInt32
     public let flags: UInt32
     public let index: [UInt16]
-    public let height: [UInt8]
+    private let height: [UInt8]
     
     public init(handle: UInt32, flags: UInt32, index: [UInt16], height: [UInt8]) {
         self.handle = handle
@@ -59,5 +59,9 @@ public final class TerrainBlock : CustomStringConvertible {
         string += "]"
         
         return string
+    }
+    
+    public func getHeight(x: Int, y: Int) -> UInt8 {
+        return height[y + (x * type(of: self).size)]
     }
 }

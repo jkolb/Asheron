@@ -71,13 +71,13 @@ class AsheronTests: XCTestCase {
         let cellFile = CellFile(indexFile: cellIndexFile)
 
         var blocks = [[TerrainBlock]]()
-        let maxY = 18
         let maxX = 17
+        let maxY = 17
         
-        for y in 0..<UInt8(maxY) {
+        for x in 0..<UInt8(maxX) {
             var array = [TerrainBlock]()
             
-            for x in 0..<UInt8(maxX) {
+            for y in 0..<UInt8(maxY) {
                 array.append(try! cellFile.fetchTerrainBlock(x: x, y: y))
             }
             
@@ -87,14 +87,13 @@ class AsheronTests: XCTestCase {
         var string = ""
         let size = TerrainBlock.size
         
-        for blockY in 0..<maxY {
-            for y in 0..<size {
-                for blockX in 0..<maxX {
-                    let block = blocks[(maxY - 1) - blockY][blockX]
+        for blockX in 0..<maxX {
+            for x in 0..<size {
+                for blockY in 0..<maxY {
+                    let block = blocks[blockX][blockY]
 
-                    for x in 0..<size {
-                        let index = ((size - 1) - y) + (x * size)
-                        string += hex(block.height[index])
+                    for y in 0..<size {
+                        string += hex(block.getHeight(x: x, y: y))
                     }
                 }
                 
