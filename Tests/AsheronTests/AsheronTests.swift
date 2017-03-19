@@ -60,13 +60,22 @@ class AsheronTests: XCTestCase {
         XCTAssertEqual(textureData.description, "textureData(06000001)")
         
         XCTAssertEqual(hex(UInt8(0xFF)), "FF")
-//        let indexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Dereth/Data/client_portal.dat")
-//        let textureHandles = try! indexFile.handles(matching: { UInt16($0 >> 16) == PortalKind.texture.rawValue })
-//        print(textureHandles)
-//        let portalFile = PortalFile(indexFile: indexFile)
-//        let texture = try! portalFile.fetchTexture(handle: PortalHandle(rawValue: textureHandles.first!)!)
-//        print(texture)
+        
+        let indexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Dereth/Data/client_portal.dat")
+        let handles = try! indexFile.handles(matching: { PortalHandle<TextureList>(rawValue: $0) != nil })
+        let portalFile = PortalFile(indexFile: indexFile)
 
+        let highresFile = HighresFile(indexFile: try! IndexFile.openForReading(at: "/Users/jkolb/src/Dereth/Data/client_highres.dat"))
+        let textureLoader = TextureLoader(portalFile: portalFile, highresFile: highresFile)
+        textureLoader.quality = .high
+        print(handles.count)
+        
+        for handle in handles {
+            let listHandle = PortalHandle<TextureList>(rawValue: handle)!
+            let textureData = try! textureLoader.fetchTextureData(handle: listHandle)
+            print(textureData)
+        }
+        
         let cellIndexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Dereth/Data/client_cell_1.dat")
         let cellFile = CellFile(indexFile: cellIndexFile)
 

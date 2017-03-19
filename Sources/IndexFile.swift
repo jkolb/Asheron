@@ -28,6 +28,7 @@ public enum IndexFileError : Error {
 
 public final class IndexFile {
     private let blockFile: BlockFile
+    private let parser: IndexParser
     public let rootNodeOffset: UInt32
     private let nodeBytes: ByteStream
     private var nodeCache: [UInt32:Node]
@@ -69,6 +70,7 @@ public final class IndexFile {
 
     public init(blockFile: BlockFile, rootNodeOffset: UInt32) {
         self.blockFile = blockFile
+        self.parser = IndexParser()
         self.rootNodeOffset = rootNodeOffset
         self.nodeBytes = ByteStream(buffer: ByteBuffer(count: Node.diskSize))
         self.nodeCache = [UInt32:Node](minimumCapacity: 64)
@@ -162,35 +164,9 @@ public final class IndexFile {
     public func readNode(at offset: UInt32) throws -> Node {
         try blockFile.readBlocks(nodeBytes.buffer, at: offset)
         
-        let node = parseNode(bytes: nodeBytes)
+        let node = parser.parseNode(bytes: nodeBytes)
         
         nodeBytes.reset()
-        
-        return node
-    }
-    
-    private func parseNode(bytes: ByteStream) -> Node {
-        var node = Node()
-        
-        for index in 0..<node.offset.count {
-            node.offset[index] = bytes.getUInt32()
-        }
-        
-        node.count = Int(bytes.getUInt32())
-        
-        for index in 0..<node.entry.count {
-            // 4 bytes skipped
-            bytes.skip(MemoryLayout<UInt32>.size)
-            
-            node.entry[index].handle = bytes.getUInt32()
-            node.entry[index].offset = bytes.getUInt32()
-            node.entry[index].length = bytes.getUInt32()
-            
-            // 8 bytes skipped
-            bytes.skip(MemoryLayout<UInt32>.size * 2)
-        }
-
-        precondition(!bytes.hasRemaining)
         
         return node
     }

@@ -24,23 +24,17 @@
 
 public final class CellFile {
     private let indexFile: IndexFile
+    private let parser: CellParser
     
     public init(indexFile: IndexFile) {
         self.indexFile = indexFile
+        self.parser = CellParser()
     }
     
     public func fetchLandBlock(x: UInt8, y: UInt8) throws -> LandBlock {
         let handle = CellHandle(x: x, y: y, index: 0xFFFF)
-        let bytes = ByteStream(buffer: try indexFile.readData(handle: handle.rawValue))
-        let rawHandle = bytes.getUInt32()
-        precondition(handle.rawValue == rawHandle)
-        let rawHasStructures = bytes.getUInt32()
-        precondition(rawHasStructures == 0 || rawHasStructures == 1)
-        let hasStructures = (rawHasStructures == 1)
-        let topography = bytes.getUInt16(count: LandBlock.size * LandBlock.size).map({ LandBlock.Topography(bits: $0) })
-        let heightIndex = bytes.getUInt8(count: LandBlock.size * LandBlock.size)
-        bytes.skip(1)
-        precondition(!bytes.hasRemaining)
-        return LandBlock(handle: handle, hasStructures: hasStructures, topography: topography, heightIndex: heightIndex)
+        let buffer = try indexFile.readData(handle: handle.rawValue)
+        
+        return parser.parseLandBlock(handle: handle, buffer: buffer)
     }
 }

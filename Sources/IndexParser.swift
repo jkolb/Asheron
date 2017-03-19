@@ -22,30 +22,30 @@
  SOFTWARE.
  */
 
-public final class PortalFile {
-    private let indexFile: IndexFile
-    private let parser: PortalParser
-    
-    public init(indexFile: IndexFile) {
-        self.indexFile = indexFile
-        self.parser = PortalParser()
-    }
-
-    public func fetchColorTable(handle: PortalHandle<ColorTable>) throws -> ColorTable {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
+public final class IndexParser {
+    public func parseNode(bytes: ByteStream) -> IndexFile.Node {
+        var node = IndexFile.Node()
         
-        return parser.parseColorTable(handle: handle, buffer: buffer)
-    }
-
-    public func fetchTextureList(handle: PortalHandle<TextureList>) throws -> TextureList {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
+        for index in 0..<node.offset.count {
+            node.offset[index] = bytes.getUInt32()
+        }
         
-        return parser.parseTextureList(handle: handle, buffer: buffer)
-    }
-    
-    public func fetchTextureData(handle: PortalHandle<TextureData>) throws -> TextureData {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
+        node.count = Int(bytes.getUInt32())
         
-        return parser.parseTextureData(handle: handle, buffer: buffer)
+        for index in 0..<node.entry.count {
+            // 4 bytes skipped
+            bytes.skip(MemoryLayout<UInt32>.size)
+            
+            node.entry[index].handle = bytes.getUInt32()
+            node.entry[index].offset = bytes.getUInt32()
+            node.entry[index].length = bytes.getUInt32()
+            
+            // 8 bytes skipped
+            bytes.skip(MemoryLayout<UInt32>.size * 2)
+        }
+        
+        precondition(!bytes.hasRemaining)
+        
+        return node
     }
 }

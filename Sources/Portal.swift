@@ -24,6 +24,7 @@
 
 public enum PortalKind : UInt32 {
     case colorTable  = 0x04000000
+    case textureList = 0x05000000
     case textureData = 0x06000000
 }
 

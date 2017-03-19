@@ -22,30 +22,18 @@
  SOFTWARE.
  */
 
-public final class PortalFile {
-    private let indexFile: IndexFile
-    private let parser: PortalParser
-    
-    public init(indexFile: IndexFile) {
-        self.indexFile = indexFile
-        self.parser = PortalParser()
-    }
-
-    public func fetchColorTable(handle: PortalHandle<ColorTable>) throws -> ColorTable {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
-        
-        return parser.parseColorTable(handle: handle, buffer: buffer)
-    }
-
-    public func fetchTextureList(handle: PortalHandle<TextureList>) throws -> TextureList {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
-        
-        return parser.parseTextureList(handle: handle, buffer: buffer)
-    }
-    
-    public func fetchTextureData(handle: PortalHandle<TextureData>) throws -> TextureData {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
-        
-        return parser.parseTextureData(handle: handle, buffer: buffer)
+public final class CellParser {
+    public func parseLandBlock(handle: CellHandle, buffer: ByteBuffer) -> LandBlock {
+        let bytes = ByteStream(buffer: buffer)
+        let rawHandle = bytes.getUInt32()
+        precondition(handle.rawValue == rawHandle)
+        let rawHasStructures = bytes.getUInt32()
+        precondition(rawHasStructures == 0 || rawHasStructures == 1)
+        let hasStructures = (rawHasStructures == 1)
+        let topography = bytes.getUInt16(count: LandBlock.size * LandBlock.size).map({ LandBlock.Topography(bits: $0) })
+        let heightIndex = bytes.getUInt8(count: LandBlock.size * LandBlock.size)
+        bytes.skip(1)
+        precondition(!bytes.hasRemaining)
+        return LandBlock(handle: handle, hasStructures: hasStructures, topography: topography, heightIndex: heightIndex)
     }
 }
