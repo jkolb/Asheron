@@ -70,22 +70,22 @@ class AsheronTests: XCTestCase {
         let cellIndexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Dereth/Data/client_cell_1.dat")
         let cellFile = CellFile(indexFile: cellIndexFile)
 
-        var blocks = [[TerrainBlock]]()
+        var blocks = [[LandBlock]]()
         let maxX = 17
         let maxY = 17
         
         for x in 0..<UInt8(maxX) {
-            var array = [TerrainBlock]()
+            var array = [LandBlock]()
             
             for y in 0..<UInt8(maxY) {
-                array.append(try! cellFile.fetchTerrainBlock(x: x, y: y))
+                array.append(try! cellFile.fetchLandBlock(x: x, y: y))
             }
             
             blocks.append(array)
         }
         
         var string = ""
-        let size = TerrainBlock.size
+        let size = LandBlock.size
         
         for blockX in 0..<maxX {
             for x in 0..<size {
@@ -93,7 +93,7 @@ class AsheronTests: XCTestCase {
                     let block = blocks[blockX][blockY]
 
                     for y in 0..<size {
-                        string += hex(block.getHeight(x: x, y: y))
+                        string += hex(block.getHeightIndex(x: x, y: y))
                     }
                 }
                 
@@ -102,9 +102,18 @@ class AsheronTests: XCTestCase {
         }
         
         print(string)
+        
+        for x in 0..<UInt8.max {
+            for y in 0..<UInt8.max {
+                let block = try! cellFile.fetchLandBlock(x: x, y: y)
+                
+                if block.hasStructures {
+                    print(block)
+                }
+            }
+        }
     }
-
-
+    
     static var allTests : [(String, (AsheronTests) -> () throws -> Void)] {
         return [
             ("testExample", testExample),

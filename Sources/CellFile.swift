@@ -29,16 +29,18 @@ public final class CellFile {
         self.indexFile = indexFile
     }
     
-    public func fetchTerrainBlock(x: UInt8, y: UInt8) throws -> TerrainBlock {
+    public func fetchLandBlock(x: UInt8, y: UInt8) throws -> LandBlock {
         let handle = CellHandle(x: x, y: y, index: 0xFFFF)
         let bytes = ByteStream(buffer: try indexFile.readData(handle: handle.rawValue))
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
-        let flags = bytes.getUInt32()
-        let index = bytes.getUInt16(count: TerrainBlock.size * TerrainBlock.size)
-        let height = bytes.getUInt8(count: TerrainBlock.size * TerrainBlock.size)
+        let rawHasStructures = bytes.getUInt32()
+        precondition(rawHasStructures == 0 || rawHasStructures == 1)
+        let hasStructures = (rawHasStructures == 1)
+        let topography = bytes.getUInt16(count: LandBlock.size * LandBlock.size).map({ LandBlock.Topography(bits: $0) })
+        let heightIndex = bytes.getUInt8(count: LandBlock.size * LandBlock.size)
         bytes.skip(1)
         precondition(!bytes.hasRemaining)
-        return TerrainBlock(handle: rawHandle, flags: flags, index: index, height: height)
+        return LandBlock(handle: handle, hasStructures: hasStructures, topography: topography, heightIndex: heightIndex)
     }
 }

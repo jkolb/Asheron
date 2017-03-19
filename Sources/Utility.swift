@@ -22,6 +22,16 @@
  SOFTWARE.
  */
 
+public func binary<T : UnsignedInteger>(_ value: T) -> String {
+    var string = String(value, radix: 2, uppercase: true)
+    
+    while string.characters.count < MemoryLayout.size(ofValue: value) * 2 * 4 {
+        string = "0\(string)"
+    }
+    
+    return string
+}
+
 public func hex<T : UnsignedInteger>(_ value: T) -> String {
     var string = String(value, radix: 16, uppercase: true)
     
