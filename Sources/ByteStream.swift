@@ -211,11 +211,11 @@ public class ByteStream : IteratorProtocol {
     }
     
     public func getFloat32() -> Float32 {
-        return unsafeBitCast(getUInt32(), to: Float32.self)
+        return Float32(bitPattern: getUInt32())
     }
     
     public func getFloat64() -> Float64 {
-        return unsafeBitCast(getUInt64(), to: Float64.self)
+        return Float64(bitPattern: getUInt64())
     }
     
     public func getCString() -> String {
@@ -328,11 +328,11 @@ public class ByteStream : IteratorProtocol {
     }
     
     public func putFloat32(_ value: Float32) {
-        putUInt32(unsafeBitCast(value, to: UInt32.self))
+        putUInt32(value.bitPattern)
     }
     
     public func putFloat64(_ value: Float64) {
-        putUInt64(unsafeBitCast(value, to: UInt64.self))
+        putUInt64(value.bitPattern)
     }
     
     public func putCString(_ value: String) {

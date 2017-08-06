@@ -37,8 +37,19 @@ extension Pixel {
         return ARGB8888(r: r, g: g, b: b, a: a)
     }
     
-    public var description: String {
-        return hex(argb8888.bits)
+    public static func convertToARGB8888<Reader: PixelReader>(width: Int, height: Int, data: ByteBuffer, reader: Reader) -> ByteBuffer {
+        let outputSize = width * height * ARGB8888.byteCount
+        let outputStream = ByteStream(buffer: ByteBuffer(count: outputSize))
+        let inputStream = ByteStream(buffer: data)
+
+        for _ in 1...height {
+            for _ in 1...width {
+                let pixel = reader.read(inputStream)
+                outputStream.putUInt32(pixel.argb8888.bits)
+            }
+        }
+        
+        return outputStream.buffer    
     }
 }
 
@@ -62,6 +73,9 @@ public struct RGB565 : Pixel {
         return (bits2 << 3) | (bits2 >> 2)
     }
     public var a: UInt8 { return UInt8.max }
+    public var description: String {
+        return hex(bits)
+    }
 }
 
 public struct BGR565 : Pixel {
@@ -84,6 +98,9 @@ public struct BGR565 : Pixel {
         return (bits0 << 3) | (bits0 >> 2)
     }
     public var a: UInt8 { return UInt8.max }
+    public var description: String {
+        return hex(bits)
+    }
 }
 
 public struct RGBA4444 : Pixel {
@@ -108,6 +125,9 @@ public struct RGBA4444 : Pixel {
     public var a: UInt8 {
         let bits3 = UInt8((bits & 0b0000_00000000_1111) >> 0)
         return (bits3 << 4) | bits3
+    }
+    public var description: String {
+        return hex(bits)
     }
 }
 
@@ -141,6 +161,9 @@ public struct ARGB4444 : Pixel {
         let aBits = (bits & 0b1111_0000_0000_0000) >> 12
         return RGBA4444(bits: rBits | gBits | bBits | aBits)
     }
+    public var description: String {
+        return hex(bits)
+    }
 }
 
 public struct ARGB8888 : Pixel {
@@ -170,9 +193,13 @@ public struct ARGB8888 : Pixel {
     public var a: UInt8 {
         return UInt8((bits & 0xFF000000) >> 24)
     }
+    public var description: String {
+        return hex(bits)
+    }
 }
 
 public struct BGR888 : Pixel {
+    // XXXXXXXX|BBBBBBBB|GGGGGGGG|RRRRRRRR
     public let bits: UInt32
     public init(bits: UInt32) { self.bits = bits }
     public init(r: UInt8, g: UInt8, b: UInt8, a: UInt8 = UInt8.max) {
@@ -197,9 +224,13 @@ public struct BGR888 : Pixel {
     public var a: UInt8 {
         return UInt8.max
     }
+    public var description: String {
+        return hex(bits)
+    }
 }
 
 public struct RGB888 : Pixel {
+    // XXXXXXXX|RRRRRRRR|GGGGGGGG|BBBBBBBB
     public let bits: UInt32
     public init(bits: UInt32) { self.bits = bits }
     public init(r: UInt8, g: UInt8, b: UInt8, a: UInt8 = UInt8.max) {
@@ -224,9 +255,13 @@ public struct RGB888 : Pixel {
     public var a: UInt8 {
         return UInt8.max
     }
+    public var description: String {
+        return hex(bits)
+    }
 }
 
 public struct I8 : Pixel {
+    // IIIIIIII
     public let bits: UInt8
     public init(bits: UInt8) { self.bits = bits }
     public static var bitCount: Int { return 8 }
@@ -236,9 +271,13 @@ public struct I8 : Pixel {
     public var g: UInt8 { return bits }
     public var b: UInt8 { return bits }
     public var a: UInt8 { return bits }
+    public var description: String {
+        return hex(bits)
+    }
 }
 
 public struct A8 : Pixel {
+    // AAAAAAAA
     public let bits: UInt8
     public init(bits: UInt8) { self.bits = bits }
     public static var bitCount: Int { return 8 }
@@ -248,4 +287,7 @@ public struct A8 : Pixel {
     public var g: UInt8 { return UInt8.min }
     public var b: UInt8 { return UInt8.min }
     public var a: UInt8 { return UInt8.max }
+    public var description: String {
+        return hex(bits)
+    }
 }
