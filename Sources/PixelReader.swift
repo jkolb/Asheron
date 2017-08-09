@@ -28,54 +28,63 @@ public protocol PixelReader {
 }
 
 public struct RGB565Reader : PixelReader {
+    public init() {}
     public func read(_ buffer: ByteStream) -> RGB565 {
         return RGB565(bits: buffer.getUInt16())
     }
 }
 
 public struct BGR565Reader : PixelReader {
+    public init() {}
     public func read(_ buffer: ByteStream) -> BGR565 {
         return BGR565(bits: buffer.getUInt16())
     }
 }
 
 public struct RGBA4444Reader : PixelReader {
+    public init() {}
     public func read(_ buffer: ByteStream) -> RGBA4444 {
         return RGBA4444(bits: buffer.getUInt16())
     }
 }
 
 public struct ARGB4444Reader : PixelReader {
+    public init() {}
     public func read(_ buffer: ByteStream) -> ARGB4444 {
         return ARGB4444(bits: buffer.getUInt16())
     }
 }
 
 public struct ARGB8888Reader : PixelReader {
+    public init() {}
     public func read(_ buffer: ByteStream) -> ARGB8888 {
         return ARGB8888(bits: buffer.getUInt32())
     }
 }
 
 public struct BGR888Reader : PixelReader {
+    public init() {}
     public func read(_ buffer: ByteStream) -> BGR888 {
         return BGR888(bits: buffer.getUInt24())
     }
 }
 
 public struct RGB888Reader : PixelReader {
+    public init() {}
     public func read(_ buffer: ByteStream) -> RGB888 {
         return RGB888(bits: buffer.getUInt24())
     }
 }
 
 public struct I8Reader : PixelReader {
+    public init() {}
     public func read(_ buffer: ByteStream) -> I8 {
         return I8(bits: buffer.getUInt8())
     }
 }
 
 public struct A8Reader : PixelReader {
+    public init() {}
     public func read(_ buffer: ByteStream) -> A8 {
         return A8(bits: buffer.getUInt8())
     }
