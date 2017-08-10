@@ -23,26 +23,26 @@
  */
 
 public struct CellHandle : Equatable, Hashable, CustomStringConvertible, RawRepresentable {
-    public let x: UInt8
-    public let y: UInt8
+    public let row: UInt8
+    public let col: UInt8
     public let index: UInt16
     
     public init?(rawValue: UInt32) {
-        let x = UInt8((rawValue & 0xFF000000) >> 24)
-        let y = UInt8((rawValue & 0x00FF0000) >> 16)
+        let row = UInt8((rawValue & 0xFF000000) >> 24)
+        let col = UInt8((rawValue & 0x00FF0000) >> 16)
         let index = UInt16(rawValue & 0x0000FFFF)
         
-        self.init(x: x, y: y, index: index)
+        self.init(row: row, col: col, index: index)
     }
     
-    public init(x: UInt8, y: UInt8, index: UInt16) {
-        self.x = x
-        self.y = y
+    public init(row: UInt8, col: UInt8, index: UInt16) {
+        self.row = row
+        self.col = col
         self.index = index
     }
     
     public var rawValue: UInt32 {
-        return UInt32(x) << 24 | UInt32(y) << 16 | UInt32(index)
+        return UInt32(row) << 24 | UInt32(col) << 16 | UInt32(index)
     }
     
     public var hashValue: Int {
@@ -50,6 +50,6 @@ public struct CellHandle : Equatable, Hashable, CustomStringConvertible, RawRepr
     }
     
     public var description: String {
-        return "(\(x), \(y)) \(hex(index))"
+        return "(\(row), \(col)) \(hex(index))"
     }
 }

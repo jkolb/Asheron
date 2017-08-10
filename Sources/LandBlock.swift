@@ -61,23 +61,23 @@ public final class LandBlock : CustomStringConvertible {
         self.heightIndex = heightIndex
     }
     
-    public var x: UInt8 {
-        return handle.x
+    public var row: UInt8 {
+        return handle.row
     }
     
-    public var y: UInt8 {
-        return handle.y
+    public var col: UInt8 {
+        return handle.col
     }
     
     public var description: String {
         return "\(handle)"
     }
     
-    public func getTopography(x: Int, y: Int) ->Topography {
-        return topography[y + (x * type(of: self).size)]
+    public func getTopography(row: Int, col: Int) ->Topography {
+        return topography[col + (row * type(of: self).size)]
     }
     
-    public func getHeightIndex(x: Int, y: Int) -> UInt8 {
-        return heightIndex[y + (x * type(of: self).size)]
+    public func getHeightIndex(row: Int, col: Int) -> UInt8 {
+        return heightIndex[col + (row * type(of: self).size)]
     }
 }

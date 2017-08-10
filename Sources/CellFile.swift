@@ -31,8 +31,8 @@ public final class CellFile {
         self.parser = CellParser()
     }
     
-    public func fetchLandBlock(x: UInt8, y: UInt8) throws -> LandBlock {
-        let handle = CellHandle(x: x, y: y, index: 0xFFFF)
+    public func fetchLandBlock(row: UInt8, col: UInt8) throws -> LandBlock {
+        let handle = CellHandle(row: row, col: col, index: 0xFFFF)
         let buffer = try indexFile.readData(handle: handle.rawValue)
         
         return parser.parseLandBlock(handle: handle, buffer: buffer)
