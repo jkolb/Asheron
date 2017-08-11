@@ -23,7 +23,7 @@
  */
 
 public final class PortalParser {
-    public func parseColorTable(handle: PortalHandle<ColorTable>, buffer: ByteBuffer) -> ColorTable {
+    public func parseColorTable(handle: ColorTableHandle, buffer: ByteBuffer) -> ColorTable {
         let bytes = ByteStream(buffer: buffer)
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
@@ -42,28 +42,28 @@ public final class PortalParser {
         return ColorTable(handle: handle, colors: colors)
     }
     
-    public func parseTextureList(handle: PortalHandle<TextureList>, buffer: ByteBuffer) -> TextureList {
+    public func parseTextureList(handle: TextureListHandle, buffer: ByteBuffer) -> TextureList {
         let bytes = ByteStream(buffer: buffer)
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
         bytes.skip(5)
         let count = bytes.getUInt32()
         precondition(count == 1 || count == 2)
-        let lowHandle: PortalHandle<TextureData>
-        let highHandle: PortalHandle<TextureData>?
+        let lowHandle: TextureDataHandle
+        let highHandle: TextureDataHandle?
         
         if count == 1 {
             let lowRawHandle = bytes.getUInt32()
             
             highHandle = nil
-            lowHandle = PortalHandle<TextureData>(rawValue: lowRawHandle)!
+            lowHandle = TextureDataHandle(rawValue: lowRawHandle)!
         }
         else {
             let highRawHandle = bytes.getUInt32()
             let lowRawHandle = bytes.getUInt32()
             
-            highHandle = PortalHandle<TextureData>(rawValue: highRawHandle)!
-            lowHandle = PortalHandle<TextureData>(rawValue: lowRawHandle)!
+            highHandle = TextureDataHandle(rawValue: highRawHandle)!
+            lowHandle = TextureDataHandle(rawValue: lowRawHandle)!
         }
         
         precondition(!bytes.hasRemaining)
@@ -71,7 +71,7 @@ public final class PortalParser {
         return TextureList(handle: handle, lowHandle: lowHandle, highHandle: highHandle)
     }
 
-    public func parseTextureData(handle: PortalHandle<TextureData>, buffer: ByteBuffer) -> TextureData {
+    public func parseTextureData(handle: TextureDataHandle, buffer: ByteBuffer) -> TextureData {
         let bytes = ByteStream(buffer: buffer)
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
@@ -89,7 +89,7 @@ public final class PortalParser {
         if d3dFormat == .D3DFMT_INDEX16 || d3dFormat == .D3DFMT_P8 {
             let rawColorTableHandle = bytes.getUInt32()
             
-            guard let colorTableHandle = PortalHandle<ColorTable>(rawValue: rawColorTableHandle) else {
+            guard let colorTableHandle = ColorTableHandle(rawValue: rawColorTableHandle) else {
                 fatalError("Invalid color table handle: \(hex(rawColorTableHandle))")
             }
             

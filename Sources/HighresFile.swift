@@ -31,7 +31,7 @@ public final class HighresFile {
         self.parser = PortalParser()
     }
     
-    public func fetchTextureData(handle: PortalHandle<TextureData>) throws -> TextureData {
+    public func fetchTextureData(handle: TextureDataHandle) throws -> TextureData {
         let buffer = try indexFile.readData(handle: handle.rawValue)
         
         return parser.parseTextureData(handle: handle, buffer: buffer)

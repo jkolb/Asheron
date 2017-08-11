@@ -28,11 +28,11 @@ public enum TextureFormat {
     case rgb565
     case argb4444
     case a8
-    case p8(PortalHandle<ColorTable>)
+    case p8(ColorTableHandle)
     case dxt1
     case dxt3
     case dxt5
-    case p16(PortalHandle<ColorTable>)
+    case p16(ColorTableHandle)
     case bgr888
     case i8
     case jfif

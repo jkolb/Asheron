@@ -33,7 +33,7 @@ public final class TextureLoader {
         self.highresFile = highresFile
     }
 
-    public func fetchTextureData(handle: PortalHandle<TextureList>) throws -> TextureData {
+    public func fetchTextureData(handle: TextureListHandle) throws -> TextureData {
         let textureList = try portalFile.fetchTextureList(handle: handle)
         let reference = textureList[quality]
         

@@ -56,38 +56,38 @@ class AsheronTests: XCTestCase {
         cStringBuffer.reset()
         XCTAssertEqual(cStringBuffer.getCString(), "ABC")
         
-        let textureData = TextureData(handle: PortalHandle<TextureData>(index: 1), width: 320, height: 200, format: .p8(PortalHandle<Asheron.ColorTable>(index: 1)), data: ByteBuffer(count: 1))
+        let textureData = TextureData(handle: TextureDataHandle(index: 1), width: 320, height: 200, format: .p8(ColorTableHandle(index: 1)), data: ByteBuffer(count: 1))
         XCTAssertEqual(textureData.description, "textureData(06000001)")
         
         XCTAssertEqual(hex(UInt8(0xFF)), "FF")
         
-        let indexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Dereth/Data/client_portal.dat")
+        let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
         let handles = try! indexFile.handles(matching: { PortalHandle<TextureList>(rawValue: $0) != nil })
         let portalFile = PortalFile(indexFile: indexFile)
 
-        let highresFile = HighresFile(indexFile: try! IndexFile.openForReading(at: "/Users/jkolb/src/Dereth/Data/client_highres.dat"))
+        let highresFile = HighresFile(indexFile: try! IndexFile.openForReading(at: "Data/client_highres.dat"))
         let textureLoader = TextureLoader(portalFile: portalFile, highresFile: highresFile)
         textureLoader.quality = .high
         print(handles.count)
         
         for handle in handles {
-            let listHandle = PortalHandle<TextureList>(rawValue: handle)!
+            let listHandle = TextureListHandle(rawValue: handle)!
             let textureData = try! textureLoader.fetchTextureData(handle: listHandle)
             print(textureData)
         }
         
-        let cellIndexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Dereth/Data/client_cell_1.dat")
+        let cellIndexFile = try! IndexFile.openForReading(at: "Data/client_cell_1.dat")
         let cellFile = CellFile(indexFile: cellIndexFile)
 
         var blocks = [[LandBlock]]()
-        let maxX = 17
-        let maxY = 17
+        let maxRow = 17
+        let maxCol = 17
         
-        for x in 0..<UInt8(maxX) {
+        for row in 0..<maxRow {
             var array = [LandBlock]()
             
-            for y in 0..<UInt8(maxY) {
-                array.append(try! cellFile.fetchLandBlock(x: x, y: y))
+            for col in 0..<maxCol {
+                array.append(try! cellFile.fetchLandBlock(handle: LandBlockHandle(row: row, col: col)))
             }
             
             blocks.append(array)
@@ -96,13 +96,13 @@ class AsheronTests: XCTestCase {
         var string = ""
         let size = LandBlock.size
         
-        for blockX in 0..<maxX {
-            for x in 0..<size {
-                for blockY in 0..<maxY {
-                    let block = blocks[blockX][blockY]
+        for blockCol in 0..<maxCol {
+            for col in 0..<size {
+                for blockRow in 0..<maxRow {
+                    let block = blocks[blockRow][blockCol]
 
-                    for y in 0..<size {
-                        string += hex(block.getHeightIndex(x: x, y: y))
+                    for row in 0..<size {
+                        string += hex(block.getHeightIndex(row: row, col: col))
                     }
                 }
                 
@@ -112,9 +112,9 @@ class AsheronTests: XCTestCase {
         
         print(string)
         
-        for x in 0..<UInt8.max {
-            for y in 0..<UInt8.max {
-                let block = try! cellFile.fetchLandBlock(x: x, y: y)
+        for row in 0..<Int(UInt8.max) {
+            for col in 0..<Int(UInt8.max) {
+                let block = try! cellFile.fetchLandBlock(handle: LandBlockHandle(row: row, col: col))
                 
                 if block.hasStructures {
                     print(block)
