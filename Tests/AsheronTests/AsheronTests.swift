@@ -62,7 +62,7 @@ class AsheronTests: XCTestCase {
         XCTAssertEqual(hex(UInt8(0xFF)), "FF")
         
         let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
-        let handles = try! indexFile.handles(matching: { PortalHandle<TextureList>(rawValue: $0) != nil })
+        let handles = try! indexFile.handles(matching: { TextureListHandle(rawValue: $0) != nil })
         let portalFile = PortalFile(indexFile: indexFile)
 
         let highresFile = HighresFile(indexFile: try! IndexFile.openForReading(at: "Data/client_highres.dat"))
