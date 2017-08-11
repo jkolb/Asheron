@@ -22,7 +22,30 @@
  SOFTWARE.
  */
 
-public protocol PixelReader {
-    associatedtype PixelType : Pixel
-    func read(_ buffer: ByteStream) -> PixelType
+public struct PixelRGBA4444 : Pixel {
+    // RRRR_GGGG|BBBB_AAAA
+    public let bits: UInt16
+    public init(bits: UInt16) { self.bits = bits }
+    public static var bitCount: Int { return 16 }
+    public static var byteCount: Int { return 2 }
+    public static var hasAlpha: Bool { return true }
+    public var r: UInt8 {
+        let bits0 = UInt8((bits & 0b1111_0000_0000_0000) >> 12)
+        return (bits0 << 4) | bits0
+    }
+    public var g: UInt8 {
+        let bits1 = UInt8((bits & 0b0000_1111_0000_0000) >> 8)
+        return (bits1 << 4) | bits1
+    }
+    public var b: UInt8 {
+        let bits2 = UInt8((bits & 0b0000_0000_1111_0000) >> 4)
+        return (bits2 << 4) | bits2
+    }
+    public var a: UInt8 {
+        let bits3 = UInt8((bits & 0b0000_00000000_1111) >> 0)
+        return (bits3 << 4) | bits3
+    }
+    public var description: String {
+        return hex(bits)
+    }
 }

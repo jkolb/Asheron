@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-public protocol PixelReader {
-    associatedtype PixelType : Pixel
-    func read(_ buffer: ByteStream) -> PixelType
+public enum TextureQuality {
+    case high
+    case low
 }

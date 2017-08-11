@@ -22,10 +22,6 @@
  SOFTWARE.
  */
 
-public enum IndexFileError : Error {
-    case missingHandle(UInt32)
-}
-
 public final class IndexFile {
     private let blockFile: BlockFile
     private let parser: IndexParser

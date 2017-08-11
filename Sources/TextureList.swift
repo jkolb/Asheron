@@ -22,28 +22,13 @@
  SOFTWARE.
  */
 
-public enum TextureQuality {
-    case high
-    case low
-}
-
-public struct TextureReference {
-    public let handle: PortalHandle<TextureData>
-    public let quality: TextureQuality
-    
-    public init(handle: PortalHandle<TextureData>, quality: TextureQuality) {
-        self.handle = handle
-        self.quality = quality
-    }
-}
-
 public final class TextureList : PortalObject {
     public static let kind = PortalKind.textureList
-    public let handle: PortalHandle<TextureList>
+    public let handle: TextureListHandle
     private let lowReference: TextureReference
     private let highReference: TextureReference?
     
-    public init(handle: PortalHandle<TextureList>, lowHandle: PortalHandle<TextureData>, highHandle: PortalHandle<TextureData>?) {
+    public init(handle: TextureListHandle, lowHandle: TextureDataHandle, highHandle: TextureDataHandle?) {
         self.handle = handle
         self.lowReference = TextureReference(handle: lowHandle, quality: .low)
         

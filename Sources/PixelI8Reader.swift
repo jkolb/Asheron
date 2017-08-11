@@ -22,7 +22,9 @@
  SOFTWARE.
  */
 
-public protocol PixelReader {
-    associatedtype PixelType : Pixel
-    func read(_ buffer: ByteStream) -> PixelType
+public struct PixelI8Reader : PixelReader {
+    public init() {}
+    public func read(_ buffer: ByteStream) -> PixelI8 {
+        return PixelI8(bits: buffer.getUInt8())
+    }
 }

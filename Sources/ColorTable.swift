@@ -24,10 +24,10 @@
 
 public final class ColorTable : PortalObject {
     public static let kind = PortalKind.colorTable
-    public let handle: PortalHandle<ColorTable>
-    private let colors: [ARGB8888]
+    public let handle: ColorTableHandle
+    private let colors: [PixelARGB8888]
     
-    public init(handle: PortalHandle<ColorTable>, colors: [ARGB8888]) {
+    public init(handle: ColorTableHandle, colors: [PixelARGB8888]) {
         self.handle = handle
         self.colors = colors
     }
@@ -36,11 +36,11 @@ public final class ColorTable : PortalObject {
         return numericCast(colors.count)
     }
     
-    public subscript (index: UInt8) -> ARGB8888 {
+    public subscript (index: UInt8) -> PixelARGB8888 {
         return colors[numericCast(index)]
     }
     
-    public subscript (index: UInt16) -> ARGB8888 {
+    public subscript (index: UInt16) -> PixelARGB8888 {
         return colors[numericCast(index)]
     }
 }

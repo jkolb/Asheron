@@ -22,7 +22,6 @@
  SOFTWARE.
  */
 
-public protocol PixelReader {
-    associatedtype PixelType : Pixel
-    func read(_ buffer: ByteStream) -> PixelType
+public enum IndexFileError : Error {
+    case missingHandle(UInt32)
 }

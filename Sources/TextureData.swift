@@ -22,15 +22,15 @@
  SOFTWARE.
  */
 
-public final class TextureData : PortalObject {
+ public final class TextureData : PortalObject {
     public static let kind = PortalKind.textureData
-    public let handle: PortalHandle<TextureData>
+    public let handle: TextureDataHandle
     public let width: UInt32
     public let height: UInt32
     public let format: TextureFormat
     public let data: ByteBuffer
     
-    public init(handle: PortalHandle<TextureData>, width: UInt32, height: UInt32, format: TextureFormat, data: ByteBuffer) {
+    public init(handle: TextureDataHandle, width: UInt32, height: UInt32, format: TextureFormat, data: ByteBuffer) {
         self.handle = handle
         self.width = width
         self.height = height

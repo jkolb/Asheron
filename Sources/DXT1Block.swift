@@ -33,38 +33,42 @@
  DXT5   Interpolated alpha  No
  */
 
-public final class DXT {
-    public static func decompress<Reader: DXTReader>(width: Int, height: Int, data: ByteBuffer, reader: Reader) -> ByteBuffer {
-        let outputSize = width * height * PixelARGB8888.byteCount
-        let outputStream = ByteStream(buffer: ByteBuffer(count: outputSize))
-        let inputStream = ByteStream(buffer: data)
+public struct DXT1Block : DXTBlock {
+    let colorBlock: DXTColor
+    let colors: [PixelARGB8888]
+    
+    public init(colorBlock: DXTColor) {
+        self.colorBlock = colorBlock
         
-        let blockSize = 4
-        let blocksWide = width / blockSize
-        let blocksTall = height / blockSize
-        var blockCache = Array<Reader.DXTBlockType>()
-        blockCache.reserveCapacity(blocksWide)
+        let alpha: UInt8
+        let color0 = PixelRGB565(bits: colorBlock.color0())
+        let color1 = PixelRGB565(bits: colorBlock.color1())
         
-        for _ in 1...blocksTall {
-            blockCache.removeAll(keepingCapacity: true)
-            
-            for _ in 1...blocksWide {
-                let block = reader.read(inputStream)
-                blockCache.append(block)
-            }
-            
-            for index in 0..<blockSize {
-                let offset = index * blockSize
-                
-                for block in blockCache {
-                    outputStream.putUInt32(block.color(at: 0 + offset).bits)
-                    outputStream.putUInt32(block.color(at: 1 + offset).bits)
-                    outputStream.putUInt32(block.color(at: 2 + offset).bits)
-                    outputStream.putUInt32(block.color(at: 3 + offset).bits)
-                }
-            }
+        let rgb0 = RGBTriplet(color0)
+        let rgb1 = RGBTriplet(color1)
+        let rgb2: RGBTriplet
+        let rgb3: RGBTriplet
+        
+        if color0.bits > color1.bits {
+            rgb2 = (2 * rgb0 + rgb1 + 1) / 3
+            rgb3 = (rgb0 + 2 * rgb1 + 1) / 3
+            alpha = UInt8.max
         }
-        
-        return outputStream.buffer
+        else {
+            rgb2 = (rgb0 + rgb1) / 2
+            rgb3 = RGBTriplet()
+            alpha = 0
+        }
+
+        self.colors = [
+            rgb0.color(alpha: UInt8.max),
+            rgb1.color(alpha: UInt8.max),
+            rgb2.color(alpha: UInt8.max),
+            rgb3.color(alpha: alpha),
+        ]
+    }
+    
+    public func color(at index: Int) -> PixelARGB8888 {
+        return colors[colorBlock.colorIndex(at: index)]
     }
 }

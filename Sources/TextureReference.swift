@@ -22,7 +22,12 @@
  SOFTWARE.
  */
 
-public protocol PixelReader {
-    associatedtype PixelType : Pixel
-    func read(_ buffer: ByteStream) -> PixelType
+public struct TextureReference {
+    public let handle: TextureDataHandle
+    public let quality: TextureQuality
+    
+    public init(handle: TextureDataHandle, quality: TextureQuality) {
+        self.handle = handle
+        self.quality = quality
+    }
 }

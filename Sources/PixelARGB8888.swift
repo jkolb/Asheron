@@ -1,0 +1,70 @@
+/*
+ The MIT License (MIT)
+ 
+ Copyright (c) 2017 Justin Kolb
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+
+public struct PixelARGB8888 : Pixel {
+    // AAAAAAAA|RRRRRRRR|GGGGGGGG|BBBBBBBB
+    public let bits: UInt32
+    public init(bits: UInt32) { self.bits = bits }
+    public init(r: UInt8, g: UInt8, b: UInt8, a: UInt8) {
+        let aBits = UInt32(a) << 24
+        let rBits = UInt32(r) << 16
+        let gBits = UInt32(g) << 8
+        let bBits = UInt32(b) << 0
+        
+        self.bits = aBits | rBits | gBits | bBits
+    }
+    public static var bitCount: Int { return 32 }
+    public static var byteCount: Int { return 4 }
+    public static var hasAlpha: Bool { return true }
+    public var r: UInt8 {
+        return UInt8((bits & 0x00FF0000) >> 16)
+    }
+    public var g: UInt8 {
+        return UInt8((bits & 0x0000FF00) >> 8)
+    }
+    public var b: UInt8 {
+        return UInt8((bits & 0x000000FF) >> 0)
+    }
+    public var a: UInt8 {
+        return UInt8((bits & 0xFF000000) >> 24)
+    }
+    public var description: String {
+        return hex(bits)
+    }
+    
+    public static func convert<Reader: PixelReader>(width: Int, height: Int, data: ByteBuffer, reader: Reader) -> ByteBuffer {
+        let outputSize = width * height * PixelARGB8888.byteCount
+        let outputStream = ByteStream(buffer: ByteBuffer(count: outputSize))
+        let inputStream = ByteStream(buffer: data)
+
+        for _ in 1...height {
+            for _ in 1...width {
+                let pixel = reader.read(inputStream)
+                outputStream.putUInt32(pixel.argb8888.bits)
+            }
+        }
+        
+        return outputStream.buffer    
+    }
+}

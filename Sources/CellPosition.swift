@@ -22,7 +22,35 @@
  SOFTWARE.
  */
 
-public protocol PixelReader {
-    associatedtype PixelType : Pixel
-    func read(_ buffer: ByteStream) -> PixelType
+public struct CellPosition : Equatable, Hashable, CustomStringConvertible, RawRepresentable {
+    public let row: UInt8
+    public let col: UInt8
+    
+    public init?(rawValue: UInt32) {
+        let row = UInt8((rawValue & 0xFF000000) >> 24)
+        let col = UInt8((rawValue & 0x00FF0000) >> 16)
+        
+        self.init(row: row, col: col)
+    }
+    
+    public init(row: UInt8, col: UInt8) {
+        self.row = row
+        self.col = col
+    }
+
+    public init(row: Int, col: Int) {
+        self.init(row: UInt8(row), col: UInt8(col))
+    }
+
+    public var rawValue: UInt32 {
+        return UInt32(row) << 24 | UInt32(col) << 16
+    }
+    
+    public var hashValue: Int {
+        return rawValue.hashValue
+    }
+    
+    public var description: String {
+        return "(\(row), \(col))"
+    }
 }

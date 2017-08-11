@@ -23,7 +23,7 @@
  */
 
 public final class CellParser {
-    public func parseLandBlock(handle: CellHandle, buffer: ByteBuffer) -> LandBlock {
+    public func parseLandBlock(handle: LandBlockHandle, buffer: ByteBuffer) -> LandBlock {
         let bytes = ByteStream(buffer: buffer)
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)

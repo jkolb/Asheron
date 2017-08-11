@@ -22,7 +22,21 @@
  SOFTWARE.
  */
 
-public protocol PixelReader {
-    associatedtype PixelType : Pixel
-    func read(_ buffer: ByteStream) -> PixelType
+public protocol CellHandle : Equatable, Hashable, CustomStringConvertible, RawRepresentable {
+    var position: CellPosition { get }
+    var index: UInt16 { get }
+}
+
+extension CellHandle {
+    public var rawValue: UInt32 {
+        return position.rawValue | UInt32(index)
+    }
+    
+    public var hashValue: Int {
+        return rawValue.hashValue
+    }
+    
+    public var description: String {
+        return "\(position) \(hex(index))"
+    }
 }

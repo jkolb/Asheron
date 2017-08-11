@@ -22,7 +22,29 @@
  SOFTWARE.
  */
 
-public protocol PixelReader {
-    associatedtype PixelType : Pixel
-    func read(_ buffer: ByteStream) -> PixelType
+public struct LandBlockHandle : CellHandle {
+    private static let landBlockIndex: UInt16 = 0xFFFF
+    public let position: CellPosition
+    public var index: UInt16 {
+        return LandBlockHandle.landBlockIndex
+    }
+    
+    public init?(rawValue: UInt32) {
+        let position = CellPosition(rawValue: rawValue)!
+        let index = UInt16(rawValue & 0x0000FFFF)
+        
+        if index != LandBlockHandle.landBlockIndex {
+            return nil
+        }
+
+        self.init(position: position)
+    }
+    
+    public init(row: Int, col: Int) {
+        self.init(position: CellPosition(row: row, col: col))
+    }
+
+    public init(position: CellPosition) {
+        self.position = position
+    }
 }

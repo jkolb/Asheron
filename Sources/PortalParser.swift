@@ -28,11 +28,11 @@ public final class PortalParser {
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
         let count = bytes.getUInt32()
-        var colors = [ARGB8888]()
+        var colors = [PixelARGB8888]()
         colors.reserveCapacity(numericCast(count))
         
         for _ in 0..<count {
-            let color = ARGB8888(bits: bytes.getUInt32())
+            let color = PixelARGB8888(bits: bytes.getUInt32())
             
             colors.append(color)
         }

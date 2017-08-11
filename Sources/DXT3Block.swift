@@ -33,38 +33,33 @@
  DXT5   Interpolated alpha  No
  */
 
-public final class DXT {
-    public static func decompress<Reader: DXTReader>(width: Int, height: Int, data: ByteBuffer, reader: Reader) -> ByteBuffer {
-        let outputSize = width * height * PixelARGB8888.byteCount
-        let outputStream = ByteStream(buffer: ByteBuffer(count: outputSize))
-        let inputStream = ByteStream(buffer: data)
+public struct DXT3Block : DXTBlock {
+    let alphaBlock: DXT3Alpha
+    let colorBlock: DXTColor
+    let colors: [PixelRGB888]
+
+    public init(alphaBlock: DXT3Alpha, colorBlock: DXTColor) {
+        self.alphaBlock = alphaBlock
+        self.colorBlock = colorBlock
+
+        let color0 = PixelRGB565(bits: colorBlock.color0())
+        let color1 = PixelRGB565(bits: colorBlock.color1())
         
-        let blockSize = 4
-        let blocksWide = width / blockSize
-        let blocksTall = height / blockSize
-        var blockCache = Array<Reader.DXTBlockType>()
-        blockCache.reserveCapacity(blocksWide)
+        let rgb0 = RGBTriplet(color0)
+        let rgb1 = RGBTriplet(color1)
+        let rgb2 = (2 * rgb0 + rgb1 + 1) / 3
+        let rgb3 = (rgb0 + 2 * rgb1 + 1) / 3
         
-        for _ in 1...blocksTall {
-            blockCache.removeAll(keepingCapacity: true)
-            
-            for _ in 1...blocksWide {
-                let block = reader.read(inputStream)
-                blockCache.append(block)
-            }
-            
-            for index in 0..<blockSize {
-                let offset = index * blockSize
-                
-                for block in blockCache {
-                    outputStream.putUInt32(block.color(at: 0 + offset).bits)
-                    outputStream.putUInt32(block.color(at: 1 + offset).bits)
-                    outputStream.putUInt32(block.color(at: 2 + offset).bits)
-                    outputStream.putUInt32(block.color(at: 3 + offset).bits)
-                }
-            }
-        }
-        
-        return outputStream.buffer
+        self.colors = [
+            rgb0.color,
+            rgb1.color,
+            rgb2.color,
+            rgb3.color,
+        ]
+    }
+    
+    public func color(at index: Int) -> PixelARGB8888 {
+        let color = colors[colorBlock.colorIndex(at: index)]
+        return PixelARGB8888(r: color.r, g: color.g, b: color.b, a: alphaBlock.alpha(at: index))
     }
 }

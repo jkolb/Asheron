@@ -22,34 +22,20 @@
  SOFTWARE.
  */
 
-public struct CellHandle : Equatable, Hashable, CustomStringConvertible, RawRepresentable {
-    public let row: UInt8
-    public let col: UInt8
-    public let index: UInt16
-    
-    public init?(rawValue: UInt32) {
-        let row = UInt8((rawValue & 0xFF000000) >> 24)
-        let col = UInt8((rawValue & 0x00FF0000) >> 16)
-        let index = UInt16(rawValue & 0x0000FFFF)
-        
-        self.init(row: row, col: col, index: index)
-    }
-    
-    public init(row: UInt8, col: UInt8, index: UInt16) {
-        self.row = row
-        self.col = col
-        self.index = index
-    }
-    
-    public var rawValue: UInt32 {
-        return UInt32(row) << 24 | UInt32(col) << 16 | UInt32(index)
-    }
-    
-    public var hashValue: Int {
-        return rawValue.hashValue
-    }
-    
-    public var description: String {
-        return "(\(row), \(col)) \(hex(index))"
+/*
+ Compressed Texture Resources (Direct3D 9)
+ https://msdn.microsoft.com/en-us/library/bb204843(v=vs.85).aspx
+ FOURCC Description         Alpha premultiplied?
+ DXT1   Opaque/1-bit alpha  N/A
+ DXT2   Explicit alpha      Yes
+ DXT3   Explicit alpha      No
+ DXT4   Interpolated alpha  Yes
+ DXT5   Interpolated alpha  No
+ */
+
+public struct DXT1Reader : DXTReader {
+    public init() {}
+    public func read(_ buffer: ByteStream) -> DXT1Block {
+        return DXT1Block(colorBlock: DXTColor(bits: buffer.getUInt64()))
     }
 }

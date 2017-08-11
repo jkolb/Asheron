@@ -22,7 +22,13 @@
  SOFTWARE.
  */
 
-public protocol PixelReader {
-    associatedtype PixelType : Pixel
-    func read(_ buffer: ByteStream) -> PixelType
+public protocol PortalObject : CustomStringConvertible {
+    static var kind: PortalKind { get }
+    var handle: PortalHandle<Self> { get }
+}
+
+extension PortalObject {
+    public var description: String {
+        return "\(handle)"
+    }
 }

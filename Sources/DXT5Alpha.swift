@@ -22,7 +22,34 @@
  SOFTWARE.
  */
 
-public protocol PixelReader {
-    associatedtype PixelType : Pixel
-    func read(_ buffer: ByteStream) -> PixelType
+/*
+ Compressed Texture Resources (Direct3D 9)
+ https://msdn.microsoft.com/en-us/library/bb204843(v=vs.85).aspx
+ FOURCC Description         Alpha premultiplied?
+ DXT1   Opaque/1-bit alpha  N/A
+ DXT2   Explicit alpha      Yes
+ DXT3   Explicit alpha      No
+ DXT4   Interpolated alpha  Yes
+ DXT5   Interpolated alpha  No
+ */
+
+public struct DXT5Alpha {
+    let bits: UInt64
+    
+    init(bits: UInt64) {
+        self.bits = bits
+    }
+    
+    public func alpha0() -> UInt8 {
+        return UInt8((bits & (0xFF << 0)) >> 0)
+    }
+    
+    public func alpha1() -> UInt8 {
+        return UInt8((bits & (0xFF << 8)) >> 8)
+    }
+    
+    public func alphaIndex(at index: Int) -> Int {
+        let shift = (UInt64(index) << 1) + UInt64(index) + 16
+        return Int((bits & (0b111 << shift)) >> shift)
+    }
 }

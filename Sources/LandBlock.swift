@@ -25,7 +25,7 @@
 public final class LandBlock : CustomStringConvertible {
     public struct Topography : CustomStringConvertible {
         private let bits: UInt16
-        
+
         public init(bits: UInt16) {
             self.bits = bits
         }
@@ -48,25 +48,20 @@ public final class LandBlock : CustomStringConvertible {
     }
     
     public static let size = 9
-    public let handle: CellHandle
+    public let handle: LandBlockHandle
     public let hasStructures: Bool
     private let topography: [Topography]
     private let heightIndex: [UInt8]
     
-    public init(handle: CellHandle, hasStructures: Bool, topography: [Topography], heightIndex: [UInt8]) {
-        precondition(handle.index == 0xFFFF)
+    public init(handle: LandBlockHandle, hasStructures: Bool, topography: [Topography], heightIndex: [UInt8]) {
         self.handle = handle
         self.hasStructures = hasStructures
         self.topography = topography
         self.heightIndex = heightIndex
     }
     
-    public var row: UInt8 {
-        return handle.row
-    }
-    
-    public var col: UInt8 {
-        return handle.col
+    public var position: CellPosition {
+        return handle.position
     }
     
     public var description: String {
