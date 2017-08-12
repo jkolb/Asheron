@@ -258,7 +258,26 @@ public class ByteStream : IteratorProtocol {
         
         return String(characters)
     }
-    
+
+    public func getString() -> String {
+        let count: Int
+        let shortCount = getUInt16()
+        
+        if shortCount == 0xFFFF {
+            count = Int(getUInt32())
+        }
+        else {
+            count = Int(shortCount)
+        }
+        
+        var nulTerminatedUTF8 = getUInt8(count: count)
+        nulTerminatedUTF8.append(0)
+        
+        align(4)
+        
+        return String(cString: nulTerminatedUTF8)
+    }
+
     public func putUInt8(_ array: [UInt8]) {
         array.withUnsafeBytes { (pointer) -> Void in
             bytes.copyBytes(from: pointer.baseAddress!, count: array.count)

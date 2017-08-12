@@ -147,4 +147,86 @@ public final class PortalParser {
         
         return TextureData(handle: handle, width: width, height: height, format: format, data: data)
     }
+
+    public func parseWorldRegion(handle: WorldRegionHandle, buffer: ByteBuffer) -> WorldRegion {
+        let bytes = ByteStream(buffer: buffer)
+        let rawHandle = bytes.getUInt32()
+        precondition(handle.rawValue == rawHandle)
+
+        let number = bytes.getUInt32()
+        precondition(number == 1)
+
+        let version = bytes.getUInt32()
+        precondition(version == 3)
+
+        let name = bytes.getString()
+        precondition(name == "Dereth")
+
+        let cellRowCount = bytes.getUInt32()
+        precondition(cellRowCount == 255)
+
+        let cellColCount = bytes.getUInt32()
+        precondition(cellColCount == 255)
+
+        let cellGridSize = bytes.getFloat32()
+        precondition(cellGridSize == 24.0)
+
+        let heightsPerCell = bytes.getUInt32()
+        precondition(heightsPerCell == 8)
+
+        let overlapPerCell = bytes.getUInt32()
+        precondition(overlapPerCell == 1)
+
+        let unknown1 = bytes.getFloat32()
+        precondition(unknown1 == 200.0)
+
+        let unknown2 = bytes.getFloat32()
+        precondition(unknown2 == 1000.0)
+
+        let unknown3 = bytes.getFloat32()
+        precondition(unknown3 == 5.0)
+
+        let landHeights = bytes.getFloat32(count: 256)
+        precondition(landHeights.count == 256)
+
+        let unknown4 = bytes.getUInt32()
+        precondition(unknown4 == 0)
+
+        let unknown5 = bytes.getFloat32()
+        precondition(unknown5 == 5.37890625)
+
+        let unknown6 = bytes.getUInt32()
+        precondition(unknown6 == 10)
+
+        let unknown7 = bytes.getFloat32()
+        precondition(unknown7 == 7620.0)
+
+        let daysPerYear = bytes.getUInt32()
+        precondition(daysPerYear == 360)
+
+        let yearUnitName = bytes.getString()
+        precondition(yearUnitName == "P.Y.")
+
+        return WorldRegion(
+            handle: handle,
+            number: number,
+            version: version,
+            name: name,
+            cellRowCount: cellRowCount,
+            cellColCount: cellColCount,
+            cellGridSize: cellGridSize,
+            heightsPerCell: heightsPerCell,
+            overlapPerCell: overlapPerCell,
+            unknown1: unknown1,
+            unknown2: unknown2,
+            unknown3: unknown3,
+            landHeights: landHeights,
+            unknown4: unknown4,
+            unknown5: unknown5,
+            unknown6: unknown6,
+            unknown7: unknown7,
+            daysPerYear: daysPerYear,
+            yearUnitName: yearUnitName
+        )
+    }
 }
