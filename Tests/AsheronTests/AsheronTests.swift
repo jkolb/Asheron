@@ -126,14 +126,21 @@ class AsheronTests: XCTestCase {
     func testRandom() {
         let random = Random(seed: .cellDiagonal)
 
-        let a = random.generate(for: CellPosition(row: 64, col: 64))
-        let b = random.generate(for: CellPosition(row: 64, col: 65))
+        let a = random.generate(for: GridPosition(row: 64, col: 64))
+        let b = random.generate(for: GridPosition(row: 64, col: 65))
 
-        print(random.generate(for: CellPosition(row: 64, col: 64)))
-        print(random.generate(for: CellPosition(row: 64, col: 65)))
+        print(random.generate(for: GridPosition(row: 64, col: 64)))
+        print(random.generate(for: GridPosition(row: 64, col: 65)))
 
         XCTAssertEqualWithAccuracy(a, 0.852051935124223, accuracy: 0.000000000000001)
         XCTAssertEqualWithAccuracy(b, 0.472334243932817, accuracy: 0.000000000000001)
+    }
+
+    func testGridPosition() {
+        let a = GridPosition(cellPosition: CellPosition(row: 64, col: 64), rowOffset: 1, colOffset: 1)
+        let b = GridPosition(row: 65, col: 65)
+
+        XCTAssertEqual(a, b)
     }
 
     static var allTests : [(String, (AsheronTests) -> () throws -> Void)] {

@@ -22,27 +22,32 @@
  SOFTWARE.
  */
 
-public struct Random {
-    public enum Seed : UInt32 {
-        case cellDiagonal = 0x00000003
+public struct GridPosition : Equatable, Hashable, CustomStringConvertible {
+    public let row: UInt32
+    public let col: UInt32
+    
+    public init(row: UInt32, col: UInt32) {
+        self.row = row
+        self.col = col
     }
 
-    private let seed: Seed
-
-    public init(seed: Seed) {
-        self.seed = seed
+    public init(row: Int, col: Int) {
+        self.init(row: UInt32(row), col: UInt32(col))
+    }
+    
+    public init(cellPosition: CellPosition, rowOffset: Int, colOffset: Int) {
+        self.init(row: Int(cellPosition.row) + rowOffset, col: Int(cellPosition.col) + colOffset)
     }
 
-    public func generate(for position: GridPosition) -> Double {
-        let magic1: UInt32 = 0x6C1AC587
-        let magic2: UInt32 = 0x421BE3BD
-        let magic3: UInt32 = 0x5111BFEF
-        let magic4: UInt32 = 0x70892FB7
-        let row = position.row
-        let col = position.col
-        let numerator = Double(magic1 &* col &- magic2 &* row &- seed.rawValue &* (magic3 &* col &* row &+ magic4))
-        let denominator = Double(UInt32.max)
+    public var hashValue: Int {
+        return row.hashValue ^ col.hashValue
+    }
+    
+    public var description: String {
+        return "(\(row), \(col))"
+    }
 
-        return numerator / denominator
+    public static func ==(a: GridPosition, b: GridPosition) -> Bool {
+        return a.row == b.row && a.col == b.col
     }
 }
