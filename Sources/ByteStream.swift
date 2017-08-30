@@ -278,6 +278,12 @@ public class ByteStream : IteratorProtocol {
         return String(cString: nulTerminatedUTF8)
     }
 
+    public func getBool() -> Bool {
+        let value = getUInt32()
+        precondition(value == 0 || value == 1)
+        return value == 1
+    }
+
     public func putUInt8(_ array: [UInt8]) {
         array.withUnsafeBytes { (pointer) -> Void in
             bytes.copyBytes(from: pointer.baseAddress!, count: array.count)

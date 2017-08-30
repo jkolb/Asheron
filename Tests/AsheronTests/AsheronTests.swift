@@ -143,9 +143,21 @@ class AsheronTests: XCTestCase {
         XCTAssertEqual(a, b)
     }
 
+    func testWorldRegion() {
+        let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
+        let portalFile = PortalFile(indexFile: indexFile)
+        let worldRegionHandle = WorldRegionHandle(index: 0)
+        let worldRegion = try! portalFile.fetchWorldRegion(handle: worldRegionHandle)
+        print(worldRegion.hours)
+        print(worldRegion.weekdays)
+        print(worldRegion.months)
+    }
+
     static var allTests : [(String, (AsheronTests) -> () throws -> Void)] {
         return [
             ("testRandom", testRandom),
+            ("testGridPosition", testGridPosition),
+            ("testWorldRegion", testWorldRegion),
             //("testExample", testExample),
         ]
     }

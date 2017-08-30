@@ -207,6 +207,33 @@ public final class PortalParser {
         let yearUnitName = bytes.getString()
         precondition(yearUnitName == "P.Y.")
 
+        let hoursCount = Int(bytes.getUInt32())
+        var hours = [WorldRegionHour]()
+        hours.reserveCapacity(hoursCount)
+
+        for _ in 0..<hoursCount {
+            let hour = parseWorldRegionHour(bytes: bytes)
+            hours.append(hour)
+        }
+
+        let weekdaysCount = Int(bytes.getUInt32())
+        var weekdays = [String]()
+        weekdays.reserveCapacity(weekdaysCount)
+
+        for _ in 0..<weekdaysCount {
+            let weekday = bytes.getString()
+            weekdays.append(weekday)
+        }
+
+        let monthsCount = Int(bytes.getUInt32())
+        var months = [WorldRegionMonth]()
+        months.reserveCapacity(monthsCount)
+
+        for _ in 0..<monthsCount {
+            let month = parseWorldRegionMonth(bytes: bytes)
+            months.append(month)
+        }
+
         return WorldRegion(
             handle: handle,
             number: number,
@@ -226,7 +253,25 @@ public final class PortalParser {
             unknown6: unknown6,
             unknown7: unknown7,
             daysPerYear: daysPerYear,
-            yearUnitName: yearUnitName
+            yearUnitName: yearUnitName,
+            hours: hours,
+            weekdays: weekdays,
+            months: months
         )
+    }
+
+    private func parseWorldRegionHour(bytes: ByteStream) -> WorldRegionHour {
+        let startTime = bytes.getFloat32()
+        let isNight = bytes.getBool()
+        let name = bytes.getString()
+
+        return WorldRegionHour(startTime: startTime, isNight: isNight, name: name)
+    }
+
+    private func parseWorldRegionMonth(bytes: ByteStream) -> WorldRegionMonth {
+        let startDay = bytes.getUInt32()
+        let name = bytes.getString()
+
+        return WorldRegionMonth(startDay: Int(startDay), name: name)
     }
 }

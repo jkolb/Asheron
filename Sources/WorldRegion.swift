@@ -43,6 +43,9 @@ public final class WorldRegion : PortalObject {
     public let unknown7: Float // 7620.0
     public let daysPerYear: UInt32 // 360
     public let yearUnitName: String // "P.Y."
+    public let hours: [WorldRegionHour]
+    public let weekdays: [String]
+    public let months: [WorldRegionMonth]
 
     public init(
         handle: WorldRegionHandle,
@@ -63,7 +66,10 @@ public final class WorldRegion : PortalObject {
         unknown6: UInt32,
         unknown7: Float,
         daysPerYear: UInt32,
-        yearUnitName: String
+        yearUnitName: String,
+        hours: [WorldRegionHour],
+        weekdays: [String],
+        months: [WorldRegionMonth]
     )
     {
         self.handle = handle
@@ -85,5 +91,8 @@ public final class WorldRegion : PortalObject {
         self.unknown7 = unknown7
         self.daysPerYear = daysPerYear
         self.yearUnitName = yearUnitName
+        self.hours = hours
+        self.weekdays = weekdays
+        self.months = months
     }
 }
