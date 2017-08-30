@@ -234,6 +234,24 @@ public final class PortalParser {
             months.append(month)
         }
 
+        let unknown8 = bytes.getUInt32()
+        precondition(unknown8 == 543)
+
+        let unknown9 = bytes.getUInt32()
+        precondition(unknown9 == 0xA0000000)
+
+        let unknown10 = bytes.getFloat32()
+        //precondition(unknown10 == 1.825)
+
+        let unknown11 = bytes.getFloat32()
+        precondition(unknown11 == 0.0)
+
+        let unknown12 = bytes.getFloat32()
+        precondition(unknown12 == 2.71875)
+
+        let weathersCount = Int(bytes.getUInt32())
+        precondition(weathersCount == 20)
+
         return WorldRegion(
             handle: handle,
             number: number,
@@ -256,7 +274,12 @@ public final class PortalParser {
             yearUnitName: yearUnitName,
             hours: hours,
             weekdays: weekdays,
-            months: months
+            months: months,
+            unknown8: unknown8,
+            unknown9: unknown9,
+            unknown10: unknown10,
+            unknown11: unknown11,
+            unknown12: unknown12
         )
     }
 

@@ -46,6 +46,12 @@ public final class WorldRegion : PortalObject {
     public let hours: [WorldRegionHour]
     public let weekdays: [String]
     public let months: [WorldRegionMonth]
+    public let unknown8: UInt32 // 543
+    public let unknown9: UInt32 // 0xA0000000
+    public let unknown10: Float // 1.825
+    public let unknown11: Float // 0.0
+    public let unknown12: Float // 2.71875
+    public let weathers: [WorldRegionWeather]
 
     public init(
         handle: WorldRegionHandle,
@@ -69,7 +75,13 @@ public final class WorldRegion : PortalObject {
         yearUnitName: String,
         hours: [WorldRegionHour],
         weekdays: [String],
-        months: [WorldRegionMonth]
+        months: [WorldRegionMonth],
+        unknown8: UInt32,
+        unknown9: UInt32,
+        unknown10: Float,
+        unknown11: Float,
+        unknown12: Float,
+        weathers: [WorldRegionWeather]
     )
     {
         self.handle = handle
@@ -94,5 +106,11 @@ public final class WorldRegion : PortalObject {
         self.hours = hours
         self.weekdays = weekdays
         self.months = months
+        self.unknown8 = unknown8
+        self.unknown9 = unknown9
+        self.unknown10 = unknown10
+        self.unknown11 = unknown11
+        self.unknown12 = unknown12
+        self.weathers = weathers
     }
 }

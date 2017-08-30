@@ -151,6 +151,9 @@ class AsheronTests: XCTestCase {
         print(worldRegion.hours)
         print(worldRegion.weekdays)
         print(worldRegion.months)
+        print(worldRegion.unknown10)
+        print(worldRegion.unknown11)
+        print(worldRegion.unknown12)
     }
 
     static var allTests : [(String, (AsheronTests) -> () throws -> Void)] {
