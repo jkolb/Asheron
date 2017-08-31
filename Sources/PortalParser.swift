@@ -251,6 +251,23 @@ public final class PortalParser {
 
         let weathersCount = Int(bytes.getUInt32())
         precondition(weathersCount == 20)
+        var weathers = [WorldRegionWeather]()
+        weathers.reserveCapacity(weathersCount)
+
+        for _ in 0..<weathersCount {
+            let weather = parseWorldRegionWeather(bytes: bytes)
+            weathers.append(weather)
+        }
+
+        let unknownAsCount = Int(bytes.getUInt32())
+        precondition(unknownAsCount == 0x25)
+        var unknownAs = [WorldRegionUnknownA]()
+        unknownAs.reserveCapacity(unknownAsCount)
+
+        for _ in 0..<unknownAsCount {
+            let unknownA = parseWorldRegionUnknownA(bytes: bytes)
+            unknownAs.append(unknownA)
+        }
 
         return WorldRegion(
             handle: handle,
@@ -279,7 +296,9 @@ public final class PortalParser {
             unknown9: unknown9,
             unknown10: unknown10,
             unknown11: unknown11,
-            unknown12: unknown12
+            unknown12: unknown12,
+            weathers: weathers,
+            unknownAs: unknownAs
         )
     }
 
@@ -296,5 +315,86 @@ public final class PortalParser {
         let name = bytes.getString()
 
         return WorldRegionMonth(startDay: Int(startDay), name: name)
+    }
+
+    private func parseWorldRegionWeather(bytes: ByteStream) -> WorldRegionWeather {
+        let percentage = bytes.getFloat32()
+        let name = bytes.getString()
+        let objectsCount = Int(bytes.getUInt32())
+        var objects = [WorldRegionWeatherObject]()
+        objects.reserveCapacity(objectsCount)
+
+        for _ in 0..<objectsCount {
+            let object = parseWorldRegionWeatherObject(bytes: bytes)
+            objects.append(object)
+        }
+
+        let unknownsCount = Int(bytes.getUInt32())
+        var unknowns = [WorldRegionWeatherUnknown]()
+        unknowns.reserveCapacity(unknownsCount)
+
+        for _ in 0..<unknownsCount {
+            let unknown = parseWorldRegionWeatherUnknown(bytes: bytes)
+            unknowns.append(unknown)
+        }
+
+        return WorldRegionWeather(percentage: percentage, name: name, objects: objects, unknowns: unknowns)
+    }
+
+    private func parseWorldRegionWeatherObject(bytes: ByteStream) -> WorldRegionWeatherObject {
+        let unknown1 = bytes.getFloat32(count: 6)
+        let objectHandle = bytes.getUInt32()
+        let unknownHandle = bytes.getUInt32()
+        let unknown2 = bytes.getUInt32()
+
+        return WorldRegionWeatherObject(unknown1: unknown1, objectHandle: objectHandle, unknownHandle: unknownHandle, unknown2: unknown2)
+    }
+
+    private func parseWorldRegionWeatherUnknown(bytes: ByteStream) -> WorldRegionWeatherUnknown {
+        let unknown1 = bytes.getFloat32(count: 4)
+        let color1 = PixelARGB8888(bits: bytes.getUInt32())
+        let unknown2 = bytes.getFloat32()
+        let color2 = PixelARGB8888(bits: bytes.getUInt32())
+        let unknown3 = bytes.getFloat32(count: 2)
+        let color3 = PixelARGB8888(bits: bytes.getUInt32())
+        let unknown4 = bytes.getUInt32()
+        let unknown2sCount = Int(bytes.getUInt32())
+        var unknowns2 = [WorldRegionWeatherUnknown2]()
+        unknowns2.reserveCapacity(unknown2sCount)
+
+        for _ in 0..<unknown2sCount {
+            let unknown2 = parseWorldRegionWeatherUnknown2(bytes: bytes)
+            unknowns2.append(unknown2)
+        }
+
+        return WorldRegionWeatherUnknown(unknown1: unknown1, color1: color1, unknown2: unknown2, color2: color2, unknown3: unknown3, color3: color3, unknown4: unknown4, unknowns2: unknowns2)
+    }
+
+    private func parseWorldRegionWeatherUnknown2(bytes: ByteStream) -> WorldRegionWeatherUnknown2 {
+        let unknown1 = bytes.getUInt32()
+        let unknown2 = bytes.getFloat32(count: 5)
+
+        return WorldRegionWeatherUnknown2(unknown1: unknown1, unknown2: unknown2)
+    }
+
+    private func parseWorldRegionUnknownA(bytes: ByteStream) -> WorldRegionUnknownA {
+        let unknown1 = bytes.getUInt32()
+        let count = Int(bytes.getUInt32())
+        var unknown2 = [WorldRegionUnknownB]()
+        unknown2.reserveCapacity(count)
+
+        for _ in 0..<count {
+            let unknownB = parseWorldRegionUnknownB(bytes: bytes)
+            unknown2.append(unknownB)
+        }
+
+        return WorldRegionUnknownA(unknown1: unknown1, unknown2: unknown2)
+    }
+
+    private func parseWorldRegionUnknownB(bytes: ByteStream) -> WorldRegionUnknownB {
+        let unknown1 = bytes.getUInt32()
+        let unknown2 = bytes.getFloat32(count: 4)
+
+        return WorldRegionUnknownB(unknown1: unknown1, unknown2: unknown2)
     }
 }

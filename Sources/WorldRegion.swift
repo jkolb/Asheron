@@ -52,6 +52,7 @@ public final class WorldRegion : PortalObject {
     public let unknown11: Float // 0.0
     public let unknown12: Float // 2.71875
     public let weathers: [WorldRegionWeather]
+    public let unknownAs: [WorldRegionUnknownA]
 
     public init(
         handle: WorldRegionHandle,
@@ -81,7 +82,8 @@ public final class WorldRegion : PortalObject {
         unknown10: Float,
         unknown11: Float,
         unknown12: Float,
-        weathers: [WorldRegionWeather]
+        weathers: [WorldRegionWeather],
+        unknownAs: [WorldRegionUnknownA]
     )
     {
         self.handle = handle
@@ -112,5 +114,6 @@ public final class WorldRegion : PortalObject {
         self.unknown11 = unknown11
         self.unknown12 = unknown12
         self.weathers = weathers
+        self.unknownAs = unknownAs
     }
 }
