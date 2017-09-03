@@ -22,10 +22,11 @@
  SOFTWARE.
  */
 
-public enum PortalKind : UInt32 {
-    case colorTable   = 0x04000000
-    case textureList  = 0x05000000
-    case textureData  = 0x06000000
-    case worldScenery = 0x12000000
-    case worldRegion  = 0x13000000
+public final class WorldScenery : PortalObject {
+    public static let kind = PortalKind.worldScenery
+    public let handle: WorldSceneryHandle
+
+    public init(handle: WorldSceneryHandle) {
+        self.handle = handle
+    }
 }

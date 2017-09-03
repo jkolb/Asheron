@@ -269,6 +269,15 @@ public final class PortalParser {
             unknownAs.append(unknownA)
         }
 
+        let sceneryListsCount = Int(bytes.getUInt32())
+        var sceneryLists = [WorldRegionSceneryList]()
+        sceneryLists.reserveCapacity(sceneryListsCount)
+
+        for _ in 0..<sceneryListsCount {
+            let sceneryList = parseWorldRegionSceneryList(bytes: bytes)
+            sceneryLists.append(sceneryList)
+        }
+
         return WorldRegion(
             handle: handle,
             number: number,
@@ -298,7 +307,8 @@ public final class PortalParser {
             unknown11: unknown11,
             unknown12: unknown12,
             weathers: weathers,
-            unknownAs: unknownAs
+            unknownAs: unknownAs,
+            sceneryLists: sceneryLists
         )
     }
 
@@ -396,5 +406,20 @@ public final class PortalParser {
         let unknown2 = bytes.getFloat32(count: 4)
 
         return WorldRegionUnknownB(unknown1: unknown1, unknown2: unknown2)
+    }
+
+    private func parseWorldRegionSceneryList(bytes: ByteStream) -> WorldRegionSceneryList {
+        let index = bytes.getUInt32()
+        let sceneryHandlesCount = Int(bytes.getUInt32())
+        var sceneryHandles = [WorldSceneryHandle]()
+        sceneryHandles.reserveCapacity(sceneryHandlesCount)
+
+        for _ in 0..<sceneryHandlesCount {
+            let rawHandle = bytes.getUInt32()
+            let sceneryHandle = WorldSceneryHandle(rawValue: rawHandle)!
+            sceneryHandles.append(sceneryHandle)
+        }
+
+        return WorldRegionSceneryList(index: index, sceneryHandles: sceneryHandles)
     }
 }
