@@ -60,6 +60,7 @@ public final class WorldRegion : PortalObject {
     public let roadBlendTextures1: [WorldRegionRoadBlendTexture]
     public let roadBlendTextures2: [WorldRegionRoadBlendTexture]
     public let roadBlendTextures3: [WorldRegionRoadBlendTexture]
+    public let biomeTextures: [WorldRegionBiomeTexture]
 
     public init(
         handle: WorldRegionHandle,
@@ -97,7 +98,8 @@ public final class WorldRegion : PortalObject {
         unknown14: UInt32,
         roadBlendTextures1: [WorldRegionRoadBlendTexture],
         roadBlendTextures2: [WorldRegionRoadBlendTexture],
-        roadBlendTextures3: [WorldRegionRoadBlendTexture]
+        roadBlendTextures3: [WorldRegionRoadBlendTexture],
+        biomeTextures: [WorldRegionBiomeTexture]
     )
     {
         self.handle = handle
@@ -136,5 +138,6 @@ public final class WorldRegion : PortalObject {
         self.roadBlendTextures1 = roadBlendTextures1
         self.roadBlendTextures2 = roadBlendTextures2
         self.roadBlendTextures3 = roadBlendTextures3
+        self.biomeTextures = biomeTextures
     }
 }

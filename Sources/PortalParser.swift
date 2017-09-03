@@ -297,6 +297,15 @@ public final class PortalParser {
         let roadBlendTextures2 = parseWorldRegionRoadBlendTextures(bytes: bytes)
         let roadBlendTextures3 = parseWorldRegionRoadBlendTextures(bytes: bytes)
 
+        let biomeTexturesCount = Int(bytes.getUInt32())
+        var biomeTextures = [WorldRegionBiomeTexture]()
+        biomeTextures.reserveCapacity(biomeTexturesCount)
+
+        for _ in 0..<biomeTexturesCount {
+            let biomeTexture = parseWorldRegionBiomeTexture(bytes: bytes)
+            biomeTextures.append(biomeTexture)
+        }
+
         return WorldRegion(
             handle: handle,
             number: number,
@@ -333,7 +342,8 @@ public final class PortalParser {
             unknown14: unknown14,
             roadBlendTextures1: roadBlendTextures1,
             roadBlendTextures2: roadBlendTextures2,
-            roadBlendTextures3: roadBlendTextures3
+            roadBlendTextures3: roadBlendTextures3,
+            biomeTextures: biomeTextures
         )
     }
 
@@ -481,5 +491,21 @@ public final class PortalParser {
         }
 
         return roadBlendTextures
+    }
+
+    private func parseWorldRegionBiomeTexture(bytes: ByteStream) -> WorldRegionBiomeTexture {
+        let index = bytes.getUInt32()
+        let textureListHandle1 = TextureListHandle(rawValue: bytes.getUInt32())!
+        let unknown1 = bytes.getUInt32()
+        let unknown2 = bytes.getUInt32()
+        let unknown3 = bytes.getUInt32()
+        let unknown4 = bytes.getUInt32()
+        let unknown5 = bytes.getUInt32()
+        let unknown6 = bytes.getUInt32()
+        let unknown7 = bytes.getUInt32()
+        let unknown8 = bytes.getUInt32()
+        let textureListHandle2 = TextureListHandle(rawValue: bytes.getUInt32())!
+
+        return WorldRegionBiomeTexture(index: index, textureListHandle1: textureListHandle1, unknown1: unknown1, unknown2: unknown2, unknown3: unknown3, unknown4: unknown4, unknown5: unknown5, unknown6: unknown6, unknown7: unknown7, unknown8: unknown8, textureListHandle2: textureListHandle2)
     }
 }
