@@ -287,6 +287,16 @@ public final class PortalParser {
             biomes.append(biome)
         }
 
+        let unknown13 = bytes.getUInt32()
+        precondition(unknown13 == 0)
+
+        let unknown14 = bytes.getUInt32()
+        precondition(unknown14 == 1024)
+
+        let roadBlendTextures1 = parseWorldRegionRoadBlendTextures(bytes: bytes)
+        let roadBlendTextures2 = parseWorldRegionRoadBlendTextures(bytes: bytes)
+        let roadBlendTextures3 = parseWorldRegionRoadBlendTextures(bytes: bytes)
+
         return WorldRegion(
             handle: handle,
             number: number,
@@ -318,7 +328,12 @@ public final class PortalParser {
             weathers: weathers,
             unknownAs: unknownAs,
             sceneryLists: sceneryLists,
-            biomes: biomes
+            biomes: biomes,
+            unknown13: unknown13,
+            unknown14: unknown14,
+            roadBlendTextures1: roadBlendTextures1,
+            roadBlendTextures2: roadBlendTextures2,
+            roadBlendTextures3: roadBlendTextures3
         )
     }
 
@@ -446,5 +461,25 @@ public final class PortalParser {
         }
 
         return WorldRegionBiome(name: name, color: color, sceneryListIndexes: sceneryListIndexes)
+    }
+
+    private func parseWorldRegionRoadBlendTexture(bytes: ByteStream) -> WorldRegionRoadBlendTexture {
+        let type = WorldRegionRoadBlendTextureType(rawValue: bytes.getUInt32())!
+        let textureListHandle = TextureListHandle(rawValue: bytes.getUInt32())!
+
+        return WorldRegionRoadBlendTexture(type: type, textureListHandle: textureListHandle)
+    }
+
+    private func parseWorldRegionRoadBlendTextures(bytes: ByteStream) -> [WorldRegionRoadBlendTexture] {
+        let count = Int(bytes.getUInt32())
+        var roadBlendTextures = [WorldRegionRoadBlendTexture]()
+        roadBlendTextures.reserveCapacity(count)
+
+        for _ in 0..<count {
+            let roadBlendTexture = parseWorldRegionRoadBlendTexture(bytes: bytes)
+            roadBlendTextures.append(roadBlendTexture)
+        }
+
+        return roadBlendTextures
     }
 }
