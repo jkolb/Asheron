@@ -146,6 +146,11 @@ class AsheronTests: XCTestCase {
         print(worldRegion.roadBlendTextures2)
         print(worldRegion.roadBlendTextures3)
         print(worldRegion.biomeTextures)
+        print(worldRegion.uiMapTextureDataHandle)
+        print(worldRegion.rawMapTextureDataHandle)
+        print(worldRegion.unknown16)
+        print(hex(worldRegion.unknown17))
+        print(hex(worldRegion.unknown18))
     }
 
     static var allTests : [(String, (AsheronTests) -> () throws -> Void)] {

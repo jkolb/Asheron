@@ -61,6 +61,12 @@ public final class WorldRegion : PortalObject {
     public let roadBlendTextures2: [WorldRegionRoadBlendTexture]
     public let roadBlendTextures3: [WorldRegionRoadBlendTexture]
     public let biomeTextures: [WorldRegionBiomeTexture]
+    public let unknown15: UInt32 // 1
+    public let uiMapTextureDataHandle: TextureDataHandle
+    public let rawMapTextureDataHandle: TextureDataHandle
+    public let unknown16: UInt32
+    public let unknown17: UInt32
+    public let unknown18: UInt32
 
     public init(
         handle: WorldRegionHandle,
@@ -99,7 +105,13 @@ public final class WorldRegion : PortalObject {
         roadBlendTextures1: [WorldRegionRoadBlendTexture],
         roadBlendTextures2: [WorldRegionRoadBlendTexture],
         roadBlendTextures3: [WorldRegionRoadBlendTexture],
-        biomeTextures: [WorldRegionBiomeTexture]
+        biomeTextures: [WorldRegionBiomeTexture],
+        unknown15: UInt32,
+        uiMapTextureDataHandle: TextureDataHandle,
+        rawMapTextureDataHandle: TextureDataHandle,
+        unknown16: UInt32,
+        unknown17: UInt32,
+        unknown18: UInt32
     )
     {
         self.handle = handle
@@ -139,5 +151,11 @@ public final class WorldRegion : PortalObject {
         self.roadBlendTextures2 = roadBlendTextures2
         self.roadBlendTextures3 = roadBlendTextures3
         self.biomeTextures = biomeTextures
+        self.unknown15 = unknown15
+        self.uiMapTextureDataHandle = uiMapTextureDataHandle
+        self.rawMapTextureDataHandle = rawMapTextureDataHandle
+        self.unknown16 = unknown16
+        self.unknown17 = unknown17
+        self.unknown18 = unknown18
     }
 }

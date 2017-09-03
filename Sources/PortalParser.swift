@@ -306,6 +306,18 @@ public final class PortalParser {
             biomeTextures.append(biomeTexture)
         }
 
+        let unknown15 = bytes.getUInt32()
+        precondition(unknown15 == 1)
+
+        let uiMapTextureDataHandle = TextureDataHandle(rawValue: bytes.getUInt32())!
+        let rawMapTextureDataHandle = TextureDataHandle(rawValue: bytes.getUInt32())!
+
+        let unknown16 = bytes.getUInt32()
+        let unknown17 = bytes.getUInt32()
+        let unknown18 = bytes.getUInt32()
+
+        precondition(!bytes.hasRemaining)
+
         return WorldRegion(
             handle: handle,
             number: number,
@@ -343,7 +355,13 @@ public final class PortalParser {
             roadBlendTextures1: roadBlendTextures1,
             roadBlendTextures2: roadBlendTextures2,
             roadBlendTextures3: roadBlendTextures3,
-            biomeTextures: biomeTextures
+            biomeTextures: biomeTextures,
+            unknown15: unknown15,
+            uiMapTextureDataHandle: uiMapTextureDataHandle,
+            rawMapTextureDataHandle: rawMapTextureDataHandle,
+            unknown16: unknown16,
+            unknown17: unknown17,
+            unknown18: unknown18
         )
     }
 
