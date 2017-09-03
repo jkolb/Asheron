@@ -80,14 +80,14 @@ class AsheronTests: XCTestCase {
         let cellFile = CellFile(indexFile: cellIndexFile)
 
         var blocks = [[LandBlock]]()
-        let maxRow = 17
-        let maxCol = 17
+        let maxX = 17
+        let maxY = 17
         
-        for row in 0..<maxRow {
+        for y in 0..<maxY {
             var array = [LandBlock]()
             
-            for col in 0..<maxCol {
-                array.append(try! cellFile.fetchLandBlock(handle: LandBlockHandle(row: row, col: col)))
+            for x in 0..<maxX {
+                array.append(try! cellFile.fetchLandBlock(handle: LandBlockHandle(x: x, y: y)))
             }
             
             blocks.append(array)
@@ -96,13 +96,13 @@ class AsheronTests: XCTestCase {
         var string = ""
         let size = LandBlock.size
         
-        for blockCol in 0..<maxCol {
-            for col in 0..<size {
-                for blockRow in 0..<maxRow {
-                    let block = blocks[blockRow][blockCol]
+        for blockY in 0..<maxY {
+            for y in 0..<size {
+                for blockX in 0..<maxX {
+                    let block = blocks[blockX][blockY]
 
-                    for row in 0..<size {
-                        string += hex(block.getHeightIndex(row: row, col: col))
+                    for x in 0..<size {
+                        string += hex(block.getHeightIndex(x: x, y: y))
                     }
                 }
                 
@@ -112,9 +112,9 @@ class AsheronTests: XCTestCase {
         
         print(string)
         
-        for row in 0..<Int(UInt8.max) {
-            for col in 0..<Int(UInt8.max) {
-                let block = try! cellFile.fetchLandBlock(handle: LandBlockHandle(row: row, col: col))
+        for y in 0..<Int(UInt8.max) {
+            for x in 0..<Int(UInt8.max) {
+                let block = try! cellFile.fetchLandBlock(handle: LandBlockHandle(x: x, y: y))
                 
                 if block.hasStructures {
                     print(block)
@@ -122,25 +122,12 @@ class AsheronTests: XCTestCase {
             }
         }
     }
-    
-    func testRandom() {
-        let random = Random(seed: .cellDiagonal)
-
-        let a = random.generate(for: GridPosition(row: 64, col: 64))
-        let b = random.generate(for: GridPosition(row: 64, col: 65))
-
-        print(random.generate(for: GridPosition(row: 64, col: 64)))
-        print(random.generate(for: GridPosition(row: 64, col: 65)))
-
-        XCTAssertEqualWithAccuracy(a, 0.852051935124223, accuracy: 0.000000000000001)
-        XCTAssertEqualWithAccuracy(b, 0.472334243932817, accuracy: 0.000000000000001)
-    }
 
     func testGridPosition() {
-        let a = GridPosition(cellPosition: CellPosition(row: 64, col: 64), rowOffset: 1, colOffset: 1)
-        let b = GridPosition(row: 65, col: 65)
+        let a = GridPosition(position: CellPosition(x: 64, y: 64), x: 1, y: 1)
 
-        XCTAssertEqual(a, b)
+        XCTAssertEqual(a.x, 513)
+        XCTAssertEqual(a.y, 513)
     }
 
     func testWorldRegion() {
@@ -158,7 +145,6 @@ class AsheronTests: XCTestCase {
 
     static var allTests : [(String, (AsheronTests) -> () throws -> Void)] {
         return [
-            ("testRandom", testRandom),
             ("testGridPosition", testGridPosition),
             ("testWorldRegion", testWorldRegion),
             //("testExample", testExample),

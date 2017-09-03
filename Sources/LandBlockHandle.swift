@@ -32,7 +32,7 @@ public struct LandBlockHandle : CellHandle {
     public init?(rawValue: UInt32) {
         let position = CellPosition(rawValue: rawValue)!
 
-        if position.row == 0xFF || position.col == 0xFF {
+        if position.x == 0xFF || position.y == 0xFF {
             return nil
         }
 
@@ -45,13 +45,13 @@ public struct LandBlockHandle : CellHandle {
         self.init(position: position)
     }
     
-    public init(row: Int, col: Int) {
-        self.init(position: CellPosition(row: row, col: col))
+    public init(x: Int, y: Int) {
+        self.init(position: CellPosition(x: x, y: y))
     }
 
     public init(position: CellPosition) {
-        precondition(position.row != 0xFF)
-        precondition(position.col != 0xFF)
+        precondition(position.x != 0xFF)
+        precondition(position.y != 0xFF)
         self.position = position
     }
 }

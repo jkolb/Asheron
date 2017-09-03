@@ -23,27 +23,27 @@
  */
 
 public struct CellPosition : Equatable, Hashable, CustomStringConvertible, RawRepresentable {
-    public let row: UInt8
-    public let col: UInt8
+    public let x: UInt8
+    public let y: UInt8
     
     public init?(rawValue: UInt32) {
-        let row = UInt8((rawValue & 0xFF000000) >> 24)
-        let col = UInt8((rawValue & 0x00FF0000) >> 16)
+        let x = UInt8((rawValue & 0xFF000000) >> 24)
+        let y = UInt8((rawValue & 0x00FF0000) >> 16)
         
-        self.init(row: row, col: col)
+        self.init(x: x, y: y)
     }
     
-    public init(row: UInt8, col: UInt8) {
-        self.row = row
-        self.col = col
+    public init(x: UInt8, y: UInt8) {
+        self.x = x
+        self.y = y
     }
 
-    public init(row: Int, col: Int) {
-        self.init(row: UInt8(row), col: UInt8(col))
+    public init(x: Int, y: Int) {
+        self.init(x: UInt8(x), y: UInt8(y))
     }
 
     public var rawValue: UInt32 {
-        return UInt32(row) << 24 | UInt32(col) << 16
+        return UInt32(x) << 24 | UInt32(y) << 16
     }
     
     public var hashValue: Int {
@@ -51,6 +51,6 @@ public struct CellPosition : Equatable, Hashable, CustomStringConvertible, RawRe
     }
     
     public var description: String {
-        return "(\(row), \(col))"
+        return "(\(x), \(y))"
     }
 }

@@ -23,31 +23,25 @@
  */
 
 public struct GridPosition : Equatable, Hashable, CustomStringConvertible {
-    public let row: UInt32
-    public let col: UInt32
+    public let x: UInt32
+    public let y: UInt32
     
-    public init(row: UInt32, col: UInt32) {
-        self.row = row
-        self.col = col
-    }
-
-    public init(row: Int, col: Int) {
-        self.init(row: UInt32(row), col: UInt32(col))
-    }
-    
-    public init(cellPosition: CellPosition, rowOffset: Int, colOffset: Int) {
-        self.init(row: Int(cellPosition.row) + rowOffset, col: Int(cellPosition.col) + colOffset)
+    public init(position: CellPosition, x: Int, y: Int) {
+        precondition(x >= 0 && x < 8)
+        precondition(y >= 0 && y < 8)
+        self.x = UInt32(Int(position.x) * 8 + x)
+        self.y = UInt32(Int(position.y) * 8 + y)
     }
 
     public var hashValue: Int {
-        return row.hashValue ^ col.hashValue
+        return x.hashValue ^ y.hashValue
     }
     
     public var description: String {
-        return "(\(row), \(col))"
+        return "(\(x), \(y))"
     }
 
     public static func ==(a: GridPosition, b: GridPosition) -> Bool {
-        return a.row == b.row && a.col == b.col
+        return a.x == b.x && a.y == b.y
     }
 }

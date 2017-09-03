@@ -68,11 +68,23 @@ public final class LandBlock : CustomStringConvertible {
         return "\(handle)"
     }
     
-    public func getTopography(row: Int, col: Int) ->Topography {
-        return topography[col + (row * type(of: self).size)]
+    public func getTopography(x: Int, y: Int) ->Topography {
+        return topography[x + (y * type(of: self).size)]
     }
     
-    public func getHeightIndex(row: Int, col: Int) -> UInt8 {
-        return heightIndex[col + (row * type(of: self).size)]
+    public func getHeightIndex(x: Int, y: Int) -> UInt8 {
+        return heightIndex[x + (y * type(of: self).size)]
+    }
+
+    public func isSplitNESW(x: Int, y: Int) -> Bool {
+        let grid = GridPosition(position: position, x: x, y: y)
+        // https://github.com/deregtd/AC2D/blob/master/Landblocks.cpp
+        // This makes the square shape near Singularity Caul have uniform tessellation
+        let magic1 = UInt32(0x0CCAC033)
+        let magic2 = UInt32(0x421BE3BD)
+        let magic3 = UInt32(0x6C1AC587)
+        let magic4 = UInt32(0x519B8F25)
+        let result = ((grid.x &* grid.y) &* magic1) &- (grid.x &* magic2) &+ (grid.y &* magic3) &- magic4
+        return ((result &* UInt32(0x80000000)) != UInt32(0))
     }
 }
