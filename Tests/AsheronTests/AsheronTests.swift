@@ -141,6 +141,7 @@ class AsheronTests: XCTestCase {
         print(worldRegion.unknown10)
         print(worldRegion.unknown11)
         print(worldRegion.unknown12)
+        print(worldRegion.biomes)
     }
 
     static var allTests : [(String, (AsheronTests) -> () throws -> Void)] {

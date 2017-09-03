@@ -278,6 +278,15 @@ public final class PortalParser {
             sceneryLists.append(sceneryList)
         }
 
+        let biomesCount = Int(bytes.getUInt32())
+        var biomes = [WorldRegionBiome]()
+        biomes.reserveCapacity(biomesCount)
+
+        for _ in 0..<biomesCount {
+            let biome = parseWorldRegionBiome(bytes: bytes)
+            biomes.append(biome)
+        }
+
         return WorldRegion(
             handle: handle,
             number: number,
@@ -308,7 +317,8 @@ public final class PortalParser {
             unknown12: unknown12,
             weathers: weathers,
             unknownAs: unknownAs,
-            sceneryLists: sceneryLists
+            sceneryLists: sceneryLists,
+            biomes: biomes
         )
     }
 
@@ -421,5 +431,20 @@ public final class PortalParser {
         }
 
         return WorldRegionSceneryList(index: index, sceneryHandles: sceneryHandles)
+    }
+
+    private func parseWorldRegionBiome(bytes: ByteStream) -> WorldRegionBiome {
+        let name = bytes.getString()
+        let color = PixelARGB8888(bits: bytes.getUInt32())
+        let sceneryListIndexesCount = Int(bytes.getUInt32())
+        var sceneryListIndexes = [Int]()
+        sceneryListIndexes.reserveCapacity(sceneryListIndexesCount)
+
+        for _ in 0..<sceneryListIndexesCount {
+            let sceneryListIndex = Int(bytes.getUInt32())
+            sceneryListIndexes.append(sceneryListIndex)
+        }
+
+        return WorldRegionBiome(name: name, color: color, sceneryListIndexes: sceneryListIndexes)
     }
 }

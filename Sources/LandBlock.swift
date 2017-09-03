@@ -30,11 +30,11 @@ public final class LandBlock : CustomStringConvertible {
             self.bits = bits
         }
         
-        public var sceneryIndex: UInt8 {
+        public var sceneryListIndex: UInt8 {
             return UInt8((self.bits & 0b11111_0000_00000_00) >> 11)
         }
         
-        public var terrainIndex: UInt8 {
+        public var biomeIndex: UInt8 {
             return UInt8((self.bits & 0b00000_0000_11111_00) >> 2)
         }
         
