@@ -69,11 +69,11 @@ public final class LandBlock : CustomStringConvertible {
     }
     
     public func getTopography(x: Int, y: Int) ->Topography {
-        return topography[x + (y * type(of: self).size)]
+        return topography[y + (x * type(of: self).size)]
     }
     
     public func getHeightIndex(x: Int, y: Int) -> UInt8 {
-        return heightIndex[x + (y * type(of: self).size)]
+        return heightIndex[y + (x * type(of: self).size)]
     }
 
     public func isSplitNESW(x: Int, y: Int) -> Bool {
