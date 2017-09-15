@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-public enum TextureQuality {
-    case high
-    case low
+public enum TextureLocation {
+    case portal
+    case highres
 }

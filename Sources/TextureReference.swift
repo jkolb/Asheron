@@ -22,12 +22,16 @@
  SOFTWARE.
  */
 
-public struct TextureReference {
+public struct TextureReference : CustomStringConvertible {
     public let handle: TextureDataHandle
-    public let quality: TextureQuality
+    public let location: TextureLocation
     
-    public init(handle: TextureDataHandle, quality: TextureQuality) {
+    public init(handle: TextureDataHandle, location: TextureLocation) {
         self.handle = handle
-        self.quality = quality
+        self.location = location
+    }
+
+    public var description: String {
+        return "\(handle):\(location)"
     }
 }

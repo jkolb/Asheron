@@ -67,7 +67,7 @@ class AsheronTests: XCTestCase {
 
         let highresFile = HighresFile(indexFile: try! IndexFile.openForReading(at: "Data/client_highres.dat"))
         let textureLoader = TextureLoader(portalFile: portalFile, highresFile: highresFile)
-        textureLoader.quality = .high
+        textureLoader.location = .highres
         print(handles.count)
         
         for handle in handles {
@@ -130,6 +130,30 @@ class AsheronTests: XCTestCase {
         XCTAssertEqual(a.y, 513)
     }
 
+    func testTextureLocation() {
+        let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
+        let portalFile = PortalFile(indexFile: indexFile)
+        let highresFile = HighresFile(indexFile: try! IndexFile.openForReading(at: "Data/client_highres.dat"))
+        let textureLoader = TextureLoader(portalFile: portalFile, highresFile: highresFile)
+        let locations: [TextureLocation] = [.portal, .highres]
+        let handles = try! indexFile.handles(matching: { TextureListHandle(rawValue: $0) != nil })
+
+        for location in locations {
+            print()
+            
+            textureLoader.location = location
+            print(location)
+
+            for handle in handles {
+                let listHandle = TextureListHandle(rawValue: handle)!
+                let textureData = try! textureLoader.fetchTextureData(handle: listHandle)
+                print(textureData)
+            }
+
+            print()
+        }
+    }
+
     func testWorldRegion() {
         let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
         let portalFile = PortalFile(indexFile: indexFile)
@@ -151,12 +175,45 @@ class AsheronTests: XCTestCase {
         print(worldRegion.unknown16)
         print(hex(worldRegion.unknown17))
         print(hex(worldRegion.unknown18))
+
+        print("Biome Textures:")
+        for biomeTexture in worldRegion.biomeTextures {
+            let textureList1 = try! portalFile.fetchTextureList(handle: biomeTexture.textureListHandle1)
+            print("1: \(textureList1): \(textureList1.portalReference)")
+            let textureList2 = try! portalFile.fetchTextureList(handle: biomeTexture.textureListHandle2)
+            print("2: \(textureList2): \(textureList2.portalReference)")
+        }
+
+        print()
+        print("Road Blend Textures 1")
+        for roadBlendTexture in worldRegion.roadBlendTextures1 {
+            print("\(roadBlendTexture)")
+        }
+
+        print()
+        print("Road Blend Textures 2")
+        for roadBlendTexture in worldRegion.roadBlendTextures2 {
+            print("\(roadBlendTexture)")
+        }
+
+        print()
+        print("Road Blend Textures 3")
+        for roadBlendTexture in worldRegion.roadBlendTextures3 {
+            print("\(roadBlendTexture)")
+        }
+
+        print()
+        print("??")
+        for unknownA in worldRegion.unknownAs {
+            print("\(hex(unknownA.unknown1))")
+        }
     }
 
     static var allTests : [(String, (AsheronTests) -> () throws -> Void)] {
         return [
             ("testGridPosition", testGridPosition),
             ("testWorldRegion", testWorldRegion),
+            ("testTextureLocation", testTextureLocation),
             //("testExample", testExample),
         ]
     }

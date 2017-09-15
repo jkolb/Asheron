@@ -49,26 +49,26 @@ public final class PortalParser {
         bytes.skip(5)
         let count = bytes.getUInt32()
         precondition(count == 1 || count == 2)
-        let lowHandle: TextureDataHandle
-        let highHandle: TextureDataHandle?
+        let portalHandle: TextureDataHandle
+        let highresHandle: TextureDataHandle?
         
         if count == 1 {
-            let lowRawHandle = bytes.getUInt32()
+            let portalRawHandle = bytes.getUInt32()
             
-            highHandle = nil
-            lowHandle = TextureDataHandle(rawValue: lowRawHandle)!
+            highresHandle = nil
+            portalHandle = TextureDataHandle(rawValue: portalRawHandle)!
         }
         else {
-            let highRawHandle = bytes.getUInt32()
-            let lowRawHandle = bytes.getUInt32()
+            let highresRawHandle = bytes.getUInt32()
+            let portalRawHandle = bytes.getUInt32()
             
-            highHandle = TextureDataHandle(rawValue: highRawHandle)!
-            lowHandle = TextureDataHandle(rawValue: lowRawHandle)!
+            highresHandle = TextureDataHandle(rawValue: highresRawHandle)!
+            portalHandle = TextureDataHandle(rawValue: portalRawHandle)!
         }
         
         precondition(!bytes.hasRemaining)
         
-        return TextureList(handle: handle, lowHandle: lowHandle, highHandle: highHandle)
+        return TextureList(handle: handle, portalHandle: portalHandle, highresHandle: highresHandle)
     }
 
     public func parseTextureData(handle: TextureDataHandle, buffer: ByteBuffer) -> TextureData {

@@ -25,33 +25,33 @@
 public final class TextureList : PortalObject {
     public static let kind = PortalKind.textureList
     public let handle: TextureListHandle
-    private let lowReference: TextureReference
-    private let highReference: TextureReference?
+    public let portalReference: TextureReference
+    public let highresReference: TextureReference?
     
-    public init(handle: TextureListHandle, lowHandle: TextureDataHandle, highHandle: TextureDataHandle?) {
+    public init(handle: TextureListHandle, portalHandle: TextureDataHandle, highresHandle: TextureDataHandle?) {
         self.handle = handle
-        self.lowReference = TextureReference(handle: lowHandle, quality: .low)
+        self.portalReference = TextureReference(handle: portalHandle, location: .portal)
         
-        if let highHandle = highHandle {
-            if lowHandle == highHandle {
-                self.highReference = lowReference
+        if let highresHandle = highresHandle {
+            if portalHandle == highresHandle {
+                self.highresReference = portalReference
             }
             else {
-                self.highReference = TextureReference(handle: highHandle, quality: .high)
+                self.highresReference = TextureReference(handle: highresHandle, location: .highres)
             }
         }
         else {
-            self.highReference = nil
+            self.highresReference = nil
         }
     }
     
-    public subscript (quality: TextureQuality) -> TextureReference {
-        switch quality {
-        case .high:
-            return highReference ?? lowReference
+    public subscript (location: TextureLocation) -> TextureReference {
+        switch location {
+        case .portal:
+            return portalReference
             
-        case .low:
-            return lowReference
+        case .highres:
+            return highresReference ?? portalReference
         }
     }
 }

@@ -25,24 +25,24 @@
 public final class TextureLoader {
     private let portalFile: PortalFile
     private let highresFile: HighresFile
-    public var quality: TextureQuality
+    public var location: TextureLocation
     
     public init(portalFile: PortalFile, highresFile: HighresFile) {
-        self.quality = .high
+        self.location = .highres
         self.portalFile = portalFile
         self.highresFile = highresFile
     }
 
     public func fetchTextureData(handle: TextureListHandle) throws -> TextureData {
         let textureList = try portalFile.fetchTextureList(handle: handle)
-        let reference = textureList[quality]
+        let reference = textureList[location]
         
-        switch reference.quality {
-        case .high:
-            return try highresFile.fetchTextureData(handle: reference.handle)
-            
-        case .low:
+        switch reference.location {
+        case .portal:
             return try portalFile.fetchTextureData(handle: reference.handle)
+            
+        case .highres:
+            return try highresFile.fetchTextureData(handle: reference.handle)            
         }
     }
 }
