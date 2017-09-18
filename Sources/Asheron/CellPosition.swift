@@ -22,22 +22,35 @@
  SOFTWARE.
  */
 
-public func binary<T : UnsignedInteger>(_ value: T) -> String {
-    var string = String(value, radix: 2, uppercase: true)
+public struct CellPosition : Hashable, CustomStringConvertible, RawRepresentable {
+    public let x: UInt8
+    public let y: UInt8
     
-    while string.characters.count < MemoryLayout.size(ofValue: value) * 2 * 4 {
-        string = "0\(string)"
+    public init?(rawValue: UInt32) {
+        let x = UInt8((rawValue & 0xFF000000) >> 24)
+        let y = UInt8((rawValue & 0x00FF0000) >> 16)
+        
+        self.init(x: x, y: y)
     }
     
-    return string
-}
+    public init(x: UInt8, y: UInt8) {
+        self.x = x
+        self.y = y
+    }
 
-public func hex<T : UnsignedInteger>(_ value: T) -> String {
-    var string = String(value, radix: 16, uppercase: true)
-    
-    while string.characters.count < MemoryLayout.size(ofValue: value) * 2 {
-        string = "0\(string)"
+    public init(x: Int, y: Int) {
+        self.init(x: UInt8(x), y: UInt8(y))
+    }
+
+    public var rawValue: UInt32 {
+        return UInt32(x) << 24 | UInt32(y) << 16
     }
     
-    return string
+    public var hashValue: Int {
+        return rawValue.hashValue
+    }
+    
+    public var description: String {
+        return "(\(x), \(y))"
+    }
 }

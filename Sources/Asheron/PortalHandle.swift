@@ -22,26 +22,40 @@
  SOFTWARE.
  */
 
-public struct GridPosition : Equatable, Hashable, CustomStringConvertible {
-    public let x: UInt32
-    public let y: UInt32
+public struct PortalHandle<ObjectType : PortalObject> : Hashable, CustomStringConvertible, RawRepresentable {
+    public let index: UInt16
     
-    public init(position: CellPosition, x: Int, y: Int) {
-        precondition(x >= 0 && x < 8)
-        precondition(y >= 0 && y < 8)
-        self.x = UInt32(Int(position.x) * 8 + x)
-        self.y = UInt32(Int(position.y) * 8 + y)
+    public init?(rawValue: UInt32) {
+        guard let kind = PortalKind(rawValue: rawValue & 0xFFFF0000) else {
+            return nil
+        }
+        
+        if kind != ObjectType.kind {
+            return nil
+        }
+        
+        let index = UInt16(rawValue & 0x0000FFFF)
+        
+        self.init(index: index)
     }
 
+    public init(index: UInt16) {
+        self.index = index
+    }
+
+    public var kind: PortalKind {
+        return ObjectType.kind
+    }
+    
+    public var rawValue: UInt32 {
+        return kind.rawValue | UInt32(index)
+    }
+    
     public var hashValue: Int {
-        return x.hashValue ^ y.hashValue
+        return rawValue.hashValue
     }
     
     public var description: String {
-        return "(\(x), \(y))"
-    }
-
-    public static func ==(a: GridPosition, b: GridPosition) -> Bool {
-        return a.x == b.x && a.y == b.y
+        return "\(kind)(\(hex(rawValue)))"
     }
 }

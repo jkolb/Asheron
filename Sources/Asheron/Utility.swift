@@ -22,21 +22,22 @@
  SOFTWARE.
  */
 
-public protocol CellHandle : Equatable, Hashable, CustomStringConvertible, RawRepresentable {
-    var position: CellPosition { get }
-    var index: UInt16 { get }
+public func binary<T : FixedWidthInteger>(_ value: T) -> String {
+    var string = String(value, radix: 2, uppercase: true)
+    
+    while string.count < MemoryLayout.size(ofValue: value) * 2 * 4 {
+        string = "0\(string)"
+    }
+    
+    return string
 }
 
-extension CellHandle {
-    public var rawValue: UInt32 {
-        return position.rawValue | UInt32(index)
+public func hex<T : FixedWidthInteger>(_ value: T) -> String {
+    var string = String(value, radix: 16, uppercase: true)
+    
+    while string.count < MemoryLayout.size(ofValue: value) * 2 {
+        string = "0\(string)"
     }
     
-    public var hashValue: Int {
-        return rawValue.hashValue
-    }
-    
-    public var description: String {
-        return "\(position) \(hex(index))"
-    }
+    return string
 }

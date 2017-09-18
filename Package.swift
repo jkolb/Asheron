@@ -1,3 +1,5 @@
+// swift-tools-version:4.0
+
 /*
  The MIT License (MIT)
  
@@ -25,5 +27,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "Asheron"
+    name: "Asheron",
+    products: [
+        .library(name: "Asheron", targets: ["Asheron"]),
+    ],
+    dependencies: [
+    ],
+    targets: [
+        .target(name: "Asheron", dependencies: []),
+        .testTarget(name: "AsheronTests", dependencies: ["Asheron"]),
+    ]
 )

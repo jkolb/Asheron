@@ -47,28 +47,24 @@ public struct DXT5Block : DXTBlock {
         let alpha1 = alphaBlock.alpha1()
         
         if alpha0 > alpha1 {
-            self.alpha = [
-                alpha0,
-                alpha1,
-                UInt8((6 * Int(alpha0) + 1 * Int(alpha1) + 3) / 7),
-                UInt8((5 * Int(alpha0) + 2 * Int(alpha1) + 3) / 7),
-                UInt8((4 * Int(alpha0) + 3 * Int(alpha1) + 3) / 7),
-                UInt8((3 * Int(alpha0) + 4 * Int(alpha1) + 3) / 7),
-                UInt8((2 * Int(alpha0) + 5 * Int(alpha1) + 3) / 7),
-                UInt8((1 * Int(alpha0) + 6 * Int(alpha1) + 3) / 7),
-            ]
+            let alpha2 = UInt8((6 * Int(alpha0) + 1 * Int(alpha1) + 3) / 7)
+            let alpha3 = UInt8((5 * Int(alpha0) + 2 * Int(alpha1) + 3) / 7)
+            let alpha4 = UInt8((4 * Int(alpha0) + 3 * Int(alpha1) + 3) / 7)
+            let alpha5 = UInt8((3 * Int(alpha0) + 4 * Int(alpha1) + 3) / 7)
+            let alpha6 = UInt8((2 * Int(alpha0) + 5 * Int(alpha1) + 3) / 7)
+            let alpha7 = UInt8((1 * Int(alpha0) + 6 * Int(alpha1) + 3) / 7)
+
+            self.alpha = [alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6, alpha7]
         }
         else {
-            self.alpha = [
-                alpha0,
-                alpha1,
-                UInt8((4 * Int(alpha0) + 1 * Int(alpha1) + 2) / 5),
-                UInt8((3 * Int(alpha0) + 2 * Int(alpha1) + 2) / 5),
-                UInt8((2 * Int(alpha0) + 3 * Int(alpha1) + 2) / 5),
-                UInt8((1 * Int(alpha0) + 4 * Int(alpha1) + 2) / 5),
-                0,
-                255,
-            ]
+            let alpha2 = UInt8((4 * Int(alpha0) + 1 * Int(alpha1) + 2) / 5)
+            let alpha3 = UInt8((3 * Int(alpha0) + 2 * Int(alpha1) + 2) / 5)
+            let alpha4 = UInt8((2 * Int(alpha0) + 3 * Int(alpha1) + 2) / 5)
+            let alpha5 = UInt8((1 * Int(alpha0) + 4 * Int(alpha1) + 2) / 5)
+            let alpha6 = UInt8(0)
+            let alpha7 = UInt8(255)
+
+            self.alpha = [alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6, alpha7]
         }
 
         let color0 = PixelRGB565(bits: colorBlock.color0())

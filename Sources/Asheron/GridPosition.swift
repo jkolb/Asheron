@@ -22,35 +22,26 @@
  SOFTWARE.
  */
 
-public struct CellPosition : Equatable, Hashable, CustomStringConvertible, RawRepresentable {
-    public let x: UInt8
-    public let y: UInt8
+public struct GridPosition : Hashable, CustomStringConvertible {
+    public let x: UInt32
+    public let y: UInt32
     
-    public init?(rawValue: UInt32) {
-        let x = UInt8((rawValue & 0xFF000000) >> 24)
-        let y = UInt8((rawValue & 0x00FF0000) >> 16)
-        
-        self.init(x: x, y: y)
-    }
-    
-    public init(x: UInt8, y: UInt8) {
-        self.x = x
-        self.y = y
+    public init(position: CellPosition, x: Int, y: Int) {
+        precondition(x >= 0 && x < 8)
+        precondition(y >= 0 && y < 8)
+        self.x = UInt32(Int(position.x) * 8 + x)
+        self.y = UInt32(Int(position.y) * 8 + y)
     }
 
-    public init(x: Int, y: Int) {
-        self.init(x: UInt8(x), y: UInt8(y))
-    }
-
-    public var rawValue: UInt32 {
-        return UInt32(x) << 24 | UInt32(y) << 16
-    }
-    
     public var hashValue: Int {
-        return rawValue.hashValue
+        return x.hashValue ^ y.hashValue
     }
     
     public var description: String {
         return "(\(x), \(y))"
+    }
+
+    public static func ==(a: GridPosition, b: GridPosition) -> Bool {
+        return a.x == b.x && a.y == b.y
     }
 }
