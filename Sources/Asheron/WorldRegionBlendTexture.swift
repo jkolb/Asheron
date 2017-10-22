@@ -22,11 +22,11 @@
  SOFTWARE.
  */
 
-public struct WorldRegionRoadBlendTexture : CustomStringConvertible {
-    public let type: WorldRegionRoadBlendTextureType
+public struct WorldRegionBlendTexture : CustomStringConvertible {
+    public let type: WorldRegionBlendTextureType
     public let textureListHandle: TextureListHandle
 
-    public init(type: WorldRegionRoadBlendTextureType, textureListHandle: TextureListHandle) {
+    public init(type: WorldRegionBlendTextureType, textureListHandle: TextureListHandle) {
         self.type = type
         self.textureListHandle = textureListHandle
     }

@@ -166,9 +166,9 @@ class AsheronTests: XCTestCase {
         print(worldRegion.unknown11)
         print(worldRegion.unknown12)
         print(worldRegion.biomes)
-        print(worldRegion.roadBlendTextures1)
-        print(worldRegion.roadBlendTextures2)
-        print(worldRegion.roadBlendTextures3)
+        print(worldRegion.cornerBlendTextures)
+        print(worldRegion.straightBlendTextures)
+        print(worldRegion.roadBlendTextures)
         print(worldRegion.biomeTextures)
         print(worldRegion.uiMapTextureDataHandle)
         print(worldRegion.rawMapTextureDataHandle)
@@ -180,40 +180,53 @@ class AsheronTests: XCTestCase {
         for biomeTexture in worldRegion.biomeTextures {
             let textureList1 = try! portalFile.fetchTextureList(handle: biomeTexture.textureListHandle1)
             print("1: \(textureList1): \(textureList1.portalReference)")
+            print("\(biomeTexture.unknown1)")
+            print("\(biomeTexture.unknown2)")
+            print("\(biomeTexture.unknown3)")
+            print("\(biomeTexture.unknown4)")
+            print("\(biomeTexture.unknown5)")
+            print("\(biomeTexture.unknown6)")
+            print("\(biomeTexture.unknown7)")
+            print("\(biomeTexture.unknown8)")
             let textureList2 = try! portalFile.fetchTextureList(handle: biomeTexture.textureListHandle2)
             print("2: \(textureList2): \(textureList2.portalReference)")
         }
 
         print()
-        print("Road Blend Textures 1")
-        for roadBlendTexture in worldRegion.roadBlendTextures1 {
-            print("\(roadBlendTexture)")
+        print("Corner Blend Textures")
+        for blendTexture in worldRegion.cornerBlendTextures {
+            print("\(blendTexture)")
         }
 
         print()
-        print("Road Blend Textures 2")
-        for roadBlendTexture in worldRegion.roadBlendTextures2 {
-            print("\(roadBlendTexture)")
+        print("Straight Blend Textures")
+        for blendTexture in worldRegion.straightBlendTextures {
+            print("\(blendTexture)")
         }
 
         print()
-        print("Road Blend Textures 3")
-        for roadBlendTexture in worldRegion.roadBlendTextures3 {
-            print("\(roadBlendTexture)")
+        print("Road Blend Textures")
+        for blendTexture in worldRegion.roadBlendTextures {
+            print("\(blendTexture)")
         }
 
         print()
         print("??")
         for unknownA in worldRegion.unknownAs {
             print("\(hex(unknownA.unknown1))")
+
+            for unknownB in unknownA.unknown2 {
+                print("\(unknownB.unknown1)")
+                print("\(unknownB.unknown2)")
+            }
         }
     }
 
     static var allTests : [(String, (AsheronTests) -> () throws -> Void)] {
         return [
-            ("testGridPosition", testGridPosition),
+            //("testGridPosition", testGridPosition),
             ("testWorldRegion", testWorldRegion),
-            ("testTextureLocation", testTextureLocation),
+            //("testTextureLocation", testTextureLocation),
             //("testExample", testExample),
         ]
     }

@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-public enum WorldRegionRoadBlendTextureType : UInt32 {
-    case bend = 8
+public enum WorldRegionBlendTextureType : UInt32 {
+    case corner = 8
     case straight = 9
     case diagonal = 10
 }

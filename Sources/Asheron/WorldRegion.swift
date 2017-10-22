@@ -57,9 +57,9 @@ public final class WorldRegion : PortalObject {
     public let biomes: [WorldRegionBiome]
     public let unknown13: UInt32 // 0
     public let unknown14: UInt32 // 1024
-    public let roadBlendTextures1: [WorldRegionRoadBlendTexture]
-    public let roadBlendTextures2: [WorldRegionRoadBlendTexture]
-    public let roadBlendTextures3: [WorldRegionRoadBlendTexture]
+    public let cornerBlendTextures: [WorldRegionBlendTexture]
+    public let straightBlendTextures: [WorldRegionBlendTexture]
+    public let roadBlendTextures: [WorldRegionBlendTexture]
     public let biomeTextures: [WorldRegionBiomeTexture]
     public let unknown15: UInt32 // 1
     public let uiMapTextureDataHandle: TextureDataHandle
@@ -102,9 +102,9 @@ public final class WorldRegion : PortalObject {
         biomes: [WorldRegionBiome],
         unknown13: UInt32,
         unknown14: UInt32,
-        roadBlendTextures1: [WorldRegionRoadBlendTexture],
-        roadBlendTextures2: [WorldRegionRoadBlendTexture],
-        roadBlendTextures3: [WorldRegionRoadBlendTexture],
+        cornerBlendTextures: [WorldRegionBlendTexture],
+        straightBlendTextures: [WorldRegionBlendTexture],
+        roadBlendTextures: [WorldRegionBlendTexture],
         biomeTextures: [WorldRegionBiomeTexture],
         unknown15: UInt32,
         uiMapTextureDataHandle: TextureDataHandle,
@@ -147,9 +147,9 @@ public final class WorldRegion : PortalObject {
         self.biomes = biomes
         self.unknown13 = unknown13
         self.unknown14 = unknown14
-        self.roadBlendTextures1 = roadBlendTextures1
-        self.roadBlendTextures2 = roadBlendTextures2
-        self.roadBlendTextures3 = roadBlendTextures3
+        self.cornerBlendTextures = cornerBlendTextures
+        self.straightBlendTextures = straightBlendTextures
+        self.roadBlendTextures = roadBlendTextures
         self.biomeTextures = biomeTextures
         self.unknown15 = unknown15
         self.uiMapTextureDataHandle = uiMapTextureDataHandle
