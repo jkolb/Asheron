@@ -154,6 +154,18 @@ class AsheronTests: XCTestCase {
         }
     }
 
+    func testMaterials() {
+        let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
+        let portalFile = PortalFile(indexFile: indexFile)
+        let rawHandles = try! indexFile.handles(matching: { MaterialHandle(rawValue: $0) != nil })
+
+        for rawHandle in rawHandles {
+            let handle = MaterialHandle(rawValue: rawHandle)!
+            let material = try! portalFile.fetchMaterial(handle: handle)
+            print(material)
+        }
+    }
+
     func testWorldRegion() {
         let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
         let portalFile = PortalFile(indexFile: indexFile)
@@ -224,6 +236,7 @@ class AsheronTests: XCTestCase {
 
     static var allTests : [(String, (AsheronTests) -> () throws -> Void)] {
         return [
+            ("testMaterials", testMaterials),
             //("testGridPosition", testGridPosition),
             ("testWorldRegion", testWorldRegion),
             //("testTextureLocation", testTextureLocation),

@@ -1,5 +1,3 @@
-// swift-tools-version:4.0
-
 /*
  The MIT License (MIT)
  
@@ -24,18 +22,38 @@
  SOFTWARE.
  */
 
-import PackageDescription
+import Swiftish
 
-let package = Package(
-    name: "Asheron",
-    products: [
-        .library(name: "Asheron", targets: ["Asheron"]),
-    ],
-    dependencies: [
-        .package(url: "https://github.com/jkolb/Swiftish", from: "3.0.0"),
-    ],
-    targets: [
-        .target(name: "Asheron", dependencies: ["Swiftish"]),
-        .testTarget(name: "AsheronTests", dependencies: ["Asheron"]),
-    ]
-)
+extension ByteStream {
+	public func getVector2() -> Vector2<Float> {
+		let x = getFloat32()
+		let y = getFloat32()
+		return Vector2<Float>(x, y)
+	}
+
+	public func getVector2(count: Int) -> [Vector2<Float>] {
+		var values = [Vector2<Float>]()
+		values.reserveCapacity(count)
+
+		for _ in 0..<count {
+			values.append(getVector2())
+		}
+
+		return values
+	}
+
+	public func getVector3() -> Vector3<Float> {
+		let x = getFloat32()
+		let y = getFloat32()
+		let z = getFloat32()
+		return Vector3<Float>(x, y, z)
+	}
+
+	public func getQuaternion() -> Quaternion<Float> {
+		let w = getFloat32()
+		let x = getFloat32()
+		let y = getFloat32()
+		let z = getFloat32()
+		return Quaternion<Float>(w, x, y, z)
+	}
+}

@@ -526,4 +526,33 @@ public final class PortalParser {
 
         return WorldRegionBiomeTexture(index: index, textureListHandle1: textureListHandle1, unknown1: unknown1, unknown2: unknown2, unknown3: unknown3, unknown4: unknown4, unknown5: unknown5, unknown6: unknown6, unknown7: unknown7, unknown8: unknown8, textureListHandle2: textureListHandle2)
     }
+
+    public func parseMaterial(handle: MaterialHandle, buffer: ByteBuffer) -> Material {
+        let bytes = ByteStream(buffer: buffer)
+        // Doesn't contain its own handle unlike others
+        //let rawHandle = bytes.getUInt32()
+        //precondition(handle.rawValue == rawHandle)
+        let material = Material(handle: handle)
+        material.flags = Material.Flags(rawValue: bytes.getUInt32())
+
+        if material.flags.contains(.color) {
+            material.value = .color(PixelARGB8888(bits: bytes.getUInt32()))
+        }
+        else if material.flags.contains(.texture) || material.flags.contains(.clipmap) {
+            let textureListHandle = TextureListHandle(rawValue: bytes.getUInt32())!
+            let colorTableHandle = ColorTableHandle(rawValue: bytes.getUInt32())
+            material.value = .texture(textureListHandle, colorTableHandle)
+        }
+        else {
+            fatalError("Unknown flags: \(material.flags)")
+        }
+
+        material.translucency = bytes.getFloat32()
+        material.luminosity = bytes.getFloat32()
+        material.diffuse = bytes.getFloat32()
+
+        precondition(!bytes.hasRemaining)
+
+        return material
+    }
 }

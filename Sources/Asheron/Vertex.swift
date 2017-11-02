@@ -1,5 +1,3 @@
-// swift-tools-version:4.0
-
 /*
  The MIT License (MIT)
  
@@ -24,18 +22,20 @@
  SOFTWARE.
  */
 
-import PackageDescription
+import Swiftish
 
-let package = Package(
-    name: "Asheron",
-    products: [
-        .library(name: "Asheron", targets: ["Asheron"]),
-    ],
-    dependencies: [
-        .package(url: "https://github.com/jkolb/Swiftish", from: "3.0.0"),
-    ],
-    targets: [
-        .target(name: "Asheron", dependencies: ["Swiftish"]),
-        .testTarget(name: "AsheronTests", dependencies: ["Asheron"]),
-    ]
-)
+public struct Vertex {
+	public var position: Vector3<Float>
+	public var normal: Vector3<Float>
+	public var texCoord: [Vector2<Float>]
+
+	public init() {
+		self.init(position: Vector3<Float>(), normal: Vector3<Float>(), texCoord: [])
+	}
+
+	public init(position: Vector3<Float>, normal: Vector3<Float>, texCoord: [Vector2<Float>]) {
+		self.position = position
+		self.normal = normal
+		self.texCoord = texCoord
+	}
+}

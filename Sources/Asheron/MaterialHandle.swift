@@ -1,5 +1,3 @@
-// swift-tools-version:4.0
-
 /*
  The MIT License (MIT)
  
@@ -24,18 +22,4 @@
  SOFTWARE.
  */
 
-import PackageDescription
-
-let package = Package(
-    name: "Asheron",
-    products: [
-        .library(name: "Asheron", targets: ["Asheron"]),
-    ],
-    dependencies: [
-        .package(url: "https://github.com/jkolb/Swiftish", from: "3.0.0"),
-    ],
-    targets: [
-        .target(name: "Asheron", dependencies: ["Swiftish"]),
-        .testTarget(name: "AsheronTests", dependencies: ["Asheron"]),
-    ]
-)
+public typealias MaterialHandle = PortalHandle<Material>

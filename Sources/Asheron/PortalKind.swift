@@ -23,9 +23,11 @@
  */
 
 public enum PortalKind : UInt32 {
+    case geometry     = 0x01000000
     case colorTable   = 0x04000000
     case textureList  = 0x05000000
     case textureData  = 0x06000000
+    case material     = 0x08000000
     case worldScenery = 0x12000000
     case worldRegion  = 0x13000000
 }

@@ -1,5 +1,3 @@
-// swift-tools-version:4.0
-
 /*
  The MIT License (MIT)
  
@@ -24,18 +22,12 @@
  SOFTWARE.
  */
 
-import PackageDescription
-
-let package = Package(
-    name: "Asheron",
-    products: [
-        .library(name: "Asheron", targets: ["Asheron"]),
-    ],
-    dependencies: [
-        .package(url: "https://github.com/jkolb/Swiftish", from: "3.0.0"),
-    ],
-    targets: [
-        .target(name: "Asheron", dependencies: ["Swiftish"]),
-        .testTarget(name: "AsheronTests", dependencies: ["Asheron"]),
-    ]
-)
+extension ByteStream {
+	public func getVertex() -> Vertex {
+		let texCoordCount = Int(getUInt16())
+		let position = getVector3()
+		let normal = getVector3()
+		let texCoord = getVector2(count: texCoordCount)
+		return Vertex(position: position, normal: normal, texCoord: texCoord)
+	}
+}

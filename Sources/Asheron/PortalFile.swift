@@ -54,4 +54,10 @@ public final class PortalFile {
 
         return parser.parseWorldRegion(handle: handle, buffer: buffer)
     }
+
+    public func fetchMaterial(handle: MaterialHandle) throws -> Material {
+        let buffer = try indexFile.readData(handle: handle.rawValue)
+
+        return parser.parseMaterial(handle: handle, buffer: buffer)
+    }
 }
