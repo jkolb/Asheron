@@ -56,4 +56,16 @@ extension ByteStream {
 		let z = getFloat32()
 		return Quaternion<Float>(w, x, y, z)
 	}
+
+	public func getPlane() -> Plane<Float> {
+		let normal = getVector3()
+		let distance = getFloat32()
+		return Plane<Float>(normal: normal, distance: distance)
+	}
+
+	public func getSphere() -> Sphere<Float> {
+		let center = getVector3()
+		let radius = getFloat32()
+		return Sphere<Float>(center: center, radius: radius)
+	}
 }
