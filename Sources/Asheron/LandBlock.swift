@@ -25,7 +25,7 @@
 public final class LandBlock : CustomStringConvertible {
     public struct Topography : CustomStringConvertible {
         private let bits: UInt16
-
+        
         public init(bits: UInt16) {
             self.bits = bits
         }
@@ -75,7 +75,7 @@ public final class LandBlock : CustomStringConvertible {
     public func getHeightIndex(x: Int, y: Int) -> UInt8 {
         return heightIndex[y + (x * type(of: self).size)]
     }
-
+    
     public func isSplitNESW(x: Int, y: Int) -> Bool {
         let grid = GridPosition(position: position, x: x, y: y)
         // https://github.com/deregtd/AC2D/blob/master/Landblocks.cpp

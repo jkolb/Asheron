@@ -27,7 +27,7 @@ public struct WorldRegionWeatherObject {
     public let objectHandle: UInt32
     public let unknownHandle: UInt32
     public let unknown2: UInt32
-
+    
     public init(unknown1: [Float], objectHandle: UInt32, unknownHandle: UInt32, unknown2: UInt32) {
         self.unknown1 = unknown1
         self.objectHandle = objectHandle

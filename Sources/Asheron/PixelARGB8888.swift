@@ -57,7 +57,7 @@ public struct PixelARGB8888 : Pixel {
         let outputSize = width * height * PixelARGB8888.byteCount
         let outputStream = ByteStream(buffer: ByteBuffer(count: outputSize))
         let inputStream = ByteStream(buffer: data)
-
+        
         for _ in 1...height {
             for _ in 1...width {
                 let pixel = reader.read(inputStream)
@@ -65,6 +65,6 @@ public struct PixelARGB8888 : Pixel {
             }
         }
         
-        return outputStream.buffer    
+        return outputStream.buffer
     }
 }

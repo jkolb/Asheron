@@ -37,11 +37,11 @@ public struct DXT3Block : DXTBlock {
     let alphaBlock: DXT3Alpha
     let colorBlock: DXTColor
     let colors: [PixelRGB888]
-
+    
     public init(alphaBlock: DXT3Alpha, colorBlock: DXTColor) {
         self.alphaBlock = alphaBlock
         self.colorBlock = colorBlock
-
+        
         let color0 = PixelRGB565(bits: colorBlock.color0())
         let color1 = PixelRGB565(bits: colorBlock.color1())
         

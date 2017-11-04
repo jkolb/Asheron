@@ -30,13 +30,13 @@ public final class PortalFile {
         self.indexFile = indexFile
         self.parser = PortalParser()
     }
-
+    
     public func fetchColorTable(handle: ColorTableHandle) throws -> ColorTable {
         let buffer = try indexFile.readData(handle: handle.rawValue)
         
         return parser.parseColorTable(handle: handle, buffer: buffer)
     }
-
+    
     public func fetchTextureList(handle: TextureListHandle) throws -> TextureList {
         let buffer = try indexFile.readData(handle: handle.rawValue)
         
@@ -48,16 +48,16 @@ public final class PortalFile {
         
         return parser.parseTextureData(handle: handle, buffer: buffer)
     }
-
+    
     public func fetchWorldRegion(handle: WorldRegionHandle) throws -> WorldRegion {
         let buffer = try indexFile.readData(handle: handle.rawValue)
-
+        
         return parser.parseWorldRegion(handle: handle, buffer: buffer)
     }
-
+    
     public func fetchMaterial(handle: MaterialHandle) throws -> Material {
         let buffer = try indexFile.readData(handle: handle.rawValue)
-
+        
         return parser.parseMaterial(handle: handle, buffer: buffer)
     }
 }

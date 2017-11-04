@@ -25,7 +25,7 @@
 public final class WorldScenery : PortalObject {
     public static let kind = PortalKind.worldScenery
     public let handle: WorldSceneryHandle
-
+    
     public init(handle: WorldSceneryHandle) {
         self.handle = handle
     }

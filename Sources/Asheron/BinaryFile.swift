@@ -34,11 +34,11 @@ public final class BinaryFile {
     public class func openForReading(at path: String) throws -> BinaryFile {
         return try openFile(at: path, flags: O_RDONLY)
     }
-
+    
     public class func openForWriting(at path: String, create: Bool = true) throws -> BinaryFile {
         return try openFile(at: path, flags: create ? (O_WRONLY | O_CREAT) : O_WRONLY)
     }
-
+    
     public class func openForUpdating(at path: String, create: Bool = true) throws -> BinaryFile {
         return try openFile(at: path, flags: create ? (O_RDWR | O_CREAT) : O_RDWR)
     }

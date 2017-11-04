@@ -67,7 +67,7 @@ public final class WorldRegion : PortalObject {
     public let unknown16: UInt32
     public let unknown17: UInt32
     public let unknown18: UInt32
-
+    
     public init(
         handle: WorldRegionHandle,
         number: UInt32,
@@ -112,7 +112,7 @@ public final class WorldRegion : PortalObject {
         unknown16: UInt32,
         unknown17: UInt32,
         unknown18: UInt32
-    )
+        )
     {
         self.handle = handle
         self.number = number

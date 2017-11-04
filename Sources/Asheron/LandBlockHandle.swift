@@ -31,24 +31,24 @@ public struct LandBlockHandle : CellHandle {
     
     public init?(rawValue: UInt32) {
         let position = CellPosition(rawValue: rawValue)!
-
+        
         if position.x == 0xFF || position.y == 0xFF {
             return nil
         }
-
+        
         let index = UInt16(rawValue & 0x0000FFFF)
         
         if index != LandBlockHandle.landBlockIndex {
             return nil
         }
-
+        
         self.init(position: position)
     }
     
     public init(x: Int, y: Int) {
         self.init(position: CellPosition(x: x, y: y))
     }
-
+    
     public init(position: CellPosition) {
         precondition(position.x != 0xFF)
         precondition(position.y != 0xFF)

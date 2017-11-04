@@ -34,7 +34,7 @@ public struct WorldRegionBiomeTexture : CustomStringConvertible {
     public let unknown7: UInt32
     public let unknown8: UInt32
     public let textureListHandle2: TextureListHandle
-
+    
     public init(
         index: UInt32,
         textureListHandle1: TextureListHandle,
@@ -47,7 +47,7 @@ public struct WorldRegionBiomeTexture : CustomStringConvertible {
         unknown7: UInt32,
         unknown8: UInt32,
         textureListHandle2: TextureListHandle
-    ) {
+        ) {
         self.index = index
         self.textureListHandle1 = textureListHandle1
         self.unknown1 = unknown1
@@ -60,7 +60,7 @@ public struct WorldRegionBiomeTexture : CustomStringConvertible {
         self.unknown8 = unknown8
         self.textureListHandle2 = textureListHandle2
     }
-
+    
     public var description: String {
         return "\(index): \(textureListHandle1) - \(textureListHandle2)"
     }

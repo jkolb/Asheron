@@ -26,13 +26,13 @@ public struct WorldRegionBiome : CustomStringConvertible {
     public let name: String
     public let color: PixelARGB8888
     public let sceneryListIndexes: [Int]
-
+    
     public init(name: String, color: PixelARGB8888, sceneryListIndexes: [Int]) {
         self.name = name
         self.color = color
         self.sceneryListIndexes = sceneryListIndexes
     }
-
+    
     public var description: String {
         return "\(name) - \(color)"
     }

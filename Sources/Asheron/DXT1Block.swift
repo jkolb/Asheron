@@ -59,7 +59,7 @@ public struct DXT1Block : DXTBlock {
             rgb3 = RGBTriplet()
             alpha = 0
         }
-
+        
         self.colors = [
             rgb0.color(alpha: UInt8.max),
             rgb1.color(alpha: UInt8.max),

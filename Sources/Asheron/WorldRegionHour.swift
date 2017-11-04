@@ -26,13 +26,13 @@ public struct WorldRegionHour : CustomStringConvertible {
     public let startTime: Float
     public let isNight: Bool
     public let name: String
-
+    
     public init(startTime: Float, isNight: Bool, name: String) {
         self.startTime = startTime
         self.isNight = isNight
         self.name = name
     }
-
+    
     public var description: String {
         return "\(isNight ? "Night" : "Day"): \(name) - \(startTime)"
     }

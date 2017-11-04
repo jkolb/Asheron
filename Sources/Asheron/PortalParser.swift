@@ -70,7 +70,7 @@ public final class PortalParser {
         
         return TextureList(handle: handle, portalHandle: portalHandle, highresHandle: highresHandle)
     }
-
+    
     public func parseTextureData(handle: TextureDataHandle, buffer: ByteBuffer) -> TextureData {
         let bytes = ByteStream(buffer: buffer)
         let rawHandle = bytes.getUInt32()
@@ -147,177 +147,177 @@ public final class PortalParser {
         
         return TextureData(handle: handle, width: width, height: height, format: format, data: data)
     }
-
+    
     public func parseWorldRegion(handle: WorldRegionHandle, buffer: ByteBuffer) -> WorldRegion {
         let bytes = ByteStream(buffer: buffer)
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
-
+        
         let number = bytes.getUInt32()
         precondition(number == 1)
-
+        
         let version = bytes.getUInt32()
         precondition(version == 3)
-
+        
         let name = bytes.getString()
         precondition(name == "Dereth")
-
+        
         let cellRowCount = bytes.getUInt32()
         precondition(cellRowCount == 255)
-
+        
         let cellColCount = bytes.getUInt32()
         precondition(cellColCount == 255)
-
+        
         let cellGridSize = bytes.getFloat32()
         precondition(cellGridSize == 24.0)
-
+        
         let heightsPerCell = bytes.getUInt32()
         precondition(heightsPerCell == 8)
-
+        
         let overlapPerCell = bytes.getUInt32()
         precondition(overlapPerCell == 1)
-
+        
         let unknown1 = bytes.getFloat32()
         precondition(unknown1 == 200.0)
-
+        
         let unknown2 = bytes.getFloat32()
         precondition(unknown2 == 1000.0)
-
+        
         let unknown3 = bytes.getFloat32()
         precondition(unknown3 == 5.0)
-
+        
         let landHeights = bytes.getFloat32(count: 256)
         precondition(landHeights.count == 256)
-
+        
         let unknown4 = bytes.getUInt32()
         precondition(unknown4 == 0)
-
+        
         let unknown5 = bytes.getFloat32()
         precondition(unknown5 == 5.37890625)
-
+        
         let unknown6 = bytes.getUInt32()
         precondition(unknown6 == 10)
-
+        
         let unknown7 = bytes.getFloat32()
         precondition(unknown7 == 7620.0)
-
+        
         let daysPerYear = bytes.getUInt32()
         precondition(daysPerYear == 360)
-
+        
         let yearUnitName = bytes.getString()
         precondition(yearUnitName == "P.Y.")
-
+        
         let hoursCount = Int(bytes.getUInt32())
         var hours = [WorldRegionHour]()
         hours.reserveCapacity(hoursCount)
-
+        
         for _ in 0..<hoursCount {
             let hour = parseWorldRegionHour(bytes: bytes)
             hours.append(hour)
         }
-
+        
         let weekdaysCount = Int(bytes.getUInt32())
         var weekdays = [String]()
         weekdays.reserveCapacity(weekdaysCount)
-
+        
         for _ in 0..<weekdaysCount {
             let weekday = bytes.getString()
             weekdays.append(weekday)
         }
-
+        
         let monthsCount = Int(bytes.getUInt32())
         var months = [WorldRegionMonth]()
         months.reserveCapacity(monthsCount)
-
+        
         for _ in 0..<monthsCount {
             let month = parseWorldRegionMonth(bytes: bytes)
             months.append(month)
         }
-
+        
         let unknown8 = bytes.getUInt32()
         precondition(unknown8 == 543)
-
+        
         let unknown9 = bytes.getUInt32()
         precondition(unknown9 == 0xA0000000)
-
+        
         let unknown10 = bytes.getFloat32()
         //precondition(unknown10 == 1.825)
-
+        
         let unknown11 = bytes.getFloat32()
         precondition(unknown11 == 0.0)
-
+        
         let unknown12 = bytes.getFloat32()
         precondition(unknown12 == 2.71875)
-
+        
         let weathersCount = Int(bytes.getUInt32())
         precondition(weathersCount == 20)
         var weathers = [WorldRegionWeather]()
         weathers.reserveCapacity(weathersCount)
-
+        
         for _ in 0..<weathersCount {
             let weather = parseWorldRegionWeather(bytes: bytes)
             weathers.append(weather)
         }
-
+        
         let unknownAsCount = Int(bytes.getUInt32())
         precondition(unknownAsCount == 0x25)
         var unknownAs = [WorldRegionUnknownA]()
         unknownAs.reserveCapacity(unknownAsCount)
-
+        
         for _ in 0..<unknownAsCount {
             let unknownA = parseWorldRegionUnknownA(bytes: bytes)
             unknownAs.append(unknownA)
         }
-
+        
         let sceneryListsCount = Int(bytes.getUInt32())
         var sceneryLists = [WorldRegionSceneryList]()
         sceneryLists.reserveCapacity(sceneryListsCount)
-
+        
         for _ in 0..<sceneryListsCount {
             let sceneryList = parseWorldRegionSceneryList(bytes: bytes)
             sceneryLists.append(sceneryList)
         }
-
+        
         let biomesCount = Int(bytes.getUInt32())
         var biomes = [WorldRegionBiome]()
         biomes.reserveCapacity(biomesCount)
-
+        
         for _ in 0..<biomesCount {
             let biome = parseWorldRegionBiome(bytes: bytes)
             biomes.append(biome)
         }
-
+        
         let unknown13 = bytes.getUInt32()
         precondition(unknown13 == 0)
-
+        
         let unknown14 = bytes.getUInt32()
         precondition(unknown14 == 1024)
-
+        
         let cornerBlendTextures = parseWorldRegionBlendTextures(bytes: bytes)
         let straightBlendTextures = parseWorldRegionBlendTextures(bytes: bytes)
         let roadBlendTextures = parseWorldRegionBlendTextures(bytes: bytes)
-
+        
         let biomeTexturesCount = Int(bytes.getUInt32())
         var biomeTextures = [WorldRegionBiomeTexture]()
         biomeTextures.reserveCapacity(biomeTexturesCount)
-
+        
         for _ in 0..<biomeTexturesCount {
             let biomeTexture = parseWorldRegionBiomeTexture(bytes: bytes)
             biomeTextures.append(biomeTexture)
         }
-
+        
         let unknown15 = bytes.getUInt32()
         precondition(unknown15 == 1)
-
+        
         let uiMapTextureDataHandle = TextureDataHandle(rawValue: bytes.getUInt32())!
         let rawMapTextureDataHandle = TextureDataHandle(rawValue: bytes.getUInt32())!
-
+        
         let unknown16 = bytes.getUInt32()
         let unknown17 = bytes.getUInt32()
         let unknown18 = bytes.getUInt32()
-
+        
         precondition(!bytes.hasRemaining)
-
+        
         return WorldRegion(
             handle: handle,
             number: number,
@@ -364,55 +364,55 @@ public final class PortalParser {
             unknown18: unknown18
         )
     }
-
+    
     private func parseWorldRegionHour(bytes: ByteStream) -> WorldRegionHour {
         let startTime = bytes.getFloat32()
         let isNight = bytes.getBool()
         let name = bytes.getString()
-
+        
         return WorldRegionHour(startTime: startTime, isNight: isNight, name: name)
     }
-
+    
     private func parseWorldRegionMonth(bytes: ByteStream) -> WorldRegionMonth {
         let startDay = bytes.getUInt32()
         let name = bytes.getString()
-
+        
         return WorldRegionMonth(startDay: Int(startDay), name: name)
     }
-
+    
     private func parseWorldRegionWeather(bytes: ByteStream) -> WorldRegionWeather {
         let percentage = bytes.getFloat32()
         let name = bytes.getString()
         let objectsCount = Int(bytes.getUInt32())
         var objects = [WorldRegionWeatherObject]()
         objects.reserveCapacity(objectsCount)
-
+        
         for _ in 0..<objectsCount {
             let object = parseWorldRegionWeatherObject(bytes: bytes)
             objects.append(object)
         }
-
+        
         let unknownsCount = Int(bytes.getUInt32())
         var unknowns = [WorldRegionWeatherUnknown]()
         unknowns.reserveCapacity(unknownsCount)
-
+        
         for _ in 0..<unknownsCount {
             let unknown = parseWorldRegionWeatherUnknown(bytes: bytes)
             unknowns.append(unknown)
         }
-
+        
         return WorldRegionWeather(percentage: percentage, name: name, objects: objects, unknowns: unknowns)
     }
-
+    
     private func parseWorldRegionWeatherObject(bytes: ByteStream) -> WorldRegionWeatherObject {
         let unknown1 = bytes.getFloat32(count: 6)
         let objectHandle = bytes.getUInt32()
         let unknownHandle = bytes.getUInt32()
         let unknown2 = bytes.getUInt32()
-
+        
         return WorldRegionWeatherObject(unknown1: unknown1, objectHandle: objectHandle, unknownHandle: unknownHandle, unknown2: unknown2)
     }
-
+    
     private func parseWorldRegionWeatherUnknown(bytes: ByteStream) -> WorldRegionWeatherUnknown {
         let unknown1 = bytes.getFloat32(count: 4)
         let color1 = PixelARGB8888(bits: bytes.getUInt32())
@@ -424,93 +424,93 @@ public final class PortalParser {
         let unknown2sCount = Int(bytes.getUInt32())
         var unknowns2 = [WorldRegionWeatherUnknown2]()
         unknowns2.reserveCapacity(unknown2sCount)
-
+        
         for _ in 0..<unknown2sCount {
             let unknown2 = parseWorldRegionWeatherUnknown2(bytes: bytes)
             unknowns2.append(unknown2)
         }
-
+        
         return WorldRegionWeatherUnknown(unknown1: unknown1, color1: color1, unknown2: unknown2, color2: color2, unknown3: unknown3, color3: color3, unknown4: unknown4, unknowns2: unknowns2)
     }
-
+    
     private func parseWorldRegionWeatherUnknown2(bytes: ByteStream) -> WorldRegionWeatherUnknown2 {
         let unknown1 = bytes.getUInt32()
         let unknown2 = bytes.getFloat32(count: 5)
-
+        
         return WorldRegionWeatherUnknown2(unknown1: unknown1, unknown2: unknown2)
     }
-
+    
     private func parseWorldRegionUnknownA(bytes: ByteStream) -> WorldRegionUnknownA {
         let unknown1 = bytes.getUInt32()
         let count = Int(bytes.getUInt32())
         var unknown2 = [WorldRegionUnknownB]()
         unknown2.reserveCapacity(count)
-
+        
         for _ in 0..<count {
             let unknownB = parseWorldRegionUnknownB(bytes: bytes)
             unknown2.append(unknownB)
         }
-
+        
         return WorldRegionUnknownA(unknown1: unknown1, unknown2: unknown2)
     }
-
+    
     private func parseWorldRegionUnknownB(bytes: ByteStream) -> WorldRegionUnknownB {
         let unknown1 = bytes.getUInt32()
         let unknown2 = bytes.getFloat32(count: 4)
-
+        
         return WorldRegionUnknownB(unknown1: unknown1, unknown2: unknown2)
     }
-
+    
     private func parseWorldRegionSceneryList(bytes: ByteStream) -> WorldRegionSceneryList {
         let index = bytes.getUInt32()
         let sceneryHandlesCount = Int(bytes.getUInt32())
         var sceneryHandles = [WorldSceneryHandle]()
         sceneryHandles.reserveCapacity(sceneryHandlesCount)
-
+        
         for _ in 0..<sceneryHandlesCount {
             let rawHandle = bytes.getUInt32()
             let sceneryHandle = WorldSceneryHandle(rawValue: rawHandle)!
             sceneryHandles.append(sceneryHandle)
         }
-
+        
         return WorldRegionSceneryList(index: index, sceneryHandles: sceneryHandles)
     }
-
+    
     private func parseWorldRegionBiome(bytes: ByteStream) -> WorldRegionBiome {
         let name = bytes.getString()
         let color = PixelARGB8888(bits: bytes.getUInt32())
         let sceneryListIndexesCount = Int(bytes.getUInt32())
         var sceneryListIndexes = [Int]()
         sceneryListIndexes.reserveCapacity(sceneryListIndexesCount)
-
+        
         for _ in 0..<sceneryListIndexesCount {
             let sceneryListIndex = Int(bytes.getUInt32())
             sceneryListIndexes.append(sceneryListIndex)
         }
-
+        
         return WorldRegionBiome(name: name, color: color, sceneryListIndexes: sceneryListIndexes)
     }
-
+    
     private func parseWorldRegionBlendTexture(bytes: ByteStream) -> WorldRegionBlendTexture {
         let type = WorldRegionBlendTextureType(rawValue: bytes.getUInt32())!
         let textureListHandle = TextureListHandle(rawValue: bytes.getUInt32())!
-
+        
         return WorldRegionBlendTexture(type: type, textureListHandle: textureListHandle)
     }
-
+    
     private func parseWorldRegionBlendTextures(bytes: ByteStream) -> [WorldRegionBlendTexture] {
         let count = Int(bytes.getUInt32())
         var blendTextures = [WorldRegionBlendTexture]()
         blendTextures.reserveCapacity(count)
-
+        
         for _ in 0..<count {
             let blendTexture = parseWorldRegionBlendTexture(bytes: bytes)
             blendTextures.append(blendTexture)
         }
-
+        
         return blendTextures
     }
-
+    
     private func parseWorldRegionBiomeTexture(bytes: ByteStream) -> WorldRegionBiomeTexture {
         let index = bytes.getUInt32()
         let textureListHandle1 = TextureListHandle(rawValue: bytes.getUInt32())!
@@ -523,10 +523,10 @@ public final class PortalParser {
         let unknown7 = bytes.getUInt32()
         let unknown8 = bytes.getUInt32()
         let textureListHandle2 = TextureListHandle(rawValue: bytes.getUInt32())!
-
+        
         return WorldRegionBiomeTexture(index: index, textureListHandle1: textureListHandle1, unknown1: unknown1, unknown2: unknown2, unknown3: unknown3, unknown4: unknown4, unknown5: unknown5, unknown6: unknown6, unknown7: unknown7, unknown8: unknown8, textureListHandle2: textureListHandle2)
     }
-
+    
     public func parseMaterial(handle: MaterialHandle, buffer: ByteBuffer) -> Material {
         let bytes = ByteStream(buffer: buffer)
         // Doesn't contain its own handle unlike others
@@ -534,7 +534,7 @@ public final class PortalParser {
         //precondition(handle.rawValue == rawHandle)
         let material = Material(handle: handle)
         material.flags = Material.Flags(rawValue: bytes.getUInt32())
-
+        
         if material.flags.contains(.color) {
             material.value = .color(PixelARGB8888(bits: bytes.getUInt32()))
         }
@@ -546,13 +546,13 @@ public final class PortalParser {
         else {
             fatalError("Unknown flags: \(material.flags)")
         }
-
+        
         material.translucency = bytes.getFloat32()
         material.luminosity = bytes.getFloat32()
         material.diffuse = bytes.getFloat32()
-
+        
         precondition(!bytes.hasRemaining)
-
+        
         return material
     }
 }

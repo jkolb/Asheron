@@ -63,7 +63,7 @@ public final class IndexFile {
         let indexFile = IndexFile(blockFile: blockFile, rootNodeOffset: rootNodeOffset)
         return indexFile
     }
-
+    
     public init(blockFile: BlockFile, rootNodeOffset: UInt32) {
         self.blockFile = blockFile
         self.parser = IndexParser()
@@ -79,7 +79,7 @@ public final class IndexFile {
         
         return try readEntry(entry)
     }
-
+    
     public func handles(matching filter: (UInt32) -> Bool) throws -> [UInt32] {
         let node = try fetchNode(at: rootNodeOffset)
         
@@ -108,7 +108,7 @@ public final class IndexFile {
         
         return handles.sorted()
     }
-
+    
     public func findEntry(for handle: UInt32) throws -> Node.Entry? {
         var offset = rootNodeOffset
         
@@ -118,7 +118,7 @@ public final class IndexFile {
             
             for index in 0..<node.count {
                 let entry = node.entry[index]
-
+                
                 if entry.handle == handle {
                     return entry
                 }
@@ -136,7 +136,7 @@ public final class IndexFile {
         
         return nil
     }
-
+    
     public func readEntry(_ entry: Node.Entry) throws -> ByteBuffer {
         let buffer = ByteBuffer(count: numericCast(entry.length))
         

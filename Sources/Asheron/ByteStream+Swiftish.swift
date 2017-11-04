@@ -25,47 +25,47 @@
 import Swiftish
 
 extension ByteStream {
-	public func getVector2() -> Vector2<Float> {
-		let x = getFloat32()
-		let y = getFloat32()
-		return Vector2<Float>(x, y)
-	}
-
-	public func getVector2(count: Int) -> [Vector2<Float>] {
-		var values = [Vector2<Float>]()
-		values.reserveCapacity(count)
-
-		for _ in 0..<count {
-			values.append(getVector2())
-		}
-
-		return values
-	}
-
-	public func getVector3() -> Vector3<Float> {
-		let x = getFloat32()
-		let y = getFloat32()
-		let z = getFloat32()
-		return Vector3<Float>(x, y, z)
-	}
-
-	public func getQuaternion() -> Quaternion<Float> {
-		let w = getFloat32()
-		let x = getFloat32()
-		let y = getFloat32()
-		let z = getFloat32()
-		return Quaternion<Float>(w, x, y, z)
-	}
-
-	public func getPlane() -> Plane<Float> {
-		let normal = getVector3()
-		let distance = getFloat32()
-		return Plane<Float>(normal: normal, distance: distance)
-	}
-
-	public func getSphere() -> Sphere<Float> {
-		let center = getVector3()
-		let radius = getFloat32()
-		return Sphere<Float>(center: center, radius: radius)
-	}
+    public func getVector2() -> Vector2<Float> {
+        let x = getFloat32()
+        let y = getFloat32()
+        return Vector2<Float>(x, y)
+    }
+    
+    public func getVector2(count: Int) -> [Vector2<Float>] {
+        var values = [Vector2<Float>]()
+        values.reserveCapacity(count)
+        
+        for _ in 0..<count {
+            values.append(getVector2())
+        }
+        
+        return values
+    }
+    
+    public func getVector3() -> Vector3<Float> {
+        let x = getFloat32()
+        let y = getFloat32()
+        let z = getFloat32()
+        return Vector3<Float>(x, y, z)
+    }
+    
+    public func getQuaternion() -> Quaternion<Float> {
+        let w = getFloat32()
+        let x = getFloat32()
+        let y = getFloat32()
+        let z = getFloat32()
+        return Quaternion<Float>(w, x, y, z)
+    }
+    
+    public func getPlane() -> Plane<Float> {
+        let normal = getVector3()
+        let distance = getFloat32()
+        return Plane<Float>(normal: normal, distance: distance)
+    }
+    
+    public func getSphere() -> Sphere<Float> {
+        let center = getVector3()
+        let radius = getFloat32()
+        return Sphere<Float>(center: center, radius: radius)
+    }
 }

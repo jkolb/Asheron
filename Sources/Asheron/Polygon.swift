@@ -23,52 +23,52 @@
  */
 
 public struct Polygon : CustomStringConvertible {
-	public enum Name : UInt8 {
-		case triangle = 3
-		case rectangle = 4
-		case pentagon = 5
-		case hexagon = 6
-		case heptagon = 7
-		case octagon = 8
-		//case nonagon = 9
-		//case decagon = 10
-	}
-
-	public struct TexCoords : OptionSet {
-		public static let none    = TexCoords(rawValue: 0)
-		public static let front   = TexCoords(rawValue: 1 << 0)
-		public static let back    = TexCoords(rawValue: 1 << 1)
-		public static let noFront = TexCoords(rawValue: 1 << 2)
-		public static let noBack  = TexCoords(rawValue: 1 << 3)
-
-		public let rawValue: UInt8
-
-		public init(rawValue: UInt8) {
-			self.rawValue = rawValue
-		}
-	}
-
-	public enum Faces : UInt16 {
-		case single = 0
-		case repeated = 1
-		case double = 2
-	}
-
-	public var index: UInt16 = 0
-	public var name: Name = .triangle
-	public var sides: Int { return Int(name.rawValue) }
-	public var texCoords: TexCoords = .none
-	public var faces: Faces = .single
-	public var unknown: UInt16 = 0
-	public var frontMaterialIndex: UInt16 = 0
-	public var backMaterialIndex: UInt16 = 0
-	public var vertexIndex: [UInt16] = []
-	public var frontTexCoordIndex: [UInt8] = []
-	public var backTexCoordIndex: [UInt8] = []
-
-	public init() {}
-
-	public var description: String {
-		return "\(index): \(name) texCoords: \(texCoords) faces: \(faces) front: \(frontMaterialIndex):\(frontTexCoordIndex.count) back: \(backMaterialIndex):\(backTexCoordIndex.count) unknown: \(unknown)"
-	}
+    public enum Name : UInt8 {
+        case triangle = 3
+        case rectangle = 4
+        case pentagon = 5
+        case hexagon = 6
+        case heptagon = 7
+        case octagon = 8
+        //case nonagon = 9
+        //case decagon = 10
+    }
+    
+    public struct TexCoords : OptionSet {
+        public static let none    = TexCoords(rawValue: 0)
+        public static let front   = TexCoords(rawValue: 1 << 0)
+        public static let back    = TexCoords(rawValue: 1 << 1)
+        public static let noFront = TexCoords(rawValue: 1 << 2)
+        public static let noBack  = TexCoords(rawValue: 1 << 3)
+        
+        public let rawValue: UInt8
+        
+        public init(rawValue: UInt8) {
+            self.rawValue = rawValue
+        }
+    }
+    
+    public enum Faces : UInt16 {
+        case single = 0
+        case repeated = 1
+        case double = 2
+    }
+    
+    public var index: UInt16 = 0
+    public var name: Name = .triangle
+    public var sides: Int { return Int(name.rawValue) }
+    public var texCoords: TexCoords = .none
+    public var faces: Faces = .single
+    public var unknown: UInt16 = 0
+    public var frontMaterialIndex: UInt16 = 0
+    public var backMaterialIndex: UInt16 = 0
+    public var vertexIndex: [UInt16] = []
+    public var frontTexCoordIndex: [UInt8] = []
+    public var backTexCoordIndex: [UInt8] = []
+    
+    public init() {}
+    
+    public var description: String {
+        return "\(index): \(name) texCoords: \(texCoords) faces: \(faces) front: \(frontMaterialIndex):\(frontTexCoordIndex.count) back: \(backMaterialIndex):\(backTexCoordIndex.count) unknown: \(unknown)"
+    }
 }

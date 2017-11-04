@@ -25,17 +25,17 @@
 import Swiftish
 
 public struct Vertex {
-	public var position: Vector3<Float>
-	public var normal: Vector3<Float>
-	public var texCoord: [Vector2<Float>]
-
-	public init() {
-		self.init(position: Vector3<Float>(), normal: Vector3<Float>(), texCoord: [])
-	}
-
-	public init(position: Vector3<Float>, normal: Vector3<Float>, texCoord: [Vector2<Float>]) {
-		self.position = position
-		self.normal = normal
-		self.texCoord = texCoord
-	}
+    public var position: Vector3<Float>
+    public var normal: Vector3<Float>
+    public var texCoord: [Vector2<Float>]
+    
+    public init() {
+        self.init(position: Vector3<Float>(), normal: Vector3<Float>(), texCoord: [])
+    }
+    
+    public init(position: Vector3<Float>, normal: Vector3<Float>, texCoord: [Vector2<Float>]) {
+        self.position = position
+        self.normal = normal
+        self.texCoord = texCoord
+    }
 }

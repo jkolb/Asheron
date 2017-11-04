@@ -31,7 +31,7 @@ public struct WorldRegionWeatherUnknown {
     public let color3: PixelARGB8888
     public let unknown4: UInt32
     public let unknowns2: [WorldRegionWeatherUnknown2]
-
+    
     public init(unknown1: [Float], color1: PixelARGB8888, unknown2: Float, color2: PixelARGB8888, unknown3: [Float], color3: PixelARGB8888, unknown4: UInt32, unknowns2: [WorldRegionWeatherUnknown2]) {
         self.unknown1 = unknown1
         self.color1 = color1

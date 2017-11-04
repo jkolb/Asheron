@@ -26,53 +26,53 @@ public struct RGBTriplet {
     private let r: Int
     private let g: Int
     private let b: Int
-
+    
     public init() {
         self.init(0, 0, 0)
     }
-
+    
     public init(_ pixel: Pixel) {
         self.init(Int(pixel.r), Int(pixel.g), Int(pixel.b))
     }
-
+    
     public init(_ r: Int, _ g: Int, _ b: Int) {
         self.r = r
         self.g = g
         self.b = b
     }
-
+    
     public static func +(x: RGBTriplet, y: RGBTriplet) -> RGBTriplet {
         return RGBTriplet(x.r + y.r, x.g + y.g, x.b + y.b)
     }
-
+    
     public static func +(x: RGBTriplet, y: Int) -> RGBTriplet {
         return RGBTriplet(x.r + y, x.g + y, x.b + y)
     }
-
+    
     public static func +(x: Int, y: RGBTriplet) -> RGBTriplet {
         return RGBTriplet(x + y.r, x + y.g, x + y.b)
     }
-
+    
     public static func *(x: RGBTriplet, y: Int) -> RGBTriplet {
         return RGBTriplet(x.r * y, x.g * y, x.b * y)
     }
-
+    
     public static func *(x: Int, y: RGBTriplet) -> RGBTriplet {
         return RGBTriplet(x * y.r, x * y.g, x * y.b)
     }
-
+    
     public static func /(x: RGBTriplet, y: Int) -> RGBTriplet {
         return RGBTriplet(x.r / y, x.g / y, x.b / y)
     }
-
+    
     public static func /(x: Int, y: RGBTriplet) -> RGBTriplet {
         return RGBTriplet(x / y.r, x / y.g, x / y.b)
     }
-
+    
     public func color(alpha: UInt8) -> PixelARGB8888 {
         return PixelARGB8888(r: UInt8(r), g: UInt8(g), b: UInt8(b), a: alpha)
     }
-
+    
     public var color: PixelRGB888 {
         return PixelRGB888(r: UInt8(r), g: UInt8(g), b: UInt8(b))
     }

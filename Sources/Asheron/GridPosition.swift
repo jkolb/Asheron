@@ -32,7 +32,7 @@ public struct GridPosition : Hashable, CustomStringConvertible {
         self.x = UInt32(Int(position.x) * 8 + x)
         self.y = UInt32(Int(position.y) * 8 + y)
     }
-
+    
     public var hashValue: Int {
         return x.hashValue ^ y.hashValue
     }
@@ -40,7 +40,7 @@ public struct GridPosition : Hashable, CustomStringConvertible {
     public var description: String {
         return "(\(x), \(y))"
     }
-
+    
     public static func ==(a: GridPosition, b: GridPosition) -> Bool {
         return a.x == b.x && a.y == b.y
     }

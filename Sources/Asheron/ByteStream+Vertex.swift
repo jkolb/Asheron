@@ -23,11 +23,11 @@
  */
 
 extension ByteStream {
-	public func getVertex() -> Vertex {
-		let texCoordCount = Int(getUInt16())
-		let position = getVector3()
-		let normal = getVector3()
-		let texCoord = getVector2(count: texCoordCount)
-		return Vertex(position: position, normal: normal, texCoord: texCoord)
-	}
+    public func getVertex() -> Vertex {
+        let texCoordCount = Int(getUInt16())
+        let position = getVector3()
+        let normal = getVector3()
+        let texCoord = getVector2(count: texCoordCount)
+        return Vertex(position: position, normal: normal, texCoord: texCoord)
+    }
 }

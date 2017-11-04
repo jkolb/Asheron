@@ -25,12 +25,12 @@
 public struct WorldRegionMonth : CustomStringConvertible {
     public let startDay: Int
     public let name: String
-
+    
     public init(startDay: Int, name: String) {
         self.startDay = startDay
         self.name = name
     }
-
+    
     public var description: String {
         return "\(name) - \(startDay)"
     }

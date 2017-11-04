@@ -25,7 +25,7 @@
 public struct WorldRegionUnknownA {
     public let unknown1: UInt32
     public let unknown2: [WorldRegionUnknownB]
-
+    
     public init(unknown1: UInt32, unknown2: [WorldRegionUnknownB]) {
         self.unknown1 = unknown1
         self.unknown2 = unknown2

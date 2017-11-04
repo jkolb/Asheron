@@ -25,20 +25,20 @@
 import Swiftish
 
 public final class Geometry : PortalObject {
-	public struct Flags : OptionSet {
-		public static let collidable = Flags(rawValue: 1 << 0)
-		public static let renderable = Flags(rawValue: 1 << 1)
-		public static let degradable = Flags(rawValue: 1 << 3)
-
-		public let rawValue: UInt32
-
-		public init(rawValue: UInt32) {
-			self.rawValue = rawValue
-		}
-	}
-
+    public struct Flags : OptionSet {
+        public static let collidable = Flags(rawValue: 1 << 0)
+        public static let renderable = Flags(rawValue: 1 << 1)
+        public static let degradable = Flags(rawValue: 1 << 3)
+        
+        public let rawValue: UInt32
+        
+        public init(rawValue: UInt32) {
+            self.rawValue = rawValue
+        }
+    }
+    
     public static let kind = PortalKind.geometry
-
+    
     public let handle: GeometryHandle
     public var flags: Flags = []
     public var material: [MaterialHandle] = []
@@ -51,7 +51,7 @@ public final class Geometry : PortalObject {
     public var renderPolygon: [Polygon] = []
     public var renderTree: BSPRenderTree = .empty
     public var unknown3: UInt32 = 0
-
+    
     public init(handle: GeometryHandle) {
         self.handle = handle
     }

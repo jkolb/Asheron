@@ -25,7 +25,7 @@
 public struct WorldRegionSceneryList {
     public let index: UInt32
     public let sceneryHandles: [WorldSceneryHandle]
-
+    
     public init(index: UInt32, sceneryHandles: [WorldSceneryHandle]) {
         self.index = index
         self.sceneryHandles = sceneryHandles

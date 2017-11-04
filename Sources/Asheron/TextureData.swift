@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
- public final class TextureData : PortalObject {
+public final class TextureData : PortalObject {
     public static let kind = PortalKind.textureData
     public let handle: TextureDataHandle
     public let width: UInt32

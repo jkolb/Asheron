@@ -53,7 +53,7 @@ public struct DXT5Block : DXTBlock {
             let alpha5 = UInt8((3 * Int(alpha0) + 4 * Int(alpha1) + 3) / 7)
             let alpha6 = UInt8((2 * Int(alpha0) + 5 * Int(alpha1) + 3) / 7)
             let alpha7 = UInt8((1 * Int(alpha0) + 6 * Int(alpha1) + 3) / 7)
-
+            
             self.alpha = [alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6, alpha7]
         }
         else {
@@ -63,10 +63,10 @@ public struct DXT5Block : DXTBlock {
             let alpha5 = UInt8((1 * Int(alpha0) + 4 * Int(alpha1) + 2) / 5)
             let alpha6 = UInt8(0)
             let alpha7 = UInt8(255)
-
+            
             self.alpha = [alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6, alpha7]
         }
-
+        
         let color0 = PixelRGB565(bits: colorBlock.color0())
         let color1 = PixelRGB565(bits: colorBlock.color1())
         

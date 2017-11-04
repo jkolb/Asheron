@@ -25,7 +25,7 @@
 public struct WorldRegionUnknownB {
     public let unknown1: UInt32
     public let unknown2: [Float] // x4
-
+    
     public init(unknown1: UInt32, unknown2: [Float]) {
         self.unknown1 = unknown1
         self.unknown2 = unknown2

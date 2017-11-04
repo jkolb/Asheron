@@ -30,7 +30,7 @@ public struct TextureReference : CustomStringConvertible {
         self.handle = handle
         self.location = location
     }
-
+    
     public var description: String {
         return "\(handle):\(location)"
     }

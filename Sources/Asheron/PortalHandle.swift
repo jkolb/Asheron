@@ -38,11 +38,11 @@ public struct PortalHandle<ObjectType : PortalObject> : Hashable, CustomStringCo
         
         self.init(index: index)
     }
-
+    
     public init(index: UInt16) {
         self.index = index
     }
-
+    
     public var kind: PortalKind {
         return ObjectType.kind
     }

@@ -60,7 +60,7 @@ public class ByteStream : IteratorProtocol {
     public func align(_ count: Int) {
         position += (count - (position % count)) % count
     }
-
+    
     public func skip(_ count: Int) {
         precondition(count >= 0)
         precondition(remaining >= count)
@@ -70,7 +70,7 @@ public class ByteStream : IteratorProtocol {
     public func next() -> UInt8? {
         return hasRemaining ? getUInt8() : nil
     }
-
+    
     public func getUInt8(count: Int) -> [UInt8] {
         precondition(remaining >= count)
         var array = [UInt8](repeating: 0, count: count)
@@ -195,7 +195,7 @@ public class ByteStream : IteratorProtocol {
         bytes += MemoryLayout<UInt8>.size * 3
         return octet0 | octet1 | octet2 | octet3
     }
-
+    
     public func getUInt32() -> UInt32 {
         precondition(remaining >= MemoryLayout<UInt32>.size)
         let value = bytes.bindMemory(to: UInt32.self, capacity: 1).pointee
@@ -258,7 +258,7 @@ public class ByteStream : IteratorProtocol {
         
         return String(characters)
     }
-
+    
     public func getString() -> String {
         let count: Int
         let shortCount = getUInt16()
@@ -277,13 +277,13 @@ public class ByteStream : IteratorProtocol {
         
         return String(cString: nulTerminatedUTF8)
     }
-
+    
     public func getBool() -> Bool {
         let value = getUInt32()
         precondition(value == 0 || value == 1)
         return value == 1
     }
-
+    
     public func putUInt8(_ array: [UInt8]) {
         array.withUnsafeBytes { (pointer) -> Void in
             bytes.copyBytes(from: pointer.baseAddress!, count: array.count)
@@ -317,7 +317,7 @@ public class ByteStream : IteratorProtocol {
     public func putInt64(_ value: Int64) {
         putUInt64(UInt64(bitPattern: value))
     }
-
+    
     public func putUInt8(_ value: UInt8) {
         precondition(remaining >= MemoryLayout<UInt8>.size)
         bytes.bindMemory(to: UInt8.self, capacity: 1).pointee = value
@@ -364,11 +364,11 @@ public class ByteStream : IteratorProtocol {
         putUTF8(value)
         putUInt8(0)
     }
-
+    
     public func putUTF8(_ value: String) {
         value.utf8.forEach { putUInt8($0) }
     }
-
+    
     public func copyBytes(from source: ByteStream) {
         let bytesCopied = min(remaining, source.remaining)
         precondition(bytesCopied > 0)

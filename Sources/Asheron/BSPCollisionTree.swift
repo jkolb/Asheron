@@ -25,111 +25,112 @@
 import Swiftish
 
 public indirect enum BSPCollisionTree {
-	case empty
-	case node(Node)
-	case leaf(Leaf)
-
-	public struct Node {
-		public var tag: Tag
-		public var partition: Plane<Float> = Plane<Float>(normal: Vector3<Float>(), distance: 0.0)
-		public var front: BSPCollisionTree = .empty
-		public var back: BSPCollisionTree = .empty
-		public var bounds: Sphere<Float> = Sphere<Float>()
-
-		public init(tag: Tag) {
-			self.tag = tag
-		}
-	}
-
-	public struct Leaf {
-		public let tag: Tag = .LEAF
-		public var leafIndex: UInt32 = 0
-		public var unknown: UInt32 = 0
-		public var bounds: Sphere<Float> = Sphere<Float>()
-		public var polygonIndex: [UInt16] = []
-
-		public init() {}
-	}
-
-	public enum Tag : String {
-	    case LEAF = "LEAF"
-	    
-	    // Front child only
-	    case BPnn = "BPnn"
-	    case BPIn = "BPIn"
-	    
-	    // Back child only
-	    case BpIN = "BpIN"
-	    case BpnN = "BpnN"
-
-	    // Both front and back children
-	    case BPIN = "BPIN"
-	    case BPnN = "BPnN"
-
-	    // Neither child
-	    case BpIn = "BpIn"
-	    case BPOL = "BPOL"
-	    
-	    public var hasFront: Bool {
-	        switch self {
-	        case .LEAF:
-	            return false
-
-	        case .BPnn:
-	            return true
-
-	        case .BPIn:
-	            return true
-	            
-	        case .BpIN:
-	            return false
-
-	        case .BpnN:
-	            return false
-	            
-	        case .BPIN:
-	            return true
-
-	        case .BPnN:
-	            return true
-	            
-	        case .BpIn:
-	            return false
-	            
-	        case .BPOL:
-	            return false
-	        }
-	    }
-	    
-	    public var hasBack: Bool {
-	        switch self {
-	        case .LEAF:
-	            return false
-	            
-	        case .BPnn:
-	            return false
-	            
-	        case .BPIn:
-	            return false
-	            
-	        case .BpIN:
-	            return true
-	            
-	        case .BpnN:
-	            return true
-	            
-	        case .BPIN:
-	            return true
-	            
-	        case .BPnN:
-	            return true
-	            
-	        case .BpIn:
-	            return false
-	            
-	        case .BPOL:
-	            return false
-	        }
-	    }
-	}
+    case empty
+    case node(Node)
+    case leaf(Leaf)
+    
+    public struct Node {
+        public var tag: Tag
+        public var partition: Plane<Float> = Plane<Float>(normal: Vector3<Float>(), distance: 0.0)
+        public var front: BSPCollisionTree = .empty
+        public var back: BSPCollisionTree = .empty
+        public var bounds: Sphere<Float> = Sphere<Float>()
+        
+        public init(tag: Tag) {
+            self.tag = tag
+        }
+    }
+    
+    public struct Leaf {
+        public let tag: Tag = .LEAF
+        public var leafIndex: UInt32 = 0
+        public var unknown: UInt32 = 0
+        public var bounds: Sphere<Float> = Sphere<Float>()
+        public var polygonIndex: [UInt16] = []
+        
+        public init() {}
+    }
+    
+    public enum Tag : String {
+        case LEAF = "LEAF"
+        
+        // Front child only
+        case BPnn = "BPnn"
+        case BPIn = "BPIn"
+        
+        // Back child only
+        case BpIN = "BpIN"
+        case BpnN = "BpnN"
+        
+        // Both front and back children
+        case BPIN = "BPIN"
+        case BPnN = "BPnN"
+        
+        // Neither child
+        case BpIn = "BpIn"
+        case BPOL = "BPOL"
+        
+        public var hasFront: Bool {
+            switch self {
+            case .LEAF:
+                return false
+                
+            case .BPnn:
+                return true
+                
+            case .BPIn:
+                return true
+                
+            case .BpIN:
+                return false
+                
+            case .BpnN:
+                return false
+                
+            case .BPIN:
+                return true
+                
+            case .BPnN:
+                return true
+                
+            case .BpIn:
+                return false
+                
+            case .BPOL:
+                return false
+            }
+        }
+        
+        public var hasBack: Bool {
+            switch self {
+            case .LEAF:
+                return false
+                
+            case .BPnn:
+                return false
+                
+            case .BPIn:
+                return false
+                
+            case .BpIN:
+                return true
+                
+            case .BpnN:
+                return true
+                
+            case .BPIN:
+                return true
+                
+            case .BPnN:
+                return true
+                
+            case .BpIn:
+                return false
+                
+            case .BPOL:
+                return false
+            }
+        }
+    }
 }
+

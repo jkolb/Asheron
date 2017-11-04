@@ -37,11 +37,11 @@ public struct CellPosition : Hashable, CustomStringConvertible, RawRepresentable
         self.x = x
         self.y = y
     }
-
+    
     public init(x: Int, y: Int) {
         self.init(x: UInt8(x), y: UInt8(y))
     }
-
+    
     public var rawValue: UInt32 {
         return UInt32(x) << 24 | UInt32(y) << 16
     }

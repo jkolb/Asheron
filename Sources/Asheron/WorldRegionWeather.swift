@@ -27,14 +27,14 @@ public struct WorldRegionWeather : CustomStringConvertible {
     public let name: String
     public let objects: [WorldRegionWeatherObject]
     public let unknowns: [WorldRegionWeatherUnknown]
-
+    
     public init(percentage: Float, name: String, objects: [WorldRegionWeatherObject], unknowns: [WorldRegionWeatherUnknown]) {
         self.percentage = percentage
         self.name = name
         self.objects = objects
         self.unknowns = unknowns
     }
-
+    
     public var description: String {
         return "\(name) - \(percentage)"
     }
