@@ -60,7 +60,7 @@ extension ByteStream {
     }
     
     private func getBSPRenderTreeTag() -> BSPRenderTree.Tag {
-        let rawValue = String(getUTF8(count: 4).characters.reversed())
+        let rawValue = String(getUTF8(count: 4).reversed())
         return BSPRenderTree.Tag(rawValue: rawValue)!
     }
 }
