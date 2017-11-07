@@ -22,39 +22,14 @@
  SOFTWARE.
  */
 
-extension ByteStream {
-    public func getPolygon() -> Polygon {
-        var polygon = Polygon()
-        polygon.index = getUInt16()
-        polygon.name = Polygon.Name(rawValue: getUInt8())!
-        polygon.texCoords = Polygon.TexCoords(rawValue: getUInt8())
-        polygon.faces = Polygon.Faces(rawValue: getUInt16())!
-        polygon.unknown = getUInt16()
-        polygon.frontMaterialIndex = getUInt16()
-        polygon.backMaterialIndex = getUInt16()
-        polygon.vertexIndex = getUInt16(count: polygon.sides)
-        
-        if polygon.texCoords.contains([.front]) {
-            polygon.frontTexCoordIndex = getUInt8(count: polygon.sides)
-        }
-        
-        if polygon.texCoords.contains([.back]) {
-            polygon.backTexCoordIndex = getUInt8(count: polygon.sides)
-        }
-        
-        align(4)
-        
-        return polygon
-    }
-    
-    public func getPolygon(count: Int) -> [Polygon] {
-        var values = [Polygon]()
-        values.reserveCapacity(count)
-        
-        for _ in 0..<count {
-            values.append(getPolygon())
-        }
-        
-        return values
+import Lilliput
+
+extension OrderedByteBuffer {
+    public func getVertex() -> Vertex {
+        let texCoordCount = Int(getUInt16())
+        let position = getVector3()
+        let normal = getVector3()
+        let texCoord = getVector2(count: texCoordCount)
+        return Vertex(position: position, normal: normal, texCoord: texCoord)
     }
 }

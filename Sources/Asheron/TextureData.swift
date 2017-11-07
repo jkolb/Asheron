@@ -22,6 +22,8 @@
  SOFTWARE.
  */
 
+import Lilliput
+
 public final class TextureData : PortalObject {
     public static let kind = PortalKind.textureData
     public let handle: TextureDataHandle

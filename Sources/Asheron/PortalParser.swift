@@ -22,9 +22,11 @@
  SOFTWARE.
  */
 
+import Lilliput
+
 public final class PortalParser {
     public func parseColorTable(handle: ColorTableHandle, buffer: ByteBuffer) -> ColorTable {
-        let bytes = ByteStream(buffer: buffer)
+        let bytes = OrderedByteBuffer<LittleEndian>(buffer: buffer)
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
         let count = bytes.getUInt32()
@@ -43,7 +45,7 @@ public final class PortalParser {
     }
     
     public func parseTextureList(handle: TextureListHandle, buffer: ByteBuffer) -> TextureList {
-        let bytes = ByteStream(buffer: buffer)
+        let bytes = OrderedByteBuffer<LittleEndian>(buffer: buffer)
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
         bytes.skip(5)
@@ -72,7 +74,7 @@ public final class PortalParser {
     }
     
     public func parseTextureData(handle: TextureDataHandle, buffer: ByteBuffer) -> TextureData {
-        let bytes = ByteStream(buffer: buffer)
+        let bytes = OrderedByteBuffer<LittleEndian>(buffer: buffer)
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
         bytes.skip(MemoryLayout<UInt32>.size)
@@ -83,7 +85,7 @@ public final class PortalParser {
             fatalError("Unexpected D3DFMT: \(hex(rawD3DFormat))")
         }
         let data = ByteBuffer(count: numericCast(bytes.getUInt32()))
-        bytes.copyBytes(to: data)
+        bytes.copy(to: data)
         let format: TextureFormat
         
         if d3dFormat == .D3DFMT_INDEX16 || d3dFormat == .D3DFMT_P8 {
@@ -149,7 +151,7 @@ public final class PortalParser {
     }
     
     public func parseWorldRegion(handle: WorldRegionHandle, buffer: ByteBuffer) -> WorldRegion {
-        let bytes = ByteStream(buffer: buffer)
+        let bytes = OrderedByteBuffer<LittleEndian>(buffer: buffer)
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
         
@@ -365,7 +367,7 @@ public final class PortalParser {
         )
     }
     
-    private func parseWorldRegionHour(bytes: ByteStream) -> WorldRegionHour {
+    private func parseWorldRegionHour(bytes: OrderedByteBuffer<LittleEndian>) -> WorldRegionHour {
         let startTime = bytes.getFloat32()
         let isNight = bytes.getBool()
         let name = bytes.getString()
@@ -373,14 +375,14 @@ public final class PortalParser {
         return WorldRegionHour(startTime: startTime, isNight: isNight, name: name)
     }
     
-    private func parseWorldRegionMonth(bytes: ByteStream) -> WorldRegionMonth {
+    private func parseWorldRegionMonth(bytes: OrderedByteBuffer<LittleEndian>) -> WorldRegionMonth {
         let startDay = bytes.getUInt32()
         let name = bytes.getString()
         
         return WorldRegionMonth(startDay: Int(startDay), name: name)
     }
     
-    private func parseWorldRegionWeather(bytes: ByteStream) -> WorldRegionWeather {
+    private func parseWorldRegionWeather(bytes: OrderedByteBuffer<LittleEndian>) -> WorldRegionWeather {
         let percentage = bytes.getFloat32()
         let name = bytes.getString()
         let objectsCount = Int(bytes.getUInt32())
@@ -404,7 +406,7 @@ public final class PortalParser {
         return WorldRegionWeather(percentage: percentage, name: name, objects: objects, unknowns: unknowns)
     }
     
-    private func parseWorldRegionWeatherObject(bytes: ByteStream) -> WorldRegionWeatherObject {
+    private func parseWorldRegionWeatherObject(bytes: OrderedByteBuffer<LittleEndian>) -> WorldRegionWeatherObject {
         let unknown1 = bytes.getFloat32(count: 6)
         let objectHandle = bytes.getUInt32()
         let unknownHandle = bytes.getUInt32()
@@ -413,7 +415,7 @@ public final class PortalParser {
         return WorldRegionWeatherObject(unknown1: unknown1, objectHandle: objectHandle, unknownHandle: unknownHandle, unknown2: unknown2)
     }
     
-    private func parseWorldRegionWeatherUnknown(bytes: ByteStream) -> WorldRegionWeatherUnknown {
+    private func parseWorldRegionWeatherUnknown(bytes: OrderedByteBuffer<LittleEndian>) -> WorldRegionWeatherUnknown {
         let unknown1 = bytes.getFloat32(count: 4)
         let color1 = PixelARGB8888(bits: bytes.getUInt32())
         let unknown2 = bytes.getFloat32()
@@ -433,14 +435,14 @@ public final class PortalParser {
         return WorldRegionWeatherUnknown(unknown1: unknown1, color1: color1, unknown2: unknown2, color2: color2, unknown3: unknown3, color3: color3, unknown4: unknown4, unknowns2: unknowns2)
     }
     
-    private func parseWorldRegionWeatherUnknown2(bytes: ByteStream) -> WorldRegionWeatherUnknown2 {
+    private func parseWorldRegionWeatherUnknown2(bytes: OrderedByteBuffer<LittleEndian>) -> WorldRegionWeatherUnknown2 {
         let unknown1 = bytes.getUInt32()
         let unknown2 = bytes.getFloat32(count: 5)
         
         return WorldRegionWeatherUnknown2(unknown1: unknown1, unknown2: unknown2)
     }
     
-    private func parseWorldRegionUnknownA(bytes: ByteStream) -> WorldRegionUnknownA {
+    private func parseWorldRegionUnknownA(bytes: OrderedByteBuffer<LittleEndian>) -> WorldRegionUnknownA {
         let unknown1 = bytes.getUInt32()
         let count = Int(bytes.getUInt32())
         var unknown2 = [WorldRegionUnknownB]()
@@ -454,14 +456,14 @@ public final class PortalParser {
         return WorldRegionUnknownA(unknown1: unknown1, unknown2: unknown2)
     }
     
-    private func parseWorldRegionUnknownB(bytes: ByteStream) -> WorldRegionUnknownB {
+    private func parseWorldRegionUnknownB(bytes: OrderedByteBuffer<LittleEndian>) -> WorldRegionUnknownB {
         let unknown1 = bytes.getUInt32()
         let unknown2 = bytes.getFloat32(count: 4)
         
         return WorldRegionUnknownB(unknown1: unknown1, unknown2: unknown2)
     }
     
-    private func parseWorldRegionSceneryList(bytes: ByteStream) -> WorldRegionSceneryList {
+    private func parseWorldRegionSceneryList(bytes: OrderedByteBuffer<LittleEndian>) -> WorldRegionSceneryList {
         let index = bytes.getUInt32()
         let sceneryHandlesCount = Int(bytes.getUInt32())
         var sceneryHandles = [WorldSceneryHandle]()
@@ -476,7 +478,7 @@ public final class PortalParser {
         return WorldRegionSceneryList(index: index, sceneryHandles: sceneryHandles)
     }
     
-    private func parseWorldRegionBiome(bytes: ByteStream) -> WorldRegionBiome {
+    private func parseWorldRegionBiome(bytes: OrderedByteBuffer<LittleEndian>) -> WorldRegionBiome {
         let name = bytes.getString()
         let color = PixelARGB8888(bits: bytes.getUInt32())
         let sceneryListIndexesCount = Int(bytes.getUInt32())
@@ -491,14 +493,14 @@ public final class PortalParser {
         return WorldRegionBiome(name: name, color: color, sceneryListIndexes: sceneryListIndexes)
     }
     
-    private func parseWorldRegionBlendTexture(bytes: ByteStream) -> WorldRegionBlendTexture {
+    private func parseWorldRegionBlendTexture(bytes: OrderedByteBuffer<LittleEndian>) -> WorldRegionBlendTexture {
         let type = WorldRegionBlendTextureType(rawValue: bytes.getUInt32())!
         let textureListHandle = TextureListHandle(rawValue: bytes.getUInt32())!
         
         return WorldRegionBlendTexture(type: type, textureListHandle: textureListHandle)
     }
     
-    private func parseWorldRegionBlendTextures(bytes: ByteStream) -> [WorldRegionBlendTexture] {
+    private func parseWorldRegionBlendTextures(bytes: OrderedByteBuffer<LittleEndian>) -> [WorldRegionBlendTexture] {
         let count = Int(bytes.getUInt32())
         var blendTextures = [WorldRegionBlendTexture]()
         blendTextures.reserveCapacity(count)
@@ -511,7 +513,7 @@ public final class PortalParser {
         return blendTextures
     }
     
-    private func parseWorldRegionBiomeTexture(bytes: ByteStream) -> WorldRegionBiomeTexture {
+    private func parseWorldRegionBiomeTexture(bytes: OrderedByteBuffer<LittleEndian>) -> WorldRegionBiomeTexture {
         let index = bytes.getUInt32()
         let textureListHandle1 = TextureListHandle(rawValue: bytes.getUInt32())!
         let unknown1 = bytes.getUInt32()
@@ -528,7 +530,7 @@ public final class PortalParser {
     }
     
     public func parseMaterial(handle: MaterialHandle, buffer: ByteBuffer) -> Material {
-        let bytes = ByteStream(buffer: buffer)
+        let bytes = OrderedByteBuffer<LittleEndian>(buffer: buffer)
         // Doesn't contain its own handle unlike others
         //let rawHandle = bytes.getUInt32()
         //precondition(handle.rawValue == rawHandle)

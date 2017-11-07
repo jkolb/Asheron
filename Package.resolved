@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "Lilliput",
+        "repositoryURL": "https://github.com/jkolb/Lilliput",
+        "state": {
+          "branch": null,
+          "revision": "db6bb6f2a9130e4d63fc1372db3d5bf131a666a2",
+          "version": "8.0.0"
+        }
+      },
+      {
         "package": "Swiftish",
         "repositoryURL": "https://github.com/jkolb/Swiftish",
         "state": {

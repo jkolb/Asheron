@@ -22,26 +22,50 @@
  SOFTWARE.
  */
 
-public final class BlockFile {
-    private let binaryFile: BinaryFile
-    private let block: ByteStream
+import Lilliput
+
+extension ReadableFile {
+    public func read(into buffer: OrderedByteBuffer<LittleEndian>, count: Int) throws -> Int {
+        precondition(count <= buffer.remainingCount)
+        let readCount = try read(into: buffer.remainingBytes, count: count)
+        buffer.position += readCount
+        return readCount
+    }
     
-    public init(binaryFile: BinaryFile, blockSize: UInt32) {
-        self.binaryFile = binaryFile
-        self.block = ByteStream(buffer: ByteBuffer(count: numericCast(blockSize)))
+    public func read(into buffer: OrderedByteBuffer<LittleEndian>) throws -> Int {
+        return try read(into: buffer, count: buffer.remainingCount)
+    }
+}
+
+public final class BlockFile {
+    public enum Error : Swift.Error {
+        case truncatedBlock
+    }
+    
+    private var file: ReadableFile & SeekableFile
+    private let block: OrderedByteBuffer<LittleEndian>
+    
+    public init(file: ReadableFile & SeekableFile, blockSize: UInt32) {
+        self.file = file
+        self.block = OrderedByteBuffer<LittleEndian>(count: numericCast(blockSize))
     }
     
     public func readBlocks(_ blocks: ByteBuffer, at offset: UInt32) throws {
-        let data = ByteStream(buffer: blocks)
+        let data = OrderedByteBuffer<LittleEndian>(buffer: blocks)
         var offset = offset
         
         while offset > 0 {
-            try binaryFile.readBytes(block.buffer, at: numericCast(offset))
+            file.position = numericCast(offset)
+            block.position = 0
+            let readCount = try file.read(into: block)
             
+            if readCount < block.count {
+                throw Error.truncatedBlock
+            }
+            
+            block.position = 0
             offset = block.getUInt32()
-            data.copyBytes(from: block)
-            
-            block.reset()
+            block.copy(to: data)
         }
         
         precondition(!data.hasRemaining)

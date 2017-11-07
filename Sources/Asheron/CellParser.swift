@@ -22,9 +22,11 @@
  SOFTWARE.
  */
 
+import Lilliput
+
 public final class CellParser {
     public func parseLandBlock(handle: LandBlockHandle, buffer: ByteBuffer) -> LandBlock {
-        let bytes = ByteStream(buffer: buffer)
+        let bytes = OrderedByteBuffer<LittleEndian>(buffer: buffer)
         let rawHandle = bytes.getUInt32()
         precondition(handle.rawValue == rawHandle)
         let rawHasStructures = bytes.getUInt32()

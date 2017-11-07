@@ -33,7 +33,9 @@
  DXT5   Interpolated alpha  No
  */
 
+import Lilliput
+
 public protocol DXTReader {
     associatedtype DXTBlockType : DXTBlock
-    func read(_ buffer: ByteStream) -> DXTBlockType
+    func read(_ buffer: OrderedByteBuffer<LittleEndian>) -> DXTBlockType
 }

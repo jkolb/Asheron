@@ -33,9 +33,11 @@
  DXT5   Interpolated alpha  No
  */
 
+import Lilliput
+
 public struct DXT3Reader : DXTReader {
     public init() {}
-    public func read(_ buffer: ByteStream) -> DXT3Block {
+    public func read(_ buffer: OrderedByteBuffer<LittleEndian>) -> DXT3Block {
         return DXT3Block(alphaBlock: DXT3Alpha(bits: buffer.getUInt64()), colorBlock: DXTColor(bits: buffer.getUInt64()))
     }
 }

@@ -22,9 +22,11 @@
  SOFTWARE.
  */
 
+import Lilliput
+
 public struct PixelARGB8888Reader : PixelReader {
     public init() {}
-    public func read(_ buffer: ByteStream) -> PixelARGB8888 {
+    public func read(_ buffer: OrderedByteBuffer<LittleEndian>) -> PixelARGB8888 {
         return PixelARGB8888(bits: buffer.getUInt32())
     }
 }

@@ -22,7 +22,9 @@
  SOFTWARE.
  */
 
-extension ByteStream {
+import Lilliput
+
+extension OrderedByteBuffer {
     public func getBSPRenderTree() -> BSPRenderTree {
         let tag = getBSPRenderTreeTag()
         
@@ -60,7 +62,7 @@ extension ByteStream {
     }
     
     private func getBSPRenderTreeTag() -> BSPRenderTree.Tag {
-        let rawValue = String(getUTF8(count: 4).reversed())
+        let rawValue = String(getString(count: 4).reversed())
         return BSPRenderTree.Tag(rawValue: rawValue)!
     }
 }

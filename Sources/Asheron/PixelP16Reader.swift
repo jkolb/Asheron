@@ -22,6 +22,8 @@
  SOFTWARE.
  */
 
+import Lilliput
+
 public struct PixelP16Reader : PixelReader {
     private let colorTable: ColorTable
     
@@ -29,7 +31,7 @@ public struct PixelP16Reader : PixelReader {
         self.colorTable = colorTable
     }
     
-    public func read(_ buffer: ByteStream) -> PixelARGB8888 {
+    public func read(_ buffer: OrderedByteBuffer<LittleEndian>) -> PixelARGB8888 {
         let index = buffer.getUInt16()
         return colorTable[index]
     }

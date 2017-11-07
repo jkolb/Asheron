@@ -22,6 +22,8 @@
  SOFTWARE.
  */
 
+import Lilliput
+
 public struct PixelARGB8888 : Pixel {
     // AAAAAAAA|RRRRRRRR|GGGGGGGG|BBBBBBBB
     public let bits: UInt32
@@ -55,8 +57,8 @@ public struct PixelARGB8888 : Pixel {
     
     public static func convert<Reader: PixelReader>(width: Int, height: Int, data: ByteBuffer, reader: Reader) -> ByteBuffer {
         let outputSize = width * height * PixelARGB8888.byteCount
-        let outputStream = ByteStream(buffer: ByteBuffer(count: outputSize))
-        let inputStream = ByteStream(buffer: data)
+        let outputStream = OrderedByteBuffer<LittleEndian>(count: outputSize)
+        let inputStream = OrderedByteBuffer<LittleEndian>(buffer: data)
         
         for _ in 1...height {
             for _ in 1...width {

@@ -22,7 +22,9 @@
  SOFTWARE.
  */
 
+import Lilliput
+
 public protocol PixelReader {
     associatedtype PixelType : Pixel
-    func read(_ buffer: ByteStream) -> PixelType
+    func read(_ buffer: OrderedByteBuffer<LittleEndian>) -> PixelType
 }

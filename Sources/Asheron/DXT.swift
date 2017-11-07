@@ -33,11 +33,13 @@
  DXT5   Interpolated alpha  No
  */
 
+import Lilliput
+
 public final class DXT {
     public static func decompress<Reader: DXTReader>(width: Int, height: Int, data: ByteBuffer, reader: Reader) -> ByteBuffer {
         let outputSize = width * height * PixelARGB8888.byteCount
-        let outputStream = ByteStream(buffer: ByteBuffer(count: outputSize))
-        let inputStream = ByteStream(buffer: data)
+        let outputStream = OrderedByteBuffer<LittleEndian>(count: outputSize)
+        let inputStream = OrderedByteBuffer<LittleEndian>(buffer: data)
         
         let blockSize = 4
         let blocksWide = width / blockSize

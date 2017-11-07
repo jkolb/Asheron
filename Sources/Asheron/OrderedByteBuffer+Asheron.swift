@@ -22,12 +22,42 @@
  SOFTWARE.
  */
 
-extension ByteStream {
-    public func getVertex() -> Vertex {
-        let texCoordCount = Int(getUInt16())
-        let position = getVector3()
-        let normal = getVector3()
-        let texCoord = getVector2(count: texCoordCount)
-        return Vertex(position: position, normal: normal, texCoord: texCoord)
+import Lilliput
+
+extension OrderedByteBuffer {
+    public func skip(_ count: Int) {
+        let _ = getUInt8(count: count)
+    }
+    
+    public func getBool() -> Bool {
+        let value = getUInt32()
+        precondition(value == 0 || value == 1)
+        return value == 1
+    }
+    
+    public func getString() -> String {
+        let count: Int
+        let shortCount = getUInt16()
+        
+        if shortCount == 0xFFFF {
+            count = Int(getUInt32())
+        }
+        else {
+            count = Int(shortCount)
+        }
+        
+        var nulTerminatedUTF8 = getUInt8(count: count)
+        nulTerminatedUTF8.append(0)
+        
+        align(4)
+        
+        return String(cString: nulTerminatedUTF8)
+    }
+    
+    public func getString(count: Int) -> String {
+        var nulTerminatedUTF8 = getUInt8(count: count)
+        nulTerminatedUTF8.append(0)
+
+        return String(cString: nulTerminatedUTF8)
     }
 }

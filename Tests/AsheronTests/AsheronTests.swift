@@ -24,48 +24,44 @@
 
 import XCTest
 @testable import Asheron
+import Lilliput
 
 class AsheronTests: XCTestCase {
     func testExample() {
-        let buffer24Bit = ByteStream(buffer: ByteBuffer(count: 3))
+        let buffer24Bit = OrderedByteBuffer<LittleEndian>(count: 3)
         buffer24Bit.putInt24(-8388608)
-        buffer24Bit.reset()
+        buffer24Bit.position = 0
         XCTAssertEqual(buffer24Bit.getInt24(), -8388608)
-        buffer24Bit.reset()
+        buffer24Bit.position = 0
         buffer24Bit.putInt24(8388607)
-        buffer24Bit.reset()
+        buffer24Bit.position = 0
         XCTAssertEqual(buffer24Bit.getInt24(), 8388607)
-        buffer24Bit.reset()
+        buffer24Bit.position = 0
         buffer24Bit.putUInt24(16777215)
-        buffer24Bit.reset()
+        buffer24Bit.position = 0
         XCTAssertEqual(buffer24Bit.getUInt24(), 16777215)
         
-        let utf8Buffer = ByteStream(buffer: ByteBuffer(count: 6))
-        utf8Buffer.putUTF8("ABCDEF")
-        utf8Buffer.reset()
-        XCTAssertEqual(utf8Buffer.getUTF8(count: 4), "ABCD")
+//        let utf8Buffer = OrderedByteBuffer<LittleEndian>(count: 6)
+//        let temp = Array<UInt8>("ABCDEF".utf8CString.prefix(4))
+//        utf8Buffer.putUInt8(Array<UInt8>("ABCDEF".utf8CString.prefix(4)))
+//        utf8Buffer.position = 0
+//        XCTAssertEqual(utf8Buffer.getString(count: 4), "ABCD")
         
-        let arrayBuffer = ByteStream(buffer: ByteBuffer(count: 4))
+        let arrayBuffer = OrderedByteBuffer<LittleEndian>(count: 4)
         arrayBuffer.putUInt8([0, 1, 2, 3])
-        arrayBuffer.reset()
+        arrayBuffer.position = 0
         XCTAssertEqual(arrayBuffer.getUInt8(count: 4), [0, 1, 2, 3])
-        
-        let cStringBuffer = ByteStream(buffer: ByteBuffer(count: 4))
-        cStringBuffer.putCString("ABC")
-        XCTAssert(!cStringBuffer.hasRemaining)
-        cStringBuffer.reset()
-        XCTAssertEqual(cStringBuffer.getCString(), "ABC")
         
         let textureData = TextureData(handle: TextureDataHandle(index: 1), width: 320, height: 200, format: .p8(ColorTableHandle(index: 1)), data: ByteBuffer(count: 1))
         XCTAssertEqual(textureData.description, "textureData(06000001)")
         
         XCTAssertEqual(hex(UInt8(0xFF)), "FF")
         
-        let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
+        let indexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Asheron/Data/client_portal.dat")
         let handles = try! indexFile.handles(matching: { TextureListHandle(rawValue: $0) != nil })
         let portalFile = PortalFile(indexFile: indexFile)
 
-        let highresFile = HighresFile(indexFile: try! IndexFile.openForReading(at: "Data/client_highres.dat"))
+        let highresFile = HighresFile(indexFile: try! IndexFile.openForReading(at: "/Users/jkolb/src/Asheron/Data/client_highres.dat"))
         let textureLoader = TextureLoader(portalFile: portalFile, highresFile: highresFile)
         textureLoader.location = .highres
         print(handles.count)
@@ -76,7 +72,7 @@ class AsheronTests: XCTestCase {
             print(textureData)
         }
         
-        let cellIndexFile = try! IndexFile.openForReading(at: "Data/client_cell_1.dat")
+        let cellIndexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Asheron/Data/client_cell_1.dat")
         let cellFile = CellFile(indexFile: cellIndexFile)
 
         var blocks = [[LandBlock]]()
@@ -131,9 +127,9 @@ class AsheronTests: XCTestCase {
     }
 
     func testTextureLocation() {
-        let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
+        let indexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Asheron/Data/client_portal.dat")
         let portalFile = PortalFile(indexFile: indexFile)
-        let highresFile = HighresFile(indexFile: try! IndexFile.openForReading(at: "Data/client_highres.dat"))
+        let highresFile = HighresFile(indexFile: try! IndexFile.openForReading(at: "/Users/jkolb/src/Asheron/Data/client_highres.dat"))
         let textureLoader = TextureLoader(portalFile: portalFile, highresFile: highresFile)
         let locations: [TextureLocation] = [.portal, .highres]
         let handles = try! indexFile.handles(matching: { TextureListHandle(rawValue: $0) != nil })
@@ -155,7 +151,7 @@ class AsheronTests: XCTestCase {
     }
 
     func testMaterials() {
-        let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
+        let indexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Asheron/Data/client_portal.dat")
         let portalFile = PortalFile(indexFile: indexFile)
         let rawHandles = try! indexFile.handles(matching: { MaterialHandle(rawValue: $0) != nil })
 
@@ -167,7 +163,7 @@ class AsheronTests: XCTestCase {
     }
 
     func testWorldRegion() {
-        let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
+        let indexFile = try! IndexFile.openForReading(at: "/Users/jkolb/src/Asheron/Data/client_portal.dat")
         let portalFile = PortalFile(indexFile: indexFile)
         let worldRegionHandle = WorldRegionHandle(index: 0)
         let worldRegion = try! portalFile.fetchWorldRegion(handle: worldRegionHandle)

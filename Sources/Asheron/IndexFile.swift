@@ -22,11 +22,17 @@
  SOFTWARE.
  */
 
+import Lilliput
+
 public final class IndexFile {
+    public enum Error : Swift.Error {
+        case truncatedHeader
+    }
+    
     private let blockFile: BlockFile
     private let parser: IndexParser
     public let rootNodeOffset: UInt32
-    private let nodeBytes: ByteStream
+    private let nodeBytes: OrderedByteBuffer<LittleEndian>
     private var nodeCache: [UInt32:Node]
     
     public struct Node {
@@ -52,14 +58,20 @@ public final class IndexFile {
     }
     
     public class func openForReading(at path: String) throws -> IndexFile {
-        let binaryFile = try BinaryFile.openForReading(at: path)
-        let headerBytes = ByteStream(buffer: ByteBuffer(count: 1024))
-        try binaryFile.readBytes(headerBytes.buffer, at: 0)
+        let binaryFile = try BinaryFile.open(forReadingAtPath: path)
+        let headerBytes = OrderedByteBuffer<LittleEndian>(count: 1024)
+        let readCount = try binaryFile.read(into: headerBytes)
+        
+        if readCount < headerBytes.count {
+            throw Error.truncatedHeader
+        }
+        
+        headerBytes.position = 0
         headerBytes.skip(324)
         let blockSize = headerBytes.getUInt32()
         headerBytes.skip(24)
         let rootNodeOffset = headerBytes.getUInt32()
-        let blockFile = BlockFile(binaryFile: binaryFile, blockSize: blockSize)
+        let blockFile = BlockFile(file: binaryFile, blockSize: blockSize)
         let indexFile = IndexFile(blockFile: blockFile, rootNodeOffset: rootNodeOffset)
         return indexFile
     }
@@ -68,7 +80,7 @@ public final class IndexFile {
         self.blockFile = blockFile
         self.parser = IndexParser()
         self.rootNodeOffset = rootNodeOffset
-        self.nodeBytes = ByteStream(buffer: ByteBuffer(count: Node.diskSize))
+        self.nodeBytes = OrderedByteBuffer<LittleEndian>(count: Node.diskSize)
         self.nodeCache = [UInt32:Node](minimumCapacity: 64)
     }
     
@@ -162,7 +174,7 @@ public final class IndexFile {
         
         let node = parser.parseNode(bytes: nodeBytes)
         
-        nodeBytes.reset()
+        nodeBytes.position = 0
         
         return node
     }

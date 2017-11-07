@@ -22,8 +22,10 @@
  SOFTWARE.
  */
 
+import Lilliput
+
 public final class IndexParser {
-    public func parseNode(bytes: ByteStream) -> IndexFile.Node {
+    public func parseNode(bytes: OrderedByteBuffer<LittleEndian>) -> IndexFile.Node {
         var node = IndexFile.Node()
         
         for index in 0..<node.offset.count {
