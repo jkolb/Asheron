@@ -58,7 +58,7 @@ public final class IndexFile {
     }
     
     public class func openForReading(at path: String) throws -> IndexFile {
-        let binaryFile = try BinaryFile.open(forReadingAtPath: path)
+        let binaryFile = try BinaryFile.open(forUpdatingAtPath: path, create: false)
         let headerBytes = OrderedByteBuffer<LittleEndian>(count: 1024)
         let readCount = try binaryFile.read(into: headerBytes)
         
