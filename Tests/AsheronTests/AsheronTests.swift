@@ -57,11 +57,11 @@ class AsheronTests: XCTestCase {
         
         XCTAssertEqual(hex(UInt8(0xFF)), "FF")
         
-        let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
-        let handles = try! indexFile.handles(matching: { TextureListHandle(rawValue: $0) != nil })
-        let portalFile = PortalFile(indexFile: indexFile)
+        let btreeFile = try! BTreeFileV2.openForReading(at: "Data/client_portal.dat")
+        let handles = try! btreeFile.handles(matching: { TextureListHandle(rawValue: $0) != nil })
+        let portalFile = PortalFile(btreeFile: btreeFile)
 
-        let highresFile = HighresFile(indexFile: try! IndexFile.openForReading(at: "Data/client_highres.dat"))
+        let highresFile = HighresFile(btreeFile: try! BTreeFileV2.openForReading(at: "Data/client_highres.dat"))
         let textureLoader = TextureLoader(portalFile: portalFile, highresFile: highresFile)
         textureLoader.location = .highres
         print(handles.count)
@@ -72,8 +72,8 @@ class AsheronTests: XCTestCase {
             print(textureData)
         }
         
-        let cellIndexFile = try! IndexFile.openForReading(at: "Data/client_cell_1.dat")
-        let cellFile = CellFile(indexFile: cellIndexFile)
+        let cellbtreeFile = try! BTreeFileV2.openForReading(at: "Data/client_cell_1.dat")
+        let cellFile = CellFile(btreeFile: cellbtreeFile)
 
         var blocks = [[LandBlock]]()
         let maxX = 17
@@ -127,12 +127,12 @@ class AsheronTests: XCTestCase {
     }
 
     func testTextureLocation() {
-        let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
-        let portalFile = PortalFile(indexFile: indexFile)
-        let highresFile = HighresFile(indexFile: try! IndexFile.openForReading(at: "Data/client_highres.dat"))
+        let btreeFile = try! BTreeFileV2.openForReading(at: "Data/client_portal.dat")
+        let portalFile = PortalFile(btreeFile: btreeFile)
+        let highresFile = HighresFile(btreeFile: try! BTreeFileV2.openForReading(at: "Data/client_highres.dat"))
         let textureLoader = TextureLoader(portalFile: portalFile, highresFile: highresFile)
         let locations: [TextureLocation] = [.portal, .highres]
-        let handles = try! indexFile.handles(matching: { TextureListHandle(rawValue: $0) != nil })
+        let handles = try! btreeFile.handles(matching: { TextureListHandle(rawValue: $0) != nil })
 
         for location in locations {
             print()
@@ -151,9 +151,9 @@ class AsheronTests: XCTestCase {
     }
 
     func testMaterials() {
-        let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
-        let portalFile = PortalFile(indexFile: indexFile)
-        let rawHandles = try! indexFile.handles(matching: { MaterialHandle(rawValue: $0) != nil })
+        let btreeFile = try! BTreeFileV2.openForReading(at: "Data/client_portal.dat")
+        let portalFile = PortalFile(btreeFile: btreeFile)
+        let rawHandles = try! btreeFile.handles(matching: { MaterialHandle(rawValue: $0) != nil })
 
         for rawHandle in rawHandles {
             let handle = MaterialHandle(rawValue: rawHandle)!
@@ -163,8 +163,8 @@ class AsheronTests: XCTestCase {
     }
 
     func testWorldRegion() {
-        let indexFile = try! IndexFile.openForReading(at: "Data/client_portal.dat")
-        let portalFile = PortalFile(indexFile: indexFile)
+        let btreeFile = try! BTreeFileV2.openForReading(at: "Data/client_portal.dat")
+        let portalFile = PortalFile(btreeFile: btreeFile)
         let worldRegionHandle = WorldRegionHandle(index: 0)
         let worldRegion = try! portalFile.fetchWorldRegion(handle: worldRegionHandle)
         print(worldRegion.hours)

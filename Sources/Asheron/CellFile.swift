@@ -23,16 +23,16 @@
  */
 
 public final class CellFile {
-    private let indexFile: IndexFile
+    private let btreeFile: BTreeFileV2
     private let parser: CellParser
     
-    public init(indexFile: IndexFile) {
-        self.indexFile = indexFile
+    public init(btreeFile: BTreeFileV2) {
+        self.btreeFile = btreeFile
         self.parser = CellParser()
     }
     
     public func fetchLandBlock(handle: LandBlockHandle) throws -> LandBlock {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
+        let buffer = try btreeFile.readData(handle: handle.rawValue)
         
         return parser.parseLandBlock(handle: handle, buffer: buffer)
     }

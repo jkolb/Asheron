@@ -23,16 +23,16 @@
  */
 
 public final class HighresFile {
-    private let indexFile: IndexFile
+    private let btreeFile: BTreeFileV2
     private let parser: PortalParser
     
-    public init(indexFile: IndexFile) {
-        self.indexFile = indexFile
+    public init(btreeFile: BTreeFileV2) {
+        self.btreeFile = btreeFile
         self.parser = PortalParser()
     }
     
     public func fetchTextureData(handle: TextureDataHandle) throws -> TextureData {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
+        let buffer = try btreeFile.readData(handle: handle.rawValue)
         
         return parser.parseTextureData(handle: handle, buffer: buffer)
     }

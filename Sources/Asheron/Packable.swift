@@ -22,6 +22,10 @@
  SOFTWARE.
  */
 
-public enum IndexFileError : Error {
-    case missingHandle(UInt32)
+import Lilliput
+
+public protocol Packable {
+    var packSize: Int { get }
+    func pack<Order>(to buffer: OrderedByteBuffer<Order>)
+    mutating func unpack<Order>(from buffer: OrderedByteBuffer<Order>)
 }

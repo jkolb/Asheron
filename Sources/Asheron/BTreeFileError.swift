@@ -22,32 +22,6 @@
  SOFTWARE.
  */
 
-import Lilliput
-
-public final class IndexParser {
-    public func parseNode(bytes: OrderedByteBuffer<LittleEndian>) -> IndexFile.Node {
-        var node = IndexFile.Node()
-        
-        for index in 0..<node.offset.count {
-            node.offset[index] = bytes.getUInt32()
-        }
-        
-        node.count = Int(bytes.getUInt32())
-        
-        for index in 0..<node.entry.count {
-            // 4 bytes skipped
-            bytes.skip(MemoryLayout<UInt32>.size)
-            
-            node.entry[index].handle = bytes.getUInt32()
-            node.entry[index].offset = bytes.getUInt32()
-            node.entry[index].length = bytes.getUInt32()
-            
-            // 8 bytes skipped
-            bytes.skip(MemoryLayout<UInt32>.size * 2)
-        }
-        
-        precondition(!bytes.hasRemaining)
-        
-        return node
-    }
+public enum BTreeFileError : Error {
+    case missingHandle(UInt32)
 }

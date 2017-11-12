@@ -23,40 +23,40 @@
  */
 
 public final class PortalFile {
-    private let indexFile: IndexFile
+    private let btreeFile: BTreeFileV2
     private let parser: PortalParser
     
-    public init(indexFile: IndexFile) {
-        self.indexFile = indexFile
+    public init(btreeFile: BTreeFileV2) {
+        self.btreeFile = btreeFile
         self.parser = PortalParser()
     }
     
     public func fetchColorTable(handle: ColorTableHandle) throws -> ColorTable {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
+        let buffer = try btreeFile.readData(handle: handle.rawValue)
         
         return parser.parseColorTable(handle: handle, buffer: buffer)
     }
     
     public func fetchTextureList(handle: TextureListHandle) throws -> TextureList {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
+        let buffer = try btreeFile.readData(handle: handle.rawValue)
         
         return parser.parseTextureList(handle: handle, buffer: buffer)
     }
     
     public func fetchTextureData(handle: TextureDataHandle) throws -> TextureData {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
+        let buffer = try btreeFile.readData(handle: handle.rawValue)
         
         return parser.parseTextureData(handle: handle, buffer: buffer)
     }
     
     public func fetchWorldRegion(handle: WorldRegionHandle) throws -> WorldRegion {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
+        let buffer = try btreeFile.readData(handle: handle.rawValue)
         
         return parser.parseWorldRegion(handle: handle, buffer: buffer)
     }
     
     public func fetchMaterial(handle: MaterialHandle) throws -> Material {
-        let buffer = try indexFile.readData(handle: handle.rawValue)
+        let buffer = try btreeFile.readData(handle: handle.rawValue)
         
         return parser.parseMaterial(handle: handle, buffer: buffer)
     }

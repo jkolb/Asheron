@@ -24,40 +24,20 @@
 
 import Lilliput
 
-public final class IndexFile {
+public typealias BTreeFileV1 = BTreeFile<BTEntryV1>
+public typealias BTreeFileV2 = BTreeFile<BTEntryV2>
+
+public final class BTreeFile<Entry : BTEntry> {
     public enum Error : Swift.Error {
         case truncatedHeader
     }
     
     private let blockFile: BlockFile
-    private let parser: IndexParser
     public let rootNodeOffset: UInt32
     private let nodeBytes: OrderedByteBuffer<LittleEndian>
-    private var nodeCache: [UInt32:Node]
+    private var nodeCache: [UInt32:BTNode<Entry>]
     
-    public struct Node {
-        static let entryCount = 61
-        static let offsetCount = entryCount + 1
-        static let diskSize = MemoryLayout<UInt32>.size * (offsetCount + 1 + (entryCount * 6))
-        
-        public struct Entry {
-            // 4 bytes skipped
-            public var handle: UInt32 = 0
-            public var offset: UInt32 = 0
-            public var length: UInt32 = 0
-            // 8 bytes ignored
-        }
-        
-        public var offset = [UInt32](repeating: 0, count: Node.offsetCount)
-        public var count: Int = 0
-        public var entry = [Entry](repeating: Entry(), count: Node.entryCount)
-        
-        public var isLeaf: Bool {
-            return offset[0] == 0
-        }
-    }
-    
-    public class func openForReading(at path: String) throws -> IndexFile {
+    public class func openForReading(at path: String) throws -> BTreeFileV2 {
         let binaryFile = try BinaryFile.open(forUpdatingAtPath: path, create: false)
         let headerBytes = OrderedByteBuffer<LittleEndian>(count: 1024)
         let readCount = try binaryFile.read(into: headerBytes)
@@ -72,21 +52,20 @@ public final class IndexFile {
         headerBytes.skip(24)
         let rootNodeOffset = headerBytes.getUInt32()
         let blockFile = BlockFile(file: binaryFile, blockSize: blockSize)
-        let indexFile = IndexFile(blockFile: blockFile, rootNodeOffset: rootNodeOffset)
-        return indexFile
+        let btreeFile = BTreeFileV2(blockFile: blockFile, rootNodeOffset: rootNodeOffset)
+        return btreeFile
     }
     
     public init(blockFile: BlockFile, rootNodeOffset: UInt32) {
         self.blockFile = blockFile
-        self.parser = IndexParser()
         self.rootNodeOffset = rootNodeOffset
-        self.nodeBytes = OrderedByteBuffer<LittleEndian>(count: Node.diskSize)
-        self.nodeCache = [UInt32:Node](minimumCapacity: 64)
+        self.nodeBytes = OrderedByteBuffer<LittleEndian>(count: BTNode<Entry>().packSize)
+        self.nodeCache = [UInt32:BTNode<Entry>](minimumCapacity: 64)
     }
     
     public func readData(handle: UInt32) throws -> ByteBuffer {
         guard let entry = try findEntry(for: handle) else {
-            throw IndexFileError.missingHandle(handle)
+            throw BTreeFileError.missingHandle(handle)
         }
         
         return try readEntry(entry)
@@ -98,7 +77,7 @@ public final class IndexFile {
         return try handlesInNode(node, matching: filter)
     }
     
-    private func handlesInNode(_ node: Node, matching filter: (UInt32) -> Bool) throws -> [UInt32] {
+    private func handlesInNode(_ node: BTNode<Entry>, matching filter: (UInt32) -> Bool) throws -> [UInt32] {
         var handles = [UInt32]()
         
         for entryIndex in 0..<node.count {
@@ -121,7 +100,7 @@ public final class IndexFile {
         return handles.sorted()
     }
     
-    public func findEntry(for handle: UInt32) throws -> Node.Entry? {
+    public func findEntry(for handle: UInt32) throws -> Entry? {
         var offset = rootNodeOffset
         
         nextLevel: while offset > 0 {
@@ -149,7 +128,7 @@ public final class IndexFile {
         return nil
     }
     
-    public func readEntry(_ entry: Node.Entry) throws -> ByteBuffer {
+    public func readEntry(_ entry: Entry) throws -> ByteBuffer {
         let buffer = ByteBuffer(count: numericCast(entry.length))
         
         try blockFile.readBlocks(buffer, at: entry.offset)
@@ -157,22 +136,23 @@ public final class IndexFile {
         return buffer
     }
     
-    public func fetchNode(at offset: UInt32) throws -> Node {
+    public func fetchNode(at offset: UInt32) throws -> BTNode<Entry> {
         if let node = nodeCache[offset] {
             return node
         }
-        
+
         let node = try readNode(at: offset)
-        
+
         nodeCache[offset] = node
-        
+
         return node
     }
     
-    public func readNode(at offset: UInt32) throws -> Node {
+    public func readNode(at offset: UInt32) throws -> BTNode<Entry> {
         try blockFile.readBlocks(nodeBytes.buffer, at: offset)
         
-        let node = parser.parseNode(bytes: nodeBytes)
+        var node = BTNode<Entry>()
+        node.unpack(from: nodeBytes)
         
         nodeBytes.position = 0
         
