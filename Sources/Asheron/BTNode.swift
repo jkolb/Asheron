@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,46 +22,25 @@
  SOFTWARE.
  */
 
-import Lilliput
-
-public struct BTNode<Entry : BTEntry> : Packable {
-    public var packSize: Int {
-        let offsetSize = BTNode.offsetCount * MemoryLayout<UInt32>.size
-        let countSize = 1 * MemoryLayout<UInt32>.size
-        let entrySize = BTNode.entryCount * Entry.empty.packSize
-        
-        return offsetSize + countSize + entrySize
-    }
-    public static var entryCount: Int {
-        return 61
-    }
-    public static var offsetCount: Int {
-        return entryCount + 1
+public struct BTNode<Entry : BTEntry> {
+    public static var entryCount: Count { return 61 }
+    public static var nextNodeCount: Count { return entryCount + 1 }
+    
+    public var nextNode: [Offset]
+    public var numEntries: Count
+    public var entry: [Entry]
+    
+    public init(nextNode: [Offset], numEntries: Count, entry: [Entry]) {
+        precondition(Count(nextNode.count) == BTNode<Entry>.nextNodeCount)
+        precondition(Count(entry.count) == BTNode<Entry>.entryCount)
+        precondition(numEntries <= BTNode<Entry>.entryCount)
+        self.nextNode = nextNode
+        self.numEntries = numEntries
+        self.entry = entry
     }
     
-    public var offset = [UInt32](repeating: 0, count: BTNode.offsetCount)
-    public var count: Int = 0
-    public var entry = [Entry](repeating: Entry.empty, count: BTNode.entryCount)
-    
+    @_transparent
     public var isLeaf: Bool {
-        return offset[0] == 0
-    }
-    
-    public func pack<Order>(to buffer: OrderedByteBuffer<Order>) {
-        fatalError("Not implemented")
-    }
-    
-    public mutating func unpack<Order>(from buffer: OrderedByteBuffer<Order>) {
-        for index in 0..<offset.count {
-            offset[index] = buffer.getUInt32()
-        }
-        
-        count = Int(buffer.getUInt32())
-        
-        for index in 0..<entry.count {
-            entry[index].unpack(from: buffer)
-        }
-        
-        precondition(!buffer.hasRemaining)
+        return nextNode[0] == 0
     }
 }

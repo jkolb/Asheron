@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,13 @@
  SOFTWARE.
  */
 
-public protocol PortalObject : CustomStringConvertible {
+public protocol PortalObject : class, CustomStringConvertible {
     static var kind: PortalKind { get }
-    var handle: PortalHandle<Self> { get }
+    var portalId: PortalId<Self> { get set }
 }
 
 extension PortalObject {
     public var description: String {
-        return "\(handle)"
+        return "\(portalId)"
     }
 }

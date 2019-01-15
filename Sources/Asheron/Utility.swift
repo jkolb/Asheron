@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,16 @@ public func hex<T : FixedWidthInteger>(_ value: T) -> String {
     var string = String(value, radix: 16, uppercase: true)
     
     while string.count < MemoryLayout.size(ofValue: value) * 2 {
+        string = "0\(string)"
+    }
+    
+    return string
+}
+
+public func pad<T : FixedWidthInteger>(_ value: T, length: Int) -> String {
+    var string = String(value, radix: 10, uppercase: true)
+    
+    while string.count < length {
         string = "0\(string)"
     }
     

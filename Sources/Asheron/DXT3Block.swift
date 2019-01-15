@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -33,33 +33,39 @@
  DXT5   Interpolated alpha  No
  */
 
+import Swiftish
+
 public struct DXT3Block : DXTBlock {
+    public static var byteCount: Int {
+        return MemoryLayout<DXT3Alpha>.size + MemoryLayout<DXTColor>.size
+    }
+    
     let alphaBlock: DXT3Alpha
     let colorBlock: DXTColor
-    let colors: [PixelRGB888]
+    let colors: [ColorRGB888]
     
     public init(alphaBlock: DXT3Alpha, colorBlock: DXTColor) {
         self.alphaBlock = alphaBlock
         self.colorBlock = colorBlock
         
-        let color0 = PixelRGB565(bits: colorBlock.color0())
-        let color1 = PixelRGB565(bits: colorBlock.color1())
+        let color0 = ColorRGB565(bits: colorBlock.color0())
+        let color1 = ColorRGB565(bits: colorBlock.color1())
         
-        let rgb0 = RGBTriplet(color0)
-        let rgb1 = RGBTriplet(color1)
-        let rgb2 = (2 * rgb0 + rgb1 + 1) / 3
-        let rgb3 = (rgb0 + 2 * rgb1 + 1) / 3
+        let rgb0: IntVector3<Int> = IntVector3<Int>(color0)
+        let rgb1: IntVector3<Int> = IntVector3<Int>(color1)
+        let rgb2: IntVector3<Int> = (2 * rgb0 + rgb1 + 1) / 3
+        let rgb3: IntVector3<Int> = (rgb0 + 2 * rgb1 + 1) / 3
         
         self.colors = [
-            rgb0.color,
-            rgb1.color,
-            rgb2.color,
-            rgb3.color,
+            IntVector3<UInt8>(rgb0).colorRGB888,
+            IntVector3<UInt8>(rgb1).colorRGB888,
+            IntVector3<UInt8>(rgb2).colorRGB888,
+            IntVector3<UInt8>(rgb3).colorRGB888,
         ]
     }
     
-    public func color(at index: Int) -> PixelARGB8888 {
+    public func color(at index: Int) -> ColorARGB8888 {
         let color = colors[colorBlock.colorIndex(at: index)]
-        return PixelARGB8888(r: color.r, g: color.g, b: color.b, a: alphaBlock.alpha(at: index))
+        return ColorARGB8888(r: color.r, g: color.g, b: color.b, a: alphaBlock.alpha(at: index))
     }
 }

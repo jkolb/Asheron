@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +22,23 @@
  SOFTWARE.
  */
 
+import Swiftish
 import Lilliput
 
 public final class CellParser {
-    public func parseLandBlock(handle: LandBlockHandle, buffer: ByteBuffer) -> LandBlock {
-        let bytes = OrderedByteBuffer<LittleEndian>(buffer: buffer)
-        let rawHandle = bytes.getUInt32()
-        precondition(handle.rawValue == rawHandle)
-        let rawHasStructures = bytes.getUInt32()
-        precondition(rawHasStructures == 0 || rawHasStructures == 1)
-        let hasStructures = (rawHasStructures == 1)
-        let topography = bytes.getUInt16(count: LandBlock.size * LandBlock.size).map({ LandBlock.Topography(bits: $0) })
-        let heightIndex = bytes.getUInt8(count: LandBlock.size * LandBlock.size)
-        bytes.skip(1)
-        precondition(!bytes.hasRemaining)
-        return LandBlock(handle: handle, hasStructures: hasStructures, topography: topography, heightIndex: heightIndex)
+    public func parseLandBlock(size: IntVector2<Int>, handle: LandBlockId, buffer: ByteBuffer) -> LandBlock {
+        fatalError("Not implemented")
+//        let bytes = OrderedByteBuffer<LittleEndian>(buffer: buffer)
+//        let rawHandle = bytes.getUInt32()
+//        precondition(handle.rawValue == rawHandle)
+//        let rawHasStructures = bytes.getUInt32()
+//        precondition(rawHasStructures == 0 || rawHasStructures == 1)
+//        let hasStructures = (rawHasStructures == 1)
+//        let count = Int(size.rows) * Int(size.cols)
+//        let topography = Grid<LandBlock.Topography>(size: size, columnMajorValues: bytes.getUInt16(count: count).map({ LandBlock.Topography(bits: $0) }))
+//        let heightIndex = Grid<UInt8>(size: size, columnMajorValues: bytes.getUInt8(count: count))
+//        bytes.skip(1)
+//        precondition(!bytes.hasRemaining)
+//        return LandBlock(handle: handle, hasStructures: hasStructures, topography: topography, heightIndex: heightIndex)
     }
 }

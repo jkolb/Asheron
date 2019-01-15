@@ -32,8 +32,8 @@ let package = Package(
         .library(name: "Asheron", targets: ["Asheron"]),
         ],
     dependencies: [
-        .package(url: "https://github.com/jkolb/Swiftish", from: "3.1.0"),
-        .package(url: "https://github.com/jkolb/Lilliput", from: "8.0.0"),
+        .package(url: "https://github.com/jkolb/Swiftish", from: "4.2.0"),
+        .package(url: "https://github.com/jkolb/Lilliput", from: "9.2.0"),
         ],
     targets: [
         .target(name: "Asheron", dependencies: ["Swiftish", "Lilliput"]),

@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,84 +22,38 @@
  SOFTWARE.
  */
 
-import Lilliput
-
-public protocol BTEntry : Packable {
-    static var empty: Self { get }
-    var handle: UInt32 { get set }
-    var offset: UInt32 { get set }
-    var length: UInt32 { get set }
+public protocol BTEntry {
+    var handle: Handle { get set }
+    var offset: Offset { get set }
+    var length: Length { get set }
 }
 
 public struct BTEntryV1 : BTEntry {
-    public let packSize = MemoryLayout<UInt32>.size * 3
-    public var handle: UInt32 = 0
-    public var offset: UInt32 = 0
-    public var length: UInt32 = 0
-    
-    public static var empty: BTEntryV1 {
-        return BTEntryV1()
-    }
-    
-    public func pack<Order>(to buffer: OrderedByteBuffer<Order>) {
-        buffer.putUInt32(handle)
-        buffer.putUInt32(offset)
-        buffer.putUInt32(length)
-    }
-    
-    public mutating func unpack<Order>(from buffer: OrderedByteBuffer<Order>) {
-        handle = buffer.getUInt32()
-        offset = buffer.getUInt32()
-        length = buffer.getUInt32()
+    public var handle: Handle
+    public var offset: Offset
+    public var length: Length
+
+    public init(handle: Handle, offset: Offset, length: Length) {
+        self.handle = handle
+        self.offset = offset
+        self.length = length
     }
 }
 
 public struct BTEntryV2 : BTEntry {
-    public let packSize = MemoryLayout<UInt32>.size * 6
-    public var comp_resv_ver: UInt32 = 0 // 1_111111111111111_1111111111111111
-    public var entry: BTEntryV1 = BTEntryV1()
-    public var date: UInt32 = 0
-    public var iter: UInt32 = 0
-    public var handle: UInt32 {
-        get {
-            return entry.handle
-        }
-        set {
-            entry.handle = newValue
-        }
-    }
-    public var offset: UInt32 {
-        get {
-            return entry.offset
-        }
-        set {
-            entry.offset = newValue
-        }
-    }
-    public var length: UInt32 {
-        get {
-            return entry.length
-        }
-        set {
-            entry.length = newValue
-        }
-    }
-    
-    public static var empty: BTEntryV2 {
-        return BTEntryV2()
-    }
+    public var comp_resv_ver: UInt32 // 1_111111111111111_1111111111111111
+    public var handle: Handle
+    public var offset: Offset
+    public var length: Length
+    public var date: UInt32
+    public var iter: UInt32
 
-    public func pack<Order>(to buffer: OrderedByteBuffer<Order>) {
-        buffer.putUInt32(comp_resv_ver)
-        entry.pack(to: buffer)
-        buffer.putUInt32(date)
-        buffer.putUInt32(iter)
-    }
-    
-    public mutating func unpack<Order>(from buffer: OrderedByteBuffer<Order>) {
-        comp_resv_ver = buffer.getUInt32()
-        entry.unpack(from: buffer)
-        date = buffer.getUInt32()
-        iter = buffer.getUInt32()
+    public init(comp_resv_ver: UInt32, handle: Handle, offset: Offset, length: Length, date: UInt32, iter: UInt32) {
+        self.comp_resv_ver = comp_resv_ver
+        self.handle = handle
+        self.offset = offset
+        self.length = length
+        self.date = date
+        self.iter = iter
     }
 }
