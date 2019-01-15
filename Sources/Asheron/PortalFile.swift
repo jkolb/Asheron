@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,42 +22,51 @@
  SOFTWARE.
  */
 
+import Lilliput
+
 public final class PortalFile {
     private let btreeFile: BTreeFileV2
-    private let parser: PortalParser
     
     public init(btreeFile: BTreeFileV2) {
         self.btreeFile = btreeFile
-        self.parser = PortalParser()
+    }
+
+    public func fetchCGfxObj(portalId: PortalId<CGfxObj>) throws -> CGfxObj {
+        return try CGfxObjInputStream(stream: fetch(portalId: portalId)).readCGfxObj(portalId: portalId)
     }
     
-    public func fetchColorTable(handle: ColorTableHandle) throws -> ColorTable {
-        let buffer = try btreeFile.readData(handle: handle.rawValue)
-        
-        return parser.parseColorTable(handle: handle, buffer: buffer)
+    public func fetchCSetup(portalId: PortalId<CSetup>) throws -> CSetup {
+        return try CSetupInputStream(stream: fetch(portalId: portalId)).readCSetup(portalId: portalId)
     }
     
-    public func fetchTextureList(handle: TextureListHandle) throws -> TextureList {
-        let buffer = try btreeFile.readData(handle: handle.rawValue)
-        
-        return parser.parseTextureList(handle: handle, buffer: buffer)
+    public func fetchPalette(portalId: PortalId<Palette>) throws -> Palette {
+        return try PaletteInputStream(stream: fetch(portalId: portalId)).readPalette(portalId: portalId)
     }
     
-    public func fetchTextureData(handle: TextureDataHandle) throws -> TextureData {
-        let buffer = try btreeFile.readData(handle: handle.rawValue)
-        
-        return parser.parseTextureData(handle: handle, buffer: buffer)
+    public func fetchImgTexRef(portalId: PortalId<ImgTexRef>) throws -> ImgTexRef {
+        return try ImgTexRefInputStream(stream: fetch(portalId: portalId)).readImgTexRef(portalId: portalId)
     }
     
-    public func fetchWorldRegion(handle: WorldRegionHandle) throws -> WorldRegion {
-        let buffer = try btreeFile.readData(handle: handle.rawValue)
-        
-        return parser.parseWorldRegion(handle: handle, buffer: buffer)
+    public func fetchImgTex(portalId: PortalId<ImgTex>) throws -> ImgTex {
+        return try ImgTexInputStream(stream: fetch(portalId: portalId)).readImgTex(portalId: portalId)
+    }
+
+    public func fetchCSurface(portalId: PortalId<CSurface>) throws -> CSurface {
+        return try CSurfaceInputStream(stream: fetch(portalId: portalId)).readCSurface(portalId: portalId)
+    }
+
+    public func fetchCRegionDesc(portalId: PortalId<CRegionDesc>) throws -> CRegionDesc {
+        return try CRegionDescInputStream(stream: fetch(portalId: portalId)).readCRegionDesc(portalId: portalId)
     }
     
-    public func fetchMaterial(handle: MaterialHandle) throws -> Material {
-        let buffer = try btreeFile.readData(handle: handle.rawValue)
+    private func fetch<T: PortalObject>(portalId: PortalId<T>) throws -> OrderedInputStream<LittleEndian> {
+        let buffer = try btreeFile.readData(handle: portalId.handle)
+        return OrderedInputStream<LittleEndian>(stream: BufferInputStream(buffer: buffer))
+    }
+
+    public func allPortalIds<T: PortalObject>() throws -> [PortalId<T>] {
+        let rawHandles = try btreeFile.handles(matching: { ($0.bits & 0xFF000000) == T.kind.rawValue })
         
-        return parser.parseMaterial(handle: handle, buffer: buffer)
+        return rawHandles.map({ PortalId<T>(handle: $0)! })
     }
 }

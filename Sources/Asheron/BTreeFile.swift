@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,64 +24,63 @@
 
 import Lilliput
 
-public typealias BTreeFileV1 = BTreeFile<BTEntryV1>
-public typealias BTreeFileV2 = BTreeFile<BTEntryV2>
+public typealias BTreeFileV1 = BTreeFile<BTEntryV1, BTreeInputStreamV1, LittleEndian>
+public typealias BTreeFileV2 = BTreeFile<BTEntryV2, BTreeInputStreamV2, LittleEndian>
 
-public final class BTreeFile<Entry : BTEntry> {
+public final class BTreeFile<Entry, Input : BTreeInputStream, Order : ByteOrder> where Entry == Input.Entry {
     public enum Error : Swift.Error {
         case truncatedHeader
+        case missingHandle(Handle)
     }
-    
+
     private let blockFile: BlockFile
-    public let rootNodeOffset: UInt32
-    private let nodeBytes: OrderedByteBuffer<LittleEndian>
-    private var nodeCache: [UInt32:BTNode<Entry>]
+    public let rootNodeOffset: Offset
+    private let nodeBytes: ByteBuffer
+    private var nodeCache: [Offset:BTNode<Entry>]
     
-    public class func openForReading(at path: String) throws -> BTreeFileV2 {
+    public class func open(at path: String) throws -> BTreeFile<Entry, Input, Order> {
         let binaryFile = try BinaryFile.open(forUpdatingAtPath: path, create: false)
-        let headerBytes = OrderedByteBuffer<LittleEndian>(count: 1024)
+        let headerBytes = OrderedBuffer<Order>(count: 1024)
         let readCount = try binaryFile.read(into: headerBytes)
         
         if readCount < headerBytes.count {
             throw Error.truncatedHeader
         }
         
-        headerBytes.position = 0
-        headerBytes.skip(324)
-        let blockSize = headerBytes.getUInt32()
-        headerBytes.skip(24)
-        let rootNodeOffset = headerBytes.getUInt32()
+        // TODO: This is for V2 header only!
+        let blockSize = Length(rawValue: headerBytes.getUInt32(at: 324))
+        let rootNodeOffset = Offset(rawValue: headerBytes.getInt32(at: 352))
         let blockFile = BlockFile(file: binaryFile, blockSize: blockSize)
-        let btreeFile = BTreeFileV2(blockFile: blockFile, rootNodeOffset: rootNodeOffset)
+        let btreeFile = BTreeFile<Entry, Input, Order>(blockFile: blockFile, rootNodeOffset: rootNodeOffset)
         return btreeFile
     }
     
-    public init(blockFile: BlockFile, rootNodeOffset: UInt32) {
+    public init(blockFile: BlockFile, rootNodeOffset: Offset) {
         self.blockFile = blockFile
         self.rootNodeOffset = rootNodeOffset
-        self.nodeBytes = OrderedByteBuffer<LittleEndian>(count: BTNode<Entry>().packSize)
-        self.nodeCache = [UInt32:BTNode<Entry>](minimumCapacity: 64)
+        self.nodeBytes = MemoryBuffer(count: Input.nodeSize)
+        self.nodeCache = [Offset:BTNode<Entry>](minimumCapacity: 64)
     }
     
-    public func readData(handle: UInt32) throws -> ByteBuffer {
+    public func readData(handle: Handle) throws -> ByteBuffer {
         guard let entry = try findEntry(for: handle) else {
-            throw BTreeFileError.missingHandle(handle)
+            throw Error.missingHandle(handle)
         }
         
         return try readEntry(entry)
     }
     
-    public func handles(matching filter: (UInt32) -> Bool) throws -> [UInt32] {
+    public func handles(matching filter: (Handle) -> Bool) throws -> [Handle] {
         let node = try fetchNode(at: rootNodeOffset)
         
         return try handlesInNode(node, matching: filter)
     }
     
-    private func handlesInNode(_ node: BTNode<Entry>, matching filter: (UInt32) -> Bool) throws -> [UInt32] {
-        var handles = [UInt32]()
+    private func handlesInNode(_ node: BTNode<Entry>, matching filter: (Handle) -> Bool) throws -> [Handle] {
+        var handles = [Handle]()
         
-        for entryIndex in 0..<node.count {
-            let entry = node.entry[Int(entryIndex)]
+        for index in 0..<node.numEntries {
+            let entry = node.entry[index]
             
             if filter(entry.handle) {
                 handles.append(entry.handle)
@@ -89,9 +88,9 @@ public final class BTreeFile<Entry : BTEntry> {
         }
         
         if !node.isLeaf {
-            for offsetIndex in 0...node.count {
-                let offset = node.offset[Int(offsetIndex)]
-                let nextNode = try fetchNode(at: offset)
+            for index in 0...node.numEntries {
+                let nodeOffset = node.nextNode[index]
+                let nextNode = try fetchNode(at: nodeOffset)
                 let nextHandles = try handlesInNode(nextNode, matching: filter)
                 handles.append(contentsOf: nextHandles)
             }
@@ -100,14 +99,14 @@ public final class BTreeFile<Entry : BTEntry> {
         return handles.sorted()
     }
     
-    public func findEntry(for handle: UInt32) throws -> Entry? {
-        var offset = rootNodeOffset
+    public func findEntry(for handle: Handle) throws -> Entry? {
+        var nodeOffset = rootNodeOffset
         
-        nextLevel: while offset > 0 {
-            let node = try fetchNode(at: offset)
-            precondition(node.count > 0)
+        nextLevel: while nodeOffset > 0 {
+            let node = try fetchNode(at: nodeOffset)
+            precondition(node.numEntries > 0)
             
-            for index in 0..<node.count {
+            for index in 0..<node.numEntries {
                 let entry = node.entry[index]
                 
                 if entry.handle == handle {
@@ -115,28 +114,28 @@ public final class BTreeFile<Entry : BTEntry> {
                 }
                 else if entry.handle > handle {
                     // Traverse left
-                    offset = node.isLeaf ? 0 : node.offset[index]
+                    nodeOffset = node.isLeaf ? 0 : node.nextNode[index]
                     
                     continue nextLevel
                 }
             }
             
             // Traverse right
-            offset = node.isLeaf ? 0 : node.offset[node.count]
+            nodeOffset = node.isLeaf ? 0 : node.nextNode[node.numEntries]
         }
         
         return nil
     }
     
     public func readEntry(_ entry: Entry) throws -> ByteBuffer {
-        let buffer = ByteBuffer(count: numericCast(entry.length))
+        let buffer = MemoryBuffer(count: Int(entry.length))
         
-        try blockFile.readBlocks(buffer, at: entry.offset)
+        try blockFile.read(into: buffer, at: entry.offset)
         
         return buffer
     }
     
-    public func fetchNode(at offset: UInt32) throws -> BTNode<Entry> {
+    public func fetchNode(at offset: Offset) throws -> BTNode<Entry> {
         if let node = nodeCache[offset] {
             return node
         }
@@ -148,14 +147,9 @@ public final class BTreeFile<Entry : BTEntry> {
         return node
     }
     
-    public func readNode(at offset: UInt32) throws -> BTNode<Entry> {
-        try blockFile.readBlocks(nodeBytes.buffer, at: offset)
-        
-        var node = BTNode<Entry>()
-        node.unpack(from: nodeBytes)
-        
-        nodeBytes.position = 0
-        
-        return node
+    public func readNode(at offset: Offset) throws -> BTNode<Entry> {
+        try blockFile.read(into: nodeBytes, at: offset)
+        let stream = Input.makeBTreeInputStream(stream: OrderedInputStream<Order>(stream: BufferInputStream(buffer: nodeBytes)))
+        return try stream.readNode()
     }
 }

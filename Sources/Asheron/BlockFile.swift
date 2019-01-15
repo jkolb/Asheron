@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -30,31 +30,30 @@ public final class BlockFile {
     }
     
     private var file: ReadWriteFile
-    private let block: OrderedByteBuffer<LittleEndian>
+    private let block: OrderedBuffer<LittleEndian>
     
-    public init(file: ReadWriteFile, blockSize: UInt32) {
+    public init(file: ReadWriteFile, blockSize: Length) {
         self.file = file
-        self.block = OrderedByteBuffer<LittleEndian>(count: numericCast(blockSize))
+        self.block = OrderedBuffer<LittleEndian>(count: Int(blockSize))
     }
     
-    public func readBlocks(_ blocks: ByteBuffer, at offset: UInt32) throws {
-        let data = OrderedByteBuffer<LittleEndian>(buffer: blocks)
+    public func read(into buffer: ByteBuffer, at offset: Offset) throws {
+        let output = BufferOutputStream(buffer: buffer)
         var offset = offset
-        
+
         while offset > 0 {
-            file.position = numericCast(offset)
-            block.position = 0
+            file.position = Int(offset)
             let readCount = try file.read(into: block)
-            
+
             if readCount < block.count {
                 throw Error.truncatedBlock
             }
-            
-            block.position = 0
-            offset = block.getUInt32()
-            block.copy(to: data)
+
+            let input = BufferInputStream(buffer: block)
+            offset = Offset(rawValue: try input.readInt32())
+            try output.write(bytes: input.remainingBytes, count: min(input.remainingCount, output.remainingCount))
         }
-        
-        precondition(!data.hasRemaining)
+
+        precondition(output.offset == buffer.count)
     }
 }

@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -33,21 +33,27 @@
  DXT5   Interpolated alpha  No
  */
 
+import Swiftish
+
 public struct DXT1Block : DXTBlock {
+    public static var byteCount: Int {
+        return MemoryLayout<DXTColor>.size
+    }
+    
     let colorBlock: DXTColor
-    let colors: [PixelARGB8888]
+    let colors: [ColorARGB8888]
     
     public init(colorBlock: DXTColor) {
         self.colorBlock = colorBlock
         
         let alpha: UInt8
-        let color0 = PixelRGB565(bits: colorBlock.color0())
-        let color1 = PixelRGB565(bits: colorBlock.color1())
+        let color0 = ColorRGB565(bits: colorBlock.color0())
+        let color1 = ColorRGB565(bits: colorBlock.color1())
         
-        let rgb0 = RGBTriplet(color0)
-        let rgb1 = RGBTriplet(color1)
-        let rgb2: RGBTriplet
-        let rgb3: RGBTriplet
+        let rgb0: IntVector3<Int> = IntVector3<Int>(color0)
+        let rgb1: IntVector3<Int> = IntVector3<Int>(color1)
+        let rgb2: IntVector3<Int>
+        let rgb3: IntVector3<Int>
         
         if color0.bits > color1.bits {
             rgb2 = (2 * rgb0 + rgb1 + 1) / 3
@@ -56,19 +62,19 @@ public struct DXT1Block : DXTBlock {
         }
         else {
             rgb2 = (rgb0 + rgb1) / 2
-            rgb3 = RGBTriplet()
+            rgb3 = IntVector3<Int>()
             alpha = 0
         }
         
         self.colors = [
-            rgb0.color(alpha: UInt8.max),
-            rgb1.color(alpha: UInt8.max),
-            rgb2.color(alpha: UInt8.max),
-            rgb3.color(alpha: alpha),
+            IntVector3<UInt8>(rgb0).colorARGB8888(alpha: UInt8.max),
+            IntVector3<UInt8>(rgb1).colorARGB8888(alpha: UInt8.max),
+            IntVector3<UInt8>(rgb2).colorARGB8888(alpha: UInt8.max),
+            IntVector3<UInt8>(rgb3).colorARGB8888(alpha: alpha),
         ]
     }
     
-    public func color(at index: Int) -> PixelARGB8888 {
+    public func color(at index: Int) -> ColorARGB8888 {
         return colors[colorBlock.colorIndex(at: index)]
     }
 }

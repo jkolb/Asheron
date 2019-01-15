@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -34,5 +34,6 @@
  */
 
 public protocol DXTBlock {
-    func color(at index: Int) -> PixelARGB8888
+    static var byteCount: Int { get }
+    func color(at index: Int) -> ColorARGB8888
 }

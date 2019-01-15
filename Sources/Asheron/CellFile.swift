@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,8 @@
  SOFTWARE.
  */
 
+import Swiftish
+
 public final class CellFile {
     private let btreeFile: BTreeFileV2
     private let parser: CellParser
@@ -31,9 +33,9 @@ public final class CellFile {
         self.parser = CellParser()
     }
     
-    public func fetchLandBlock(handle: LandBlockHandle) throws -> LandBlock {
-        let buffer = try btreeFile.readData(handle: handle.rawValue)
+    public func fetchLandBlock(size: IntVector2<Int>, LandBlockId: LandBlockId) throws -> LandBlock {
+        let buffer = try btreeFile.readData(handle: LandBlockId.handle)
         
-        return parser.parseLandBlock(handle: handle, buffer: buffer)
+        return parser.parseLandBlock(size: size, handle: LandBlockId, buffer: buffer)
     }
 }

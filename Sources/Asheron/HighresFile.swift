@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- Copyright (c) 2017 Justin Kolb
+ Copyright (c) 2018 Justin Kolb
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +22,27 @@
  SOFTWARE.
  */
 
+import Lilliput
+
 public final class HighresFile {
     private let btreeFile: BTreeFileV2
-    private let parser: PortalParser
     
     public init(btreeFile: BTreeFileV2) {
         self.btreeFile = btreeFile
-        self.parser = PortalParser()
     }
     
-    public func fetchTextureData(handle: TextureDataHandle) throws -> TextureData {
-        let buffer = try btreeFile.readData(handle: handle.rawValue)
+    public func fetchImgTex(portalId: PortalId<ImgTex>) throws -> ImgTex {
+        return try ImgTexInputStream(stream: fetch(portalId: portalId)).readImgTex(portalId: portalId)
+    }
+
+    private func fetch<T: PortalObject>(portalId: PortalId<T>) throws -> OrderedInputStream<LittleEndian> {
+        let buffer = try btreeFile.readData(handle: portalId.handle)
+        return OrderedInputStream<LittleEndian>(stream: BufferInputStream(buffer: buffer))
+    }
+    
+    public func allPortalIds<T: PortalObject>() throws -> [PortalId<T>] {
+        let rawHandles = try btreeFile.handles(matching: { ($0.bits & 0xFF000000) == T.kind.rawValue })
         
-        return parser.parseTextureData(handle: handle, buffer: buffer)
+        return rawHandles.map({ PortalId<T>(handle: $0)! })
     }
 }
