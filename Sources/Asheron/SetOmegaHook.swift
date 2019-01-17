@@ -22,13 +22,11 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public struct SetOmegaHook {
     public var direction: CAnimHook.Direction
-    public var axis: Vector3<Float>
+    public var axis: CVector
     
-    public init(direction: CAnimHook.Direction, axis: Vector3<Float>) {
+    public init(direction: CAnimHook.Direction, axis: CVector) {
         self.direction = direction
         self.axis = axis
     }

@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public indirect enum DrawingBSPTree {
     case empty
     case node(DrawingBSPNode)
@@ -43,14 +41,14 @@ public struct DrawingBSPPortal {
     public var bspTag: BSPTag {
         return .PORT
     }
-    public var splittingPlane: Plane<Float>
+    public var splittingPlane: CPlane
     public var posNode: DrawingBSPTree
     public var negNode: DrawingBSPTree
-    public var sphere: Sphere<Float>?
+    public var sphere: CSphere?
     public var inPolys: [UInt16]
     public var inPortals: [CPortalPoly]
     
-    public init(splittingPlane: Plane<Float>, posNode: DrawingBSPTree, negNode: DrawingBSPTree, sphere: Sphere<Float>?, inPolys: [UInt16], inPortals: [CPortalPoly]) {
+    public init(splittingPlane: CPlane, posNode: DrawingBSPTree, negNode: DrawingBSPTree, sphere: CSphere?, inPolys: [UInt16], inPortals: [CPortalPoly]) {
         precondition(!posNode.isEmpty)
         precondition(!negNode.isEmpty)
         self.splittingPlane = splittingPlane
@@ -64,13 +62,13 @@ public struct DrawingBSPPortal {
 
 public struct DrawingBSPNode {
     public var bspTag: BSPTag
-    public var splittingPlane: Plane<Float>
+    public var splittingPlane: CPlane
     public var posNode: DrawingBSPTree
     public var negNode: DrawingBSPTree
-    public var sphere: Sphere<Float>?
+    public var sphere: CSphere?
     public var inPolys: [UInt16]
     
-    public init(bspTag: BSPTag, splittingPlane: Plane<Float>, posNode: DrawingBSPTree, negNode: DrawingBSPTree, sphere: Sphere<Float>?, inPolys: [UInt16]) {
+    public init(bspTag: BSPTag, splittingPlane: CPlane, posNode: DrawingBSPTree, negNode: DrawingBSPTree, sphere: CSphere?, inPolys: [UInt16]) {
         self.bspTag = bspTag
         self.splittingPlane = splittingPlane
         self.posNode = posNode

@@ -23,8 +23,6 @@
  */
 
 import Lilliput
-import Swiftish
-
 public class DatInputStream : ByteInputStream {
     public let stream: ByteInputStream
     
@@ -178,34 +176,34 @@ public class DatInputStream : ByteInputStream {
     }
     
     @inline(__always)
-    public func readVector3() throws -> Vector3<Float> {
+    public func readVector3() throws -> CVector {
         let x = try readFloat32()
         let y = try readFloat32()
         let z = try readFloat32()
         
-        return Vector3<Float>(x, y, z)
+        return CVector(x, y, z)
     }
     
     @inline(__always)
-    public func readQuaternion() throws -> Quaternion<Float> {
+    public func readQuaternion() throws -> Quaternion {
         let w = try readFloat32()
         let x = try readFloat32()
         let y = try readFloat32()
         let z = try readFloat32()
 
-        return Quaternion<Float>(w, x, y, z)
+        return Quaternion(w, x, y, z)
     }
 
     @inline(__always)
-    public func readPlane() throws -> Plane<Float> {
+    public func readPlane() throws -> CPlane {
         let normal = try readVector3()
         let distance = try readFloat32()
         
-        return Plane<Float>(normal: normal, distance: distance)
+        return CPlane(normal: normal, distance: distance)
     }
     
     @inline(__always)
-    public func readSphere() throws -> Sphere<Float>? {
+    public func readSphere() throws -> CSphere? {
         let center = try readVector3()
         let radius = try readFloat32()
         
@@ -213,7 +211,7 @@ public class DatInputStream : ByteInputStream {
             return nil
         }
         
-        return Sphere<Float>(center: center, radius: radius)
+        return CSphere(center: center, radius: radius)
     }
     
     @inline(__always)

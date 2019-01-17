@@ -22,15 +22,13 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public struct CSWVertex {
     public var vertId: UInt16
-    public var vertex: Vector3<Float>
-    public var normal: Vector3<Float>
-    public var uvs: [Vector2<Float>]
+    public var vertex: CVector
+    public var normal: CVector
+    public var uvs: [Vector2]
     
-    public init(vertId: UInt16, vertex: Vector3<Float>, normal: Vector3<Float>, uvs: [Vector2<Float>]) {
+    public init(vertId: UInt16, vertex: CVector, normal: CVector, uvs: [Vector2]) {
         self.vertId = vertId
         self.vertex = vertex
         self.normal = normal

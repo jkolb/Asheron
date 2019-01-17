@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public final class LandBlock : CustomStringConvertible {
     public struct Topography : CustomStringConvertible {
         private let bits: UInt16

@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public struct LandBlockId : CellId {
     private static let landBlockIndex: UInt16 = 0xFFFF
     public var position: IntVector2<Int> {

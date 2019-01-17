@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public final class CGfxObjInputStream : DatInputStream {
     public func readCGfxObj(portalId: PortalId<CGfxObj>) throws -> CGfxObj {
         let streamID = try readPortalId(type: CGfxObj.self)
@@ -69,10 +67,10 @@ public final class CGfxObjInputStream : DatInputStream {
     }
     
     @inline(__always)
-    private func readVector2() throws -> Vector2<Float> {
+    private func readVector2() throws -> Vector2 {
         let u = try readFloat32()
         let v = try readFloat32()
         
-        return Vector2<Float>(u, v)
+        return Vector2(u, v)
     }
 }

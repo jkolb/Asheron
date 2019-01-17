@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public struct CreateParticleHook {
 /*
      list[9] = LF_MEMBER, protected, type = 0x124C, offset = 12 member name = 'emitter_info_id'
@@ -33,10 +31,10 @@ public struct CreateParticleHook {
  */
     public var direction: CAnimHook.Direction
     public var partIndex: UInt32
-    public var offset: Transform3<Float>
+    public var offset: Frame
     public var emitterId: Handle
     
-    public init(direction: CAnimHook.Direction, partIndex: UInt32, offset: Transform3<Float>, emitterId: Handle) {
+    public init(direction: CAnimHook.Direction, partIndex: UInt32, offset: Frame, emitterId: Handle) {
         self.direction = direction
         self.partIndex = partIndex
         self.offset = offset

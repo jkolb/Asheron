@@ -22,19 +22,17 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public struct CylSphere {
 /*
      list[26] = LF_MEMBER, private, type = 0x1074, offset = 0 member name = 'low_pt'
      list[27] = LF_MEMBER, private, type = T_REAL32(0040), offset = 12 member name = 'height'
      list[28] = LF_MEMBER, private, type = T_REAL32(0040), offset = 16 member name = 'radius'
  */
-    public var lowPt: Vector3<Float>
+    public var lowPt: CVector
     public var height: Float
     public var radius: Float
     
-    public init(lowPt: Vector3<Float>, height: Float, radius: Float) {
+    public init(lowPt: CVector, height: Float, radius: Float) {
         self.lowPt = lowPt
         self.height = height
         self.radius = radius

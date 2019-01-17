@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public struct AnimFrame {
     /*
      list[0] = LF_MEMBER, public, type = 0x00012189, offset = 0 member name = 'frame'
@@ -32,10 +30,10 @@ public struct AnimFrame {
      list[3] = LF_MEMBER, public, type = T_ULONG(0022), offset = 12 member name = 'num_parts'
      */
     
-    public var frame: [Transform3<Float>]
+    public var frame: [Frame]
     public var hooks: [CAnimHook]
     
-    public init(frame: [Transform3<Float>], hooks: [CAnimHook]) {
+    public init(frame: [Frame], hooks: [CAnimHook]) {
         self.frame = frame
         self.hooks = hooks
     }

@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public struct Grid<T> {
     public let size: IntVector2<Int>
     private var values: [T]

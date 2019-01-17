@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public final class CellFile {
     private let btreeFile: BTreeFileV2
     private let parser: CellParser

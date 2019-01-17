@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public protocol CellId : Hashable, CustomStringConvertible {
     var position: IntVector2<Int> { get }
     var index: UInt16 { get }

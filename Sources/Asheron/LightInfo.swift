@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public enum LightType : Int32 {
     case INVALID_LIGHT_TYPE = -1
     case POINT_LIGHT = 0
@@ -42,13 +40,13 @@ public struct LightInfo {
      list[30] = LF_MEMBER, protected, type = T_REAL32(0040), offset = 100 member name = 'cone_angle'
      */
     public var type: LightType
-    public var offset: Transform3<Float>
+    public var offset: Frame
     public var color: ColorARGB8888 // RGBColor
     public var intensity: Float
     public var falloff: Float
     public var coneAngle: Float
     
-    public init(type: LightType, offset: Transform3<Float>, color: ColorARGB8888, intensity: Float, falloff: Float, coneAngle: Float) {
+    public init(type: LightType, offset: Frame, color: ColorARGB8888, intensity: Float, falloff: Float, coneAngle: Float) {
         self.type = type
         self.offset = offset
         self.color = color

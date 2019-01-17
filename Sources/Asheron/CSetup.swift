@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public final class CSetup : PortalObject {
     public struct Flags : OptionSet {
         public static let hasParentIndex   = Flags(rawValue: 1 << 0)
@@ -41,20 +39,20 @@ public final class CSetup : PortalObject {
     public var portalId: PortalId<CSetup>
     public var parts: [PortalId<CGfxObj>]
     public var parentIndex: [Int]
-    public var defaultScale: [Vector3<Float>]
+    public var defaultScale: [CVector]
     public var allowFreeHeading: Bool
     public var hasPhysicsBSP: Bool
     public var holdingLocations: [UInt32:LocationType]
     public var connectionPoints: [UInt32:LocationType]
     public var placementFrames: [UInt32:PlacementType]
     public var cylSphere: [CylSphere]
-    public var sphere: [Sphere<Float>]
+    public var sphere: [CSphere]
     public var height: Float
     public var radius: Float
     public var stepDownHeight: Float
     public var stepUpHeight: Float
-    public var sortingSphere: Sphere<Float>
-    public var selectionSphere: Sphere<Float>
+    public var sortingSphere: CSphere
+    public var selectionSphere: CSphere
     public var lights: [UInt32:LightInfo]
     public var defaultAnimId: Handle
     public var defaultScriptId: Handle
@@ -62,7 +60,7 @@ public final class CSetup : PortalObject {
     public var defaultSTable: Handle
     public var defaultPhsTable: Handle
 
-    public init(portalId: PortalId<CSetup>, parts: [PortalId<CGfxObj>], parentIndex: [Int], defaultScale: [Vector3<Float>], allowFreeHeading: Bool, hasPhysicsBSP: Bool, holdingLocations: [UInt32:LocationType], connectionPoints: [UInt32:LocationType], placementFrames: [UInt32:PlacementType], cylSphere: [CylSphere], sphere: [Sphere<Float>], height: Float, radius: Float, stepDownHeight: Float, stepUpHeight: Float, sortingSphere: Sphere<Float>, selectionSphere: Sphere<Float>, lights: [UInt32:LightInfo], defaultAnimId: Handle, defaultScriptId: Handle, defaultMTable: Handle, defaultSTable: Handle, defaultPhsTable: Handle) {
+    public init(portalId: PortalId<CSetup>, parts: [PortalId<CGfxObj>], parentIndex: [Int], defaultScale: [CVector], allowFreeHeading: Bool, hasPhysicsBSP: Bool, holdingLocations: [UInt32:LocationType], connectionPoints: [UInt32:LocationType], placementFrames: [UInt32:PlacementType], cylSphere: [CylSphere], sphere: [CSphere], height: Float, radius: Float, stepDownHeight: Float, stepUpHeight: Float, sortingSphere: CSphere, selectionSphere: CSphere, lights: [UInt32:LightInfo], defaultAnimId: Handle, defaultScriptId: Handle, defaultMTable: Handle, defaultSTable: Handle, defaultPhsTable: Handle) {
         self.portalId = portalId
         self.parts = parts
         self.parentIndex = parentIndex

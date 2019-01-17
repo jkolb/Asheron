@@ -22,15 +22,13 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public struct SkyObject {
     public var objectName: String = "" // Not in file
     public var beginTime: Float
     public var endTime: Float
     public var beginAngle: Float
     public var endAngle: Float
-    public var texVelocity: Vector3<Float>
+    public var texVelocity: CVector
     public var defaultGFXObject: Handle
     public var defaultPesObject: Handle
     public var properties: UInt32
@@ -40,7 +38,7 @@ public struct SkyObject {
         endTime: Float,
         beginAngle: Float,
         endAngle: Float,
-        texVelocity: Vector3<Float>,
+        texVelocity: CVector,
         defaultGFXObject: Handle,
         defaultPesObject: Handle,
         properties: UInt32

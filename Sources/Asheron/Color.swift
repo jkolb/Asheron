@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public protocol Color : CustomStringConvertible {
     static var bitCount: Int { get }
     static var byteCount: Int { get }
@@ -46,12 +44,6 @@ extension IntVector3 {
     }
 }
 
-extension IntVector4 {
-    public init(_ color: Color) {
-        self.init(T(color.r), T(color.g), T(color.b), T(color.a))
-    }
-}
-
 extension IntVector3 where T == UInt8 {
     public var colorRGB888: ColorRGB888 {
         return ColorRGB888(r: r, g: g, b: b)
@@ -63,15 +55,5 @@ extension IntVector3 where T == UInt8 {
     
     public func colorARGB8888(alpha: UInt8) -> ColorARGB8888 {
         return ColorARGB8888(r: r, g: g, b: b, a: alpha)
-    }
-}
-
-extension IntVector4 where T == UInt8 {
-    public var colorRGB888: ColorRGB888 {
-        return ColorRGB888(r: r, g: g, b: b)
-    }
-    
-    public var colorARGB8888: ColorARGB8888 {
-        return ColorARGB8888(r: r, g: g, b: b, a: a)
     }
 }

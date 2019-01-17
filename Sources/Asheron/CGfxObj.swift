@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public final class CGfxObj : PortalObject {
     public struct Flags : OptionSet {
         public static let collidable = Flags(rawValue: 1 << 0)
@@ -47,12 +45,12 @@ public final class CGfxObj : PortalObject {
     public var vertexArray: CVertexArray
     public var physicsPolygons: [CPolygon]
     public var physicsBSP: PhysicsBSPTree
-    public var sortCenter: Vector3<Float>
+    public var sortCenter: CVector
     public var polygons: [CPolygon]
     public var drawingBSP: DrawingBSPTree
     public var degradeId: UInt32?
     
-    public init(portalId: PortalId<CGfxObj>, flags: Flags, rgSurfaces: [PortalId<CSurface>], vertexArray: CVertexArray, physicsPolygons: [CPolygon], physicsBSP: PhysicsBSPTree, sortCenter: Vector3<Float>, polygons: [CPolygon], drawingBSP: DrawingBSPTree, degradeId: UInt32?) {
+    public init(portalId: PortalId<CGfxObj>, flags: Flags, rgSurfaces: [PortalId<CSurface>], vertexArray: CVertexArray, physicsPolygons: [CPolygon], physicsBSP: PhysicsBSPTree, sortCenter: CVector, polygons: [CPolygon], drawingBSP: DrawingBSPTree, degradeId: UInt32?) {
         self.portalId = portalId
         self.flags = flags
         self.rgSurfaces = rgSurfaces

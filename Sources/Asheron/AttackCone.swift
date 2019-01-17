@@ -22,16 +22,14 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public struct AttackCone {
     public var partIndex: Int32
-    public var left: Vector2<Float>
-    public var right: Vector2<Float>
+    public var left: Vector2
+    public var right: Vector2
     public var radius: Float
     public var height: Float
     
-    public init(partIndex: Int32, left: Vector2<Float>, right: Vector2<Float>, radius: Float, height: Float) {
+    public init(partIndex: Int32, left: Vector2, right: Vector2, radius: Float, height: Float) {
         self.partIndex = partIndex
         self.left = left
         self.right = right

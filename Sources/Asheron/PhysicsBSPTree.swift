@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public indirect enum PhysicsBSPTree {
     case empty
     case node(PhysicsBSPNode)
@@ -40,12 +38,12 @@ public indirect enum PhysicsBSPTree {
 
 public struct PhysicsBSPNode {
     public var bspTag: BSPTag
-    public var splittingPlane: Plane<Float>
+    public var splittingPlane: CPlane
     public var posNode: PhysicsBSPTree
     public var negNode: PhysicsBSPTree
-    public var sphere: Sphere<Float>?
+    public var sphere: CSphere?
     
-    public init(bspTag: BSPTag, splittingPlane: Plane<Float>, posNode: PhysicsBSPTree, negNode: PhysicsBSPTree, sphere: Sphere<Float>?) {
+    public init(bspTag: BSPTag, splittingPlane: CPlane, posNode: PhysicsBSPTree, negNode: PhysicsBSPTree, sphere: CSphere?) {
         self.bspTag = bspTag
         self.splittingPlane = splittingPlane
         self.posNode = posNode
@@ -60,10 +58,10 @@ public struct PhysicsBSPLeaf {
     }
     public var leafIndex: UInt32
     public var solid: Bool
-    public var sphere: Sphere<Float>?
+    public var sphere: CSphere?
     public var inPolys: [UInt16]
 
-    public init(leafIndex: UInt32, solid: Bool, sphere: Sphere<Float>?, inPolys: [UInt16]) {
+    public init(leafIndex: UInt32, solid: Bool, sphere: CSphere?, inPolys: [UInt16]) {
         self.leafIndex = leafIndex
         self.solid = solid
         self.sphere = sphere

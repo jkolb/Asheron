@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public final class CRegionDescInputStream : DatInputStream {
     public func readCRegionDesc(portalId: PortalId<CRegionDesc>) throws -> CRegionDesc {
         let streamID = try readPortalId(type: CRegionDesc.self)
@@ -176,7 +174,7 @@ public final class CRegionDescInputStream : DatInputStream {
         let endAngle = try readFloat32()
         let texVelocityX = try readFloat32()
         let texVelocityY = try readFloat32()
-        let texVelocity = Vector3<Float>(texVelocityX, texVelocityY, 0.0)
+        let texVelocity = CVector(texVelocityX, texVelocityY, 0.0)
         let defaultGFXObject = try readHandle()
         let defaultPesObject = try readHandle()
         let properties = try readUInt32()

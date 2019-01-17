@@ -22,17 +22,15 @@
  SOFTWARE.
  */
 
-import Swiftish
-
 public struct LocationType {
     /*
      list[1] = LF_MEMBER, public, type = T_ULONG(0022), offset = 12 member name = 'part_id'
      list[2] = LF_MEMBER, public, type = 0x5E9F, offset = 16 member name = 'frame'
      */
     public var partId: UInt32
-    public var frame: Transform3<Float>
+    public var frame: Frame
     
-    public init(partId: UInt32, frame: Transform3<Float>) {
+    public init(partId: UInt32, frame: Frame) {
         self.partId = partId
         self.frame = frame
     }

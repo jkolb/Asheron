@@ -33,8 +33,6 @@
  DXT5   Interpolated alpha  No
  */
 
-import Swiftish
-
 public struct DXT1Block : DXTBlock {
     public static var byteCount: Int {
         return MemoryLayout<DXTColor>.size

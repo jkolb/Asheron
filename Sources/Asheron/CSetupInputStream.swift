@@ -23,8 +23,6 @@
  */
 
 import Lilliput
-import Swiftish
-
 public struct CSetupFlags : OptionSet {
     public static let hasParentIndex   = CSetupFlags(rawValue: 1 << 0)
     public static let hasDefaultScale  = CSetupFlags(rawValue: 1 << 1)
@@ -110,11 +108,11 @@ public final class CSetupInputStream : DatInputStream {
     }
     
     @inline(__always)
-    private func readFrame() throws -> Transform3<Float> {
+    private func readFrame() throws -> Frame {
         let origin = try readVector3()
         let quaternion = try readQuaternion()
         
-        return Transform3<Float>(translation: origin, rotation: quaternion)
+        return Frame(origin: origin, quaternion: quaternion)
     }
     
     @inline(__always)
@@ -425,11 +423,11 @@ public final class CSetupInputStream : DatInputStream {
     }
     
     @inline(__always)
-    private func readVector2() throws -> Vector2<Float> {
+    private func readVector2() throws -> Vector2 {
         let x = try readFloat32()
         let y = try readFloat32()
         
-        return Vector2<Float>(x, y)
+        return Vector2(x, y)
     }
     
     @inline(__always)
