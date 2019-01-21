@@ -32,9 +32,8 @@ let package = Package(
         .library(name: "Asheron", targets: ["Asheron"]),
         ],
     dependencies: [
-        .package(url: "https://github.com/jkolb/Lilliput", from: "9.2.0"),
         ],
     targets: [
-        .target(name: "Asheron", dependencies: ["Lilliput"]),
+        .target(name: "Asheron", dependencies: []),
         ]
 )
