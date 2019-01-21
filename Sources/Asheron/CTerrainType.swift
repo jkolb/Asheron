@@ -25,9 +25,9 @@
 public struct CTerrainType {
     public var terrainName: String
     public var terrainColor: ColorARGB8888
-    public var sceneTypeIndex: [Count]
+    public var sceneTypeIndex: [Int32]
     
-    public init(terrainName: String, terrainColor: ColorARGB8888, sceneTypeIndex: [Count]) {
+    public init(terrainName: String, terrainColor: ColorARGB8888, sceneTypeIndex: [Int32]) {
         self.terrainName = terrainName
         self.terrainColor = terrainColor
         self.sceneTypeIndex = sceneTypeIndex

@@ -23,16 +23,16 @@
  */
 
 public struct BTNode<Entry : BTEntry> {
-    public static var entryCount: Count { return 61 }
-    public static var nextNodeCount: Count { return entryCount + 1 }
+    public static var entryCount: Int32 { return 61 }
+    public static var nextNodeCount: Int32 { return entryCount + 1 }
     
-    public var nextNode: [Offset]
-    public var numEntries: Count
+    public var nextNode: [Int32]
+    public var numEntries: Int32
     public var entry: [Entry]
     
-    public init(nextNode: [Offset], numEntries: Count, entry: [Entry]) {
-        precondition(Count(nextNode.count) == BTNode<Entry>.nextNodeCount)
-        precondition(Count(entry.count) == BTNode<Entry>.entryCount)
+    public init(nextNode: [Int32], numEntries: Int32, entry: [Entry]) {
+        precondition(Int32(nextNode.count) == BTNode<Entry>.nextNodeCount)
+        precondition(Int32(entry.count) == BTNode<Entry>.entryCount)
         precondition(numEntries <= BTNode<Entry>.entryCount)
         self.nextNode = nextNode
         self.numEntries = numEntries

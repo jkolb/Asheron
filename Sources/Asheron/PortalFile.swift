@@ -22,13 +22,11 @@
  SOFTWARE.
  */
 
-import Lilliput
-
 public final class PortalFile {
-    private let btreeFile: BTreeFileV2
+    private let btreeDataSource: BTreeDataSourceV2
     
-    public init(btreeFile: BTreeFileV2) {
-        self.btreeFile = btreeFile
+    public init(btreeDataSource: BTreeDataSourceV2) {
+        self.btreeDataSource = btreeDataSource
     }
 
     public func fetchCGfxObj(portalId: PortalId<CGfxObj>) throws -> CGfxObj {
@@ -59,13 +57,12 @@ public final class PortalFile {
         return try CRegionDescInputStream(stream: fetch(portalId: portalId)).readCRegionDesc(portalId: portalId)
     }
     
-    private func fetch<T: PortalObject>(portalId: PortalId<T>) throws -> OrderedInputStream<LittleEndian> {
-        let buffer = try btreeFile.readData(handle: portalId.handle)
-        return OrderedInputStream<LittleEndian>(stream: BufferInputStream(buffer: buffer))
+    private func fetch<T: PortalObject>(portalId: PortalId<T>) throws -> AsheronInputStream {
+        return try btreeDataSource.readData(handle: portalId.handle)
     }
 
     public func allPortalIds<T: PortalObject>() throws -> [PortalId<T>] {
-        let rawHandles = try btreeFile.handles(matching: { ($0.bits & 0xFF000000) == T.kind.rawValue })
+        let rawHandles = try btreeDataSource.handles(matching: { ($0.bits & 0xFF000000) == T.kind.rawValue })
         
         return rawHandles.map({ PortalId<T>(handle: $0)! })
     }

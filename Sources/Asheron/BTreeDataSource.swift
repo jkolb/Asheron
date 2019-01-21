@@ -22,47 +22,45 @@
  SOFTWARE.
  */
 
-import Lilliput
+public typealias BTreeDataSourceV1 = BTreeDataSource<BTEntryV1, BTreeInputStreamV1>
+public typealias BTreeDataSourceV2 = BTreeDataSource<BTEntryV2, BTreeInputStreamV2>
 
-public typealias BTreeFileV1 = BTreeFile<BTEntryV1, BTreeInputStreamV1, LittleEndian>
-public typealias BTreeFileV2 = BTreeFile<BTEntryV2, BTreeInputStreamV2, LittleEndian>
-
-public final class BTreeFile<Entry, Input : BTreeInputStream, Order : ByteOrder> where Entry == Input.Entry {
+public final class BTreeDataSource<Entry, Input : BTreeInputStream> where Entry == Input.Entry {
     public enum Error : Swift.Error {
         case truncatedHeader
         case missingHandle(Handle)
     }
 
-    private let blockFile: BlockFile
-    public let rootNodeOffset: Offset
-    private let nodeBytes: ByteBuffer
-    private var nodeCache: [Offset:BTNode<Entry>]
+    private let blockDataSource: BlockDataSource
+    public let rootNodeOffset: Int32
+    private let nodeBytes: UnsafeMutableRawPointer
+    private var nodeCache: [Int32:BTNode<Entry>]
     
-    public class func open(at path: String) throws -> BTreeFile<Entry, Input, Order> {
-        let binaryFile = try BinaryFile.open(forUpdatingAtPath: path, create: false)
-        let headerBytes = OrderedBuffer<Order>(count: 1024)
-        let readCount = try binaryFile.read(into: headerBytes)
-        
-        if readCount < headerBytes.count {
-            throw Error.truncatedHeader
-        }
-        
-        // TODO: This is for V2 header only!
-        let blockSize = Length(rawValue: headerBytes.getUInt32(at: 324))
-        let rootNodeOffset = Offset(rawValue: headerBytes.getInt32(at: 352))
-        let blockFile = BlockFile(file: binaryFile, blockSize: blockSize)
-        let btreeFile = BTreeFile<Entry, Input, Order>(blockFile: blockFile, rootNodeOffset: rootNodeOffset)
-        return btreeFile
-    }
+//    public class func open(at path: String) throws -> BTreeFile<Entry, Input> {
+//        let binaryFile = try BinaryFile.open(forUpdatingAtPath: path, create: false)
+//        let headerBytes = OrderedBuffer<Order>(count: 1024)
+//        let readCount = try binaryFile.read(into: headerBytes)
+//
+//        if readCount < headerBytes.count {
+//            throw Error.truncatedHeader
+//        }
+//
+//        // TODO: This is for V2 header only!
+//        let blockSize = headerBytes.getInt32(at: 324)
+//        let rootNodeOffset = headerBytes.getInt32(at: 352)
+//        let blockDataSource = BlockDataSource(file: binaryFile, blockSize: blockSize)
+//        let btreeFile = BTreeFile<Entry, Input>(blockFile: blockFile, rootNodeOffset: rootNodeOffset)
+//        return btreeFile
+//    }
     
-    public init(blockFile: BlockFile, rootNodeOffset: Offset) {
-        self.blockFile = blockFile
+    public init(blockDataSource: BlockDataSource, rootNodeOffset: Int32) {
+        self.blockDataSource = blockDataSource
         self.rootNodeOffset = rootNodeOffset
-        self.nodeBytes = MemoryBuffer(count: Input.nodeSize)
-        self.nodeCache = [Offset:BTNode<Entry>](minimumCapacity: 64)
+        self.nodeBytes = UnsafeMutableRawPointer.allocate(byteCount: Int(Input.nodeSize), alignment: 1)
+        self.nodeCache = [Int32:BTNode<Entry>](minimumCapacity: 64)
     }
     
-    public func readData(handle: Handle) throws -> ByteBuffer {
+    public func readData(handle: Handle) throws -> AsheronInputStream {
         guard let entry = try findEntry(for: handle) else {
             throw Error.missingHandle(handle)
         }
@@ -79,7 +77,7 @@ public final class BTreeFile<Entry, Input : BTreeInputStream, Order : ByteOrder>
     private func handlesInNode(_ node: BTNode<Entry>, matching filter: (Handle) -> Bool) throws -> [Handle] {
         var handles = [Handle]()
         
-        for index in 0..<node.numEntries {
+        for index in 0..<Int(node.numEntries) {
             let entry = node.entry[index]
             
             if filter(entry.handle) {
@@ -88,7 +86,7 @@ public final class BTreeFile<Entry, Input : BTreeInputStream, Order : ByteOrder>
         }
         
         if !node.isLeaf {
-            for index in 0...node.numEntries {
+            for index in 0...Int(node.numEntries) {
                 let nodeOffset = node.nextNode[index]
                 let nextNode = try fetchNode(at: nodeOffset)
                 let nextHandles = try handlesInNode(nextNode, matching: filter)
@@ -106,7 +104,7 @@ public final class BTreeFile<Entry, Input : BTreeInputStream, Order : ByteOrder>
             let node = try fetchNode(at: nodeOffset)
             precondition(node.numEntries > 0)
             
-            for index in 0..<node.numEntries {
+            for index in 0..<Int(node.numEntries) {
                 let entry = node.entry[index]
                 
                 if entry.handle == handle {
@@ -121,21 +119,20 @@ public final class BTreeFile<Entry, Input : BTreeInputStream, Order : ByteOrder>
             }
             
             // Traverse right
-            nodeOffset = node.isLeaf ? 0 : node.nextNode[node.numEntries]
+            nodeOffset = node.isLeaf ? 0 : node.nextNode[Int(node.numEntries)]
         }
         
         return nil
     }
     
-    public func readEntry(_ entry: Entry) throws -> ByteBuffer {
-        let buffer = MemoryBuffer(count: Int(entry.length))
-        
-        try blockFile.read(into: buffer, at: entry.offset)
-        
-        return buffer
+    public func readEntry(_ entry: Entry) throws -> AsheronInputStream {
+        let buffer = UnsafeMutableRawPointer.allocate(byteCount: Int(entry.length), alignment: 1)
+        let bytesRead = try blockDataSource.read(bytes: buffer, count: entry.length, at: entry.offset)
+        precondition(bytesRead == entry.length)
+        return blockDataSource.wrap(bytes: buffer, count: bytesRead)
     }
     
-    public func fetchNode(at offset: Offset) throws -> BTNode<Entry> {
+    public func fetchNode(at offset: Int32) throws -> BTNode<Entry> {
         if let node = nodeCache[offset] {
             return node
         }
@@ -147,9 +144,11 @@ public final class BTreeFile<Entry, Input : BTreeInputStream, Order : ByteOrder>
         return node
     }
     
-    public func readNode(at offset: Offset) throws -> BTNode<Entry> {
-        try blockFile.read(into: nodeBytes, at: offset)
-        let stream = Input.makeBTreeInputStream(stream: OrderedInputStream<Order>(stream: BufferInputStream(buffer: nodeBytes)))
+    public func readNode(at offset: Int32) throws -> BTNode<Entry> {
+        let bytesRead = try blockDataSource.read(bytes: nodeBytes, count: Input.nodeSize, at: offset)
+        precondition(bytesRead == Input.nodeSize)
+        let asheronStream = blockDataSource.wrap(bytes: nodeBytes, count: Input.nodeSize)
+        let stream = Input.makeBTreeInputStream(stream: asheronStream)
         return try stream.readNode()
     }
 }

@@ -22,40 +22,17 @@
  SOFTWARE.
  */
 
-public struct Length : RawRepresentable, Comparable, Hashable, CustomStringConvertible, ExpressibleByIntegerLiteral {
-    public let rawValue: UInt32
+public final class AsheronBuffer {
+    public let bytes: UnsafeMutableRawPointer
+    public let count: Int32
     
-    public init(rawValue: UInt32) {
-        self.rawValue = rawValue
-    }
-    
-    public init(integerLiteral value: UInt32) {
-        self.init(rawValue: value)
-    }
-    
-    public init<T>(_ source: T) where T : BinaryInteger {
-        self.init(rawValue: UInt32(source))
-    }
-
-    public var hashValue: Int {
-        return rawValue.hashValue
+    public init(count: Int32) {
+        precondition(count >= 0)
+        self.bytes = UnsafeMutableRawPointer.allocate(byteCount: Int(count), alignment: 1)
+        self.count = count
     }
     
-    public static func ==(a: Length, b: Length) -> Bool {
-        return a.rawValue == b.rawValue
-    }
-    
-    public static func <(a: Length, b: Length) -> Bool {
-        return a.rawValue < b.rawValue
-    }
-    
-    public var description: String {
-        return rawValue.description
-    }
-}
-
-extension Int {
-    public init(_ length: Length) {
-        self.init(length.rawValue)
+    deinit {
+        bytes.deallocate()
     }
 }

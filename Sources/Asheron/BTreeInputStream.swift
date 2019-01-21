@@ -22,21 +22,19 @@
  SOFTWARE.
  */
 
-import Lilliput
-
 public protocol BTreeInputStream {
     associatedtype Entry : BTEntry
-    static var nodeSize: Int { get }
+    static var nodeSize: Int32 { get }
     func readNode() throws -> BTNode<Entry>
-    static func makeBTreeInputStream(stream: ByteInputStream) -> Self
+    static func makeBTreeInputStream(stream: AsheronInputStream) -> Self
 }
 
 public final class BTreeInputStreamV1 : DatInputStream, BTreeInputStream {
-    public static var nodeSize: Int {
-        return (Int(BTNode<BTEntryV1>.nextNodeCount) * MemoryLayout<Offset>.size) + MemoryLayout<Count>.size + (Int(BTNode<BTEntryV1>.entryCount) * MemoryLayout<BTEntryV1>.size)
+    public static var nodeSize: Int32 {
+        return (BTNode<BTEntryV1>.nextNodeCount * Int32(MemoryLayout<Int32>.size)) + Int32(MemoryLayout<Int32>.size) + (BTNode<BTEntryV1>.entryCount * Int32(MemoryLayout<BTEntryV1>.size))
     }
     
-    public static func makeBTreeInputStream(stream: ByteInputStream) -> BTreeInputStreamV1 {
+    public static func makeBTreeInputStream(stream: AsheronInputStream) -> BTreeInputStreamV1 {
         return BTreeInputStreamV1(stream: stream)
     }
     
@@ -48,7 +46,7 @@ public final class BTreeInputStreamV1 : DatInputStream, BTreeInputStream {
     }
     
     @inline(__always)
-    private func readNextNode() throws -> [Offset] {
+    private func readNextNode() throws -> [Int32] {
         return try readArray(count: BTNode<BTEntryV1>.nextNodeCount, readElement: readOffset)
     }
 
@@ -68,11 +66,11 @@ public final class BTreeInputStreamV1 : DatInputStream, BTreeInputStream {
 }
 
 public final class BTreeInputStreamV2 : DatInputStream, BTreeInputStream {
-    public static var nodeSize: Int {
-        return (Int(BTNode<BTEntryV2>.nextNodeCount) * MemoryLayout<Offset>.size) + MemoryLayout<Count>.size + (Int(BTNode<BTEntryV2>.entryCount) * MemoryLayout<BTEntryV2>.size)
+    public static var nodeSize: Int32 {
+        return (BTNode<BTEntryV2>.nextNodeCount * Int32(MemoryLayout<Int32>.size)) + Int32(MemoryLayout<Int32>.size) + (BTNode<BTEntryV2>.entryCount * Int32(MemoryLayout<BTEntryV2>.size))
     }
     
-    public static func makeBTreeInputStream(stream: ByteInputStream) -> BTreeInputStreamV2 {
+    public static func makeBTreeInputStream(stream: AsheronInputStream) -> BTreeInputStreamV2 {
         return BTreeInputStreamV2(stream: stream)
     }
     
@@ -84,7 +82,7 @@ public final class BTreeInputStreamV2 : DatInputStream, BTreeInputStream {
     }
     
     @inline(__always)
-    private func readNextNode() throws -> [Offset] {
+    private func readNextNode() throws -> [Int32] {
         return try readArray(count: BTNode<BTEntryV2>.nextNodeCount, readElement: readOffset)
     }
     

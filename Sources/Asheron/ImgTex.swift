@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Lilliput
-
 public final class ImgTex : PortalObject {
     public enum Category: UInt32 {
         case unknown   = 0
@@ -51,7 +49,7 @@ public final class ImgTex : PortalObject {
         case p16(PortalId<Palette>, [UInt16])
         case bgr888([ColorBGR888])
         case i8([ColorI8])
-        case jfif(ByteBuffer)
+        case jfif(AsheronBuffer)
     }
     
     public static let kind = PortalKind.imgTex

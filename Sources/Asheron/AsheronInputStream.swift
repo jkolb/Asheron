@@ -22,40 +22,18 @@
  SOFTWARE.
  */
 
-public struct Offset : RawRepresentable, Comparable, Hashable, CustomStringConvertible, ExpressibleByIntegerLiteral {
-    public let rawValue: Int32
-    
-    public init(rawValue: Int32) {
-        self.rawValue = rawValue
-    }
-    
-    public init(integerLiteral value: Int32) {
-        self.init(rawValue: value)
-    }
-    
-    public init<T>(_ source: T) where T : BinaryInteger {
-        self.init(rawValue: Int32(source))
-    }
-
-    public var hashValue: Int {
-        return rawValue.hashValue
-    }
-    
-    public static func ==(a: Offset, b: Offset) -> Bool {
-        return a.rawValue == b.rawValue
-    }
-    
-    public static func <(a: Offset, b: Offset) -> Bool {
-        return a.rawValue < b.rawValue
-    }
-    
-    public var description: String {
-        return rawValue.description
-    }
-}
-
-extension Int {
-    public init(_ offset: Offset) {
-        self.init(offset.rawValue)
-    }
+public protocol AsheronInputStream : class {
+    var bytesRead: Int32 { get }
+    func skip(count: Int32) throws
+    func readUInt8()  throws -> UInt8
+    func readUInt16() throws -> UInt16
+    func readUInt32() throws -> UInt32
+    func readUInt64() throws -> UInt64
+    func readInt8()  throws -> Int8
+    func readInt16() throws -> Int16
+    func readInt32() throws -> Int32
+    func readInt64() throws -> Int64
+    func readFloat32() throws -> Float32
+    func readFloat64() throws -> Float64
+    func read(bytes: UnsafeMutableRawPointer, count: Int32) throws -> Int32
 }

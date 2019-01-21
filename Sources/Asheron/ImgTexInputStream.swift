@@ -22,8 +22,6 @@
  SOFTWARE.
  */
 
-import Lilliput
-
 public final class ImgTexInputStream : DatInputStream {
     public enum Format : UInt32 {
         /* DirectX standard formats */
@@ -105,22 +103,23 @@ public final class ImgTexInputStream : DatInputStream {
             imgTexFormat = .i8(Colors)
             
         case .CUSTOM_JFIF:
-            let byteBuffer = try readByteBuffer(count: count)
-            imgTexFormat = .jfif(byteBuffer)
+            let buffer = try readBuffer(count: count)
+            imgTexFormat = .jfif(buffer)
         }
 
         return ImgTex(portalId: portalId, category: category, width: Int(width), height: Int(height), format: imgTexFormat)
     }
     
     @inline(__always)
-    private func readByteBuffer(count: Count) throws -> ByteBuffer {
-        let byteBuffer = MemoryBuffer(count: Int(count))
-        try read(bytes: byteBuffer.bytes, count: byteBuffer.count)
-        return byteBuffer
+    private func readBuffer(count: Int32) throws -> AsheronBuffer {
+        let buffer = AsheronBuffer(count: count)
+        let bytesRead = try read(bytes: buffer.bytes, count: buffer.count)
+        precondition(bytesRead == count)
+        return buffer
     }
     
     @inline(__always)
-    private func readIndices<T>(width: Count, height: Count, count: Count, reader: () throws -> T) throws -> [T] {
+    private func readIndices<T>(width: Int32, height: Int32, count: Int32, reader: () throws -> T) throws -> [T] {
         var indices = [T]()
         let numIndices = Int(width) * Int(height)
         indices.reserveCapacity(numIndices)
@@ -134,7 +133,7 @@ public final class ImgTexInputStream : DatInputStream {
     }
 
     @inline(__always)
-    private func readColors<T : Color>(width: Count, height: Count, count: Count, reader: () throws -> T) throws -> [T] {
+    private func readColors<T : Color>(width: Int32, height: Int32, count: Int32, reader: () throws -> T) throws -> [T] {
         var Colors = [T]()
         let numColors = Int(width) * Int(height)
         Colors.reserveCapacity(numColors)
@@ -148,7 +147,7 @@ public final class ImgTexInputStream : DatInputStream {
     }
 
     @inline(__always)
-    private func readDXTBlocks<T : DXTBlock>(width: Count, height: Count, count: Count, reader: () throws -> T) throws -> [T] {
+    private func readDXTBlocks<T : DXTBlock>(width: Int32, height: Int32, count: Int32, reader: () throws -> T) throws -> [T] {
         var blocks = [T]()
         let blockSize = 4
         let blocksWide = Int(width) / blockSize

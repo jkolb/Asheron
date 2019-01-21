@@ -22,26 +22,23 @@
  SOFTWARE.
  */
 
-import Lilliput
-
 public final class HighresFile {
-    private let btreeFile: BTreeFileV2
+    private let btreeDataSource: BTreeDataSourceV2
     
-    public init(btreeFile: BTreeFileV2) {
-        self.btreeFile = btreeFile
+    public init(btreeDataSource: BTreeDataSourceV2) {
+        self.btreeDataSource = btreeDataSource
     }
     
     public func fetchImgTex(portalId: PortalId<ImgTex>) throws -> ImgTex {
         return try ImgTexInputStream(stream: fetch(portalId: portalId)).readImgTex(portalId: portalId)
     }
 
-    private func fetch<T: PortalObject>(portalId: PortalId<T>) throws -> OrderedInputStream<LittleEndian> {
-        let buffer = try btreeFile.readData(handle: portalId.handle)
-        return OrderedInputStream<LittleEndian>(stream: BufferInputStream(buffer: buffer))
+    private func fetch<T: PortalObject>(portalId: PortalId<T>) throws -> AsheronInputStream {
+        return try btreeDataSource.readData(handle: portalId.handle)
     }
     
     public func allPortalIds<T: PortalObject>() throws -> [PortalId<T>] {
-        let rawHandles = try btreeFile.handles(matching: { ($0.bits & 0xFF000000) == T.kind.rawValue })
+        let rawHandles = try btreeDataSource.handles(matching: { ($0.bits & 0xFF000000) == T.kind.rawValue })
         
         return rawHandles.map({ PortalId<T>(handle: $0)! })
     }

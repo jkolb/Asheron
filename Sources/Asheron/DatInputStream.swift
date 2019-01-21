@@ -22,22 +22,21 @@
  SOFTWARE.
  */
 
-import Lilliput
-public class DatInputStream : ByteInputStream {
-    public let stream: ByteInputStream
+public class DatInputStream {
+    public let stream: AsheronInputStream
     
-    public init(stream: ByteInputStream) {
+    public init(stream: AsheronInputStream) {
         self.stream = stream
     }
     
-    public var bytesRead: Int {
+    public var bytesRead: Int32 {
         @inline(__always) get {
             return stream.bytesRead
         }
     }
     
     @inline(__always)
-    public func skip(count: Int) throws {
+    public func skip(count: Int32) throws {
         try stream.skip(count: count)
     }
 
@@ -62,7 +61,37 @@ public class DatInputStream : ByteInputStream {
     }
     
     @inline(__always)
-    public func read(bytes: UnsafeMutableRawPointer, count: Int) throws {
+    public func readInt8() throws -> Int8 {
+        return try stream.readInt8()
+    }
+    
+    @inline(__always)
+    public func readInt16() throws -> Int16 {
+        return try stream.readInt16()
+    }
+    
+    @inline(__always)
+    public func readInt32() throws -> Int32 {
+        return try stream.readInt32()
+    }
+    
+    @inline(__always)
+    public func readInt64() throws -> Int64 {
+        return try stream.readInt64()
+    }
+    
+    @inline(__always)
+    public func readFloat32() throws -> Float32 {
+        return try stream.readFloat32()
+    }
+    
+    @inline(__always)
+    public func readFloat64() throws -> Float64 {
+        return try stream.readFloat64()
+    }
+
+    @inline(__always)
+    public func read(bytes: UnsafeMutableRawPointer, count: Int32) throws -> Int32 {
         return try stream.read(bytes: bytes, count: count)
     }
     
@@ -83,7 +112,7 @@ public class DatInputStream : ByteInputStream {
     }
     
     @inline(__always)
-    public func readArray<T>(count: Count, readElement: () throws -> T) rethrows -> [T] {
+    public func readArray<T>(count: Int32, readElement: () throws -> T) rethrows -> [T] {
         return try readArray(count: Int(count), readElement: readElement)
     }
 
@@ -109,7 +138,7 @@ public class DatInputStream : ByteInputStream {
     }
     
     @inline(__always)
-    public func readDictionary<K, V>(count: Count, readKey: () throws -> K, readValue: () throws -> V) rethrows -> [K:V] {
+    public func readDictionary<K, V>(count: Int32, readKey: () throws -> K, readValue: () throws -> V) rethrows -> [K:V] {
         var dictionary = [K:V](minimumCapacity: Int(count))
         
         for _ in 0..<count {
@@ -135,28 +164,28 @@ public class DatInputStream : ByteInputStream {
     }
 
     @inline(__always)
-    public func readOffset() throws -> Offset {
-        return Offset(rawValue: try readInt32())
+    public func readOffset() throws -> Int32 {
+        return try readInt32()
     }
     
     @inline(__always)
-    public func readCount() throws -> Count {
-        return Count(rawValue: try readInt32())
+    public func readCount() throws -> Int32 {
+        return try readInt32()
     }
     
     @inline(__always)
-    public func readLength() throws -> Length {
-        return Length(rawValue: try readUInt32())
+    public func readLength() throws -> Int32 {
+        return try readInt32()
     }
 
     @inline(__always)
-    public func readPackedCount() throws -> Count {
+    public func readPackedCount() throws -> Int32 {
         let byte0 = try readUInt8()
         
         if byte0 & 0b1_0000000 == 0b0_0000000 {
             let b0 = byte0
             
-            return Count(b0)
+            return Int32(b0)
         }
         else {
             let byte1 = try readUInt8()
@@ -164,7 +193,7 @@ public class DatInputStream : ByteInputStream {
             let b0 = UInt16(byte0 & 0b0_1111111) << 8
             let b1 = UInt16(byte1)
             
-            return Count(b0 | b1)
+            return Int32(b0 | b1)
         }
     }
     
@@ -230,9 +259,9 @@ public class DatInputStream : ByteInputStream {
         let sidesType = SidesType(rawValue: try readUInt32())!
         let posSurface = try readUInt16()
         let negSurface = try readUInt16()
-        let vertexIds = try readArray(count: Count(numPts), readElement: readUInt16)
-        let posUVIndices = try readArray(count: !stippling.contains(.NO_POS_UVS) ? Count(numPts) : 0, readElement: readUInt8)
-        let negUVIndices = try readArray(count: sidesType == .both && !stippling.contains(.NO_NEG_UVS) ? Count(numPts) : 0, readElement: readUInt8)
+        let vertexIds = try readArray(count: Int32(numPts), readElement: readUInt16)
+        let posUVIndices = try readArray(count: !stippling.contains(.NO_POS_UVS) ? Int32(numPts) : 0, readElement: readUInt8)
+        let negUVIndices = try readArray(count: sidesType == .both && !stippling.contains(.NO_NEG_UVS) ? Int32(numPts) : 0, readElement: readUInt8)
         
         return CPolygon(polyId: polyId, stippling: stippling, sidesType: sidesType, posSurface: posSurface, negSurface: negSurface, vertexIds: vertexIds, posUVIndices: posUVIndices, negUVIndices: negUVIndices)
     }

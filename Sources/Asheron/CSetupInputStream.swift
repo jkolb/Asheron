@@ -22,7 +22,6 @@
  SOFTWARE.
  */
 
-import Lilliput
 public struct CSetupFlags : OptionSet {
     public static let hasParentIndex   = CSetupFlags(rawValue: 1 << 0)
     public static let hasDefaultScale  = CSetupFlags(rawValue: 1 << 1)
@@ -116,14 +115,14 @@ public final class CSetupInputStream : DatInputStream {
     }
     
     @inline(__always)
-    private func readPlacementType(numParts: Count) throws -> PlacementType {
+    private func readPlacementType(numParts: Int32) throws -> PlacementType {
         let animFrame = try readAnimFrame(numParts: numParts)
         
         return PlacementType(animFrame: animFrame)
     }
     
     @inline(__always)
-    private func readAnimFrame(numParts: Count) throws -> AnimFrame {
+    private func readAnimFrame(numParts: Int32) throws -> AnimFrame {
         let frame = try readArray(count: numParts, readElement: readFrame)
         let hooks = try readArray(readElement: readCAnimHook)
         

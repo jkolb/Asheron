@@ -24,16 +24,16 @@
 
 public protocol BTEntry {
     var handle: Handle { get set }
-    var offset: Offset { get set }
-    var length: Length { get set }
+    var offset: Int32 { get set }
+    var length: Int32 { get set }
 }
 
 public struct BTEntryV1 : BTEntry {
     public var handle: Handle
-    public var offset: Offset
-    public var length: Length
+    public var offset: Int32
+    public var length: Int32
 
-    public init(handle: Handle, offset: Offset, length: Length) {
+    public init(handle: Handle, offset: Int32, length: Int32) {
         self.handle = handle
         self.offset = offset
         self.length = length
@@ -43,12 +43,12 @@ public struct BTEntryV1 : BTEntry {
 public struct BTEntryV2 : BTEntry {
     public var comp_resv_ver: UInt32 // 1_111111111111111_1111111111111111
     public var handle: Handle
-    public var offset: Offset
-    public var length: Length
+    public var offset: Int32
+    public var length: Int32
     public var date: UInt32
     public var iter: UInt32
 
-    public init(comp_resv_ver: UInt32, handle: Handle, offset: Offset, length: Length, date: UInt32, iter: UInt32) {
+    public init(comp_resv_ver: UInt32, handle: Handle, offset: Int32, length: Int32, date: UInt32, iter: UInt32) {
         self.comp_resv_ver = comp_resv_ver
         self.handle = handle
         self.offset = offset

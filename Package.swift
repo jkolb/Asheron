@@ -36,6 +36,5 @@ let package = Package(
         ],
     targets: [
         .target(name: "Asheron", dependencies: ["Lilliput"]),
-        .testTarget(name: "AsheronTests", dependencies: ["Asheron"]),
         ]
 )

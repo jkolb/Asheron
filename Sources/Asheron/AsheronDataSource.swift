@@ -22,38 +22,7 @@
  SOFTWARE.
  */
 
-import Lilliput
-
-public final class BlockFile {
-    public enum Error : Swift.Error {
-        case truncatedBlock
-    }
-    
-    private var file: ReadWriteFile
-    private let block: OrderedBuffer<LittleEndian>
-    
-    public init(file: ReadWriteFile, blockSize: Length) {
-        self.file = file
-        self.block = OrderedBuffer<LittleEndian>(count: Int(blockSize))
-    }
-    
-    public func read(into buffer: ByteBuffer, at offset: Offset) throws {
-        let output = BufferOutputStream(buffer: buffer)
-        var offset = offset
-
-        while offset > 0 {
-            file.position = Int(offset)
-            let readCount = try file.read(into: block)
-
-            if readCount < block.count {
-                throw Error.truncatedBlock
-            }
-
-            let input = BufferInputStream(buffer: block)
-            offset = Offset(rawValue: try input.readInt32())
-            try output.write(bytes: input.remainingBytes, count: min(input.remainingCount, output.remainingCount))
-        }
-
-        precondition(output.offset == buffer.count)
-    }
+public protocol AsheronDataSource : class {
+    func read(bytes: UnsafeMutableRawPointer, count: Int32, at offset: Int32) throws -> Int32
+    func wrap(bytes: UnsafeMutableRawPointer, count: Int32) -> AsheronInputStream
 }

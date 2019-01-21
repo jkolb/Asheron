@@ -42,7 +42,7 @@ public final class CGfxObjInputStream : DatInputStream {
     @inline(__always)
     private func readCVertexArray() throws -> CVertexArray {
         let vertexType = VertexType(rawValue: try readUInt32())!
-        let numVertices: Count = try readCount()
+        let numVertices = try readCount()
         
         switch vertexType {
         case .UnknownVertexType:
@@ -61,7 +61,7 @@ public final class CGfxObjInputStream : DatInputStream {
         let numUVs = try readUInt16()
         let vertex = try readVector3()
         let normal = try readVector3()
-        let uvs = try readArray(count: Count(numUVs), readElement: readVector2)
+        let uvs = try readArray(count: Int32(numUVs), readElement: readVector2)
         
         return CSWVertex(vertId: vertId, vertex: vertex, normal: normal, uvs: uvs)
     }

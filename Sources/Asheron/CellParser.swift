@@ -22,11 +22,8 @@
  SOFTWARE.
  */
 
-import Swiftish
-import Lilliput
-
 public final class CellParser {
-    public func parseLandBlock(size: IntVector2<Int>, handle: LandBlockId, buffer: ByteBuffer) -> LandBlock {
+    public func parseLandBlock(size: IntVector2<Int>, handle: LandBlockId, inputStream: AsheronInputStream) -> LandBlock {
         fatalError("Not implemented")
 //        let bytes = OrderedByteBuffer<LittleEndian>(buffer: buffer)
 //        let rawHandle = bytes.getUInt32()
