@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+import Foundation
+
 public protocol Packable {
     init(from dataStream: DataStream)
     func encode(to dataStream: DataStream)

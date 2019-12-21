@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+import Foundation
+
 public final class Wave : Identifiable {
     public enum FormatCode : UInt16, Packable {
         case pcm = 0x0001 // PCM

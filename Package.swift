@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.1
 
 /*
 The MIT License (MIT)
@@ -28,10 +28,13 @@ import PackageDescription
 
 let package = Package(
     name: "Asheron",
+    platforms: [
+        .macOS(.v10_15),
+        .iOS(.v13),
+        .tvOS(.v13),
+    ],
     products: [
         .library(name: "Asheron", targets: ["Asheron"]),
-        ],
-    dependencies: [
         ],
     targets: [
         .target(name: "Asheron", dependencies: []),

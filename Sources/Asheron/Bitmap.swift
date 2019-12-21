@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+import Foundation
+
 public struct BitmapFileHeader : Packable {
     public static var byteSize: UInt32 = 14
     public var size: UInt32

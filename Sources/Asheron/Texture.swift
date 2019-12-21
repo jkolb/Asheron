@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+import Foundation
+
 public final class Texture : Identifiable {
     public enum Category: UInt32, Packable {
         case unknown   = 0
