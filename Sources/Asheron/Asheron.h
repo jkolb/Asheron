@@ -1,5 +1,3 @@
-// swift-tools-version:5.0
-
 /*
 The MIT License (MIT)
 
@@ -24,16 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import PackageDescription
+#import <Cocoa/Cocoa.h>
 
-let package = Package(
-    name: "Asheron",
-    products: [
-        .library(name: "Asheron", targets: ["Asheron"]),
-        ],
-    dependencies: [
-        ],
-    targets: [
-        .target(name: "Asheron", dependencies: []),
-        ]
-)
+//! Project version number for Asheron.
+FOUNDATION_EXPORT double AsheronVersionNumber;
+
+//! Project version string for Asheron.
+FOUNDATION_EXPORT const unsigned char AsheronVersionString[];
+
+// In this header, you should import all the public headers of your framework using statements like #import <Asheron/PublicHeader.h>
+
+
